@@ -35,6 +35,10 @@ public class UserService {
 	}
 	
 	public void register(UserModel user) {
+		try {
+			userRepository.getByUsername(user.getUsername());
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is already taken.");
+		} catch (NoResultException e) {
 		UserEntity entity = new UserEntity();
 		entity.setFirstName(user.getFirstName());
 		entity.setLastName(user.getLastName());
@@ -45,5 +49,6 @@ public class UserService {
 		RoleEntity role = new RoleEntity();
 		role.setId(2);
 		userRepository.save(entity);
+		}
 	}
 }

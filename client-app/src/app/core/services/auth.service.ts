@@ -23,8 +23,8 @@ export class AuthService {
         this.loadData();
     }
 
-    login(loginRequest: Login): Observable<User> {
-      return this.apiService.post('login', loginRequest);
+    login(loginRequest: Login): Observable<Login> {
+      return this.apiService.post<Login>('login', loginRequest);
     }
 
     logout(): void {

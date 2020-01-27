@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
-    this.authService.login(this.loginForm.value).subscribe(data => {
+    this.authService.login(this.loginForm.value).subscribe((data:any) => {
       this.authService.setData(data);
       this.router.navigate(['/rental']);
       this.logger.success('Success', 'You logged in successfully!');

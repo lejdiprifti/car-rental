@@ -32,7 +32,7 @@ export class SidebarComponent {
 
   loadMenu(): void {
     if (this.authService.isLoggedIn) {
-      this.items = menuItems.filter(item => item.allowedRoles.includes(this.authService.user.role));
+      this.items = menuItems.filter(item => item.allowedRoles.includes(this.authService.user.role.id));
     }
   }
 

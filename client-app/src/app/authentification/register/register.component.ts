@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { LoggerService } from '@ikubinfo/core/utilities/logger.service';
+import { RegisterService } from '@ikubinfo/core/services/register.service';
 
 @Component({
   selector: 'ikubinfo-register',
@@ -10,7 +12,8 @@ export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private registerService: RegisterService) { }
+  constructor(private fb: FormBuilder, private registerService: RegisterService,
+    private logger: LoggerService) { }
 
   ngOnInit() {
     this.registerForm = this.fb.group({
@@ -24,7 +27,11 @@ export class RegisterComponent implements OnInit {
   }
 
   register(): void {
-    this.registerService
+    this.registerService.register(this.registerForm.value).subscribe(res => {
+      this.logger.success('Success', 'You registered succesfully');
+    }, err=>{
+      this.logger.error('Error', 'Username is already taken.');
+    })
 
   }
 

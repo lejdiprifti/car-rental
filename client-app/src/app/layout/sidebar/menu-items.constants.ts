@@ -1,4 +1,4 @@
-import { Role } from './../../core/models/role.enum';
+import { RoleEnum as Role } from './../../core/models/role.enum';
 import { MenuItem } from './menu-item'
 
 export const menuItems: Array<MenuItem> = [{
