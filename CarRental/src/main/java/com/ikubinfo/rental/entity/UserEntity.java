@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -32,7 +34,14 @@ public class UserEntity {
 	private String address;
 	
 	@Column(name="contact_number")
-	private int phone;
+	private String phone;
+	
+	@Column(name="email")
+	private String email;
+	
+	@ManyToOne
+	@JoinColumn(name="role_id")
+	private RoleEntity role;
 	
 	@Column(name="active")
 	private boolean active;
@@ -89,19 +98,43 @@ public class UserEntity {
 		this.address = address;
 	}
 
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public RoleEntity getRole() {
+		return role;
+	}
+
+	public void setRole(RoleEntity role) {
+		this.role = role;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 	@Override
 	public String toString() {
 		return "UserEntity [id=" + id + ", username=" + username + ", password=" + password + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", address=" + address + ", phone=" + phone + "]";
-	}
-	
+				+ ", lastName=" + lastName + ", address=" + address + ", phone=" + phone + ", email=" + email
+				+ ", role=" + role + ", active=" + active + "]";
+	}	
 	
 }

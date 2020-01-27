@@ -1,6 +1,7 @@
 package com.ikubinfo.rental.repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
@@ -19,9 +20,10 @@ public class UserRepository {
 		
 	}
 	
-	public UserEntity getByUsername(String username) {
+	public UserEntity getByUsername(String username) throws NoResultException {
 		TypedQuery<UserEntity> query = em.createQuery("Select u from UserEntity u where u.username=?1 and u.active=?2", UserEntity.class);
 		query.setParameter(1, username);
+		query.setParameter(2, true);
 		return query.getSingleResult();
 	}
 	public UserEntity getByUsernameAndPassword(String username,String password) {

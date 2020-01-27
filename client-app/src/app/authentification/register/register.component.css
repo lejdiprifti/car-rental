@@ -87,3 +87,8 @@
   border-radius: 50%;
   border: 2px solid #fff;
 }
+
+.required {
+  font-size: 10px;
+  color: red;
+}

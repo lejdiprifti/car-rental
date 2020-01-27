@@ -7,8 +7,9 @@ public class UserModel {
 	private String password;
 	private String firstName;
 	private String lastName;
+	private String email;
 	private String address;
-	private int phone;
+	private String phone;
 	private RoleModel role;
 	private boolean active;
 	
@@ -64,12 +65,20 @@ public class UserModel {
 		this.address = address;
 	}
 
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public RoleModel getRole() {
@@ -91,9 +100,7 @@ public class UserModel {
 	@Override
 	public String toString() {
 		return "UserModel [id=" + id + ", username=" + username + ", password=" + password + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", address=" + address + ", phone=" + phone + ", role=" + role
-				+ ", active=" + active + "]";
-	}
-	
-	
+				+ ", lastName=" + lastName + ", email=" + email + ", address=" + address + ", phone=" + phone
+				+ ", role=" + role + ", active=" + active + "]";
+	}	
 }

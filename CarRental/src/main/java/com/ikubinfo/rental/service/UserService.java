@@ -4,6 +4,7 @@ import javax.persistence.NoResultException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -22,6 +23,8 @@ public class UserService {
 	@Autowired
 	private UserConverter userConverter;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	public UserService() {
 
 	}
@@ -43,11 +46,14 @@ public class UserService {
 		entity.setFirstName(user.getFirstName());
 		entity.setLastName(user.getLastName());
 		entity.setUsername(user.getUsername());
-		entity.setPassword(user.getPassword());
+		entity.setPassword(passwordEncoder.encode(user.getPassword()));
+		entity.setEmail(user.getEmail());
 		entity.setPhone(user.getPhone());
 		entity.setAddress(user.getAddress());
+		entity.setActive(true);
 		RoleEntity role = new RoleEntity();
 		role.setId(2);
+		entity.setRole(role);
 		userRepository.save(entity);
 		}
 	}
