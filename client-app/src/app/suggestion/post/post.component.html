@@ -1,0 +1,14 @@
+<ikubinfo-panel header="Post">
+  <div panel-content>
+    <form role="form" [formGroup]="postForm">
+      <ikubinfo-input label="Title">
+        <input formControlName="title" type="text" class="form-control" />
+      </ikubinfo-input>
+      <ikubinfo-input label="Description">
+        <textarea formControlName="description" type="text" class="form-control"> </textarea>
+      </ikubinfo-input>
+    </form>
+    <button type="submit" (click)="submit()" [disabled]="postForm.invalid" class="btn btn-primary">Submit</button>
+    <button (click)="reset()" class="btn btn-secondary">Reset</button>
+  </div>
+</ikubinfo-panel>

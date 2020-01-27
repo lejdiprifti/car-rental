@@ -1,0 +1,7 @@
+<div class="form-group">
+  <label class="form-control-label">{{label}}</label>
+  <ng-content></ng-content>
+  <div class="invalid-feedback" *ngIf="showErrorMsg">
+    {{errorMsg}}
+  </div>
+</div>
