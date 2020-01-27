@@ -5,7 +5,7 @@ import { AuthGuard } from '@ikubinfo/core/guards/auth-guard';
 
 const routes: Routes = [
   {
-    path: 'suggestion',
+    path: 'rental',
     loadChildren: () => import('./suggestion/suggestion.module').then(module => module.SuggestionModule),
     canLoad: [AuthGuard]
   },

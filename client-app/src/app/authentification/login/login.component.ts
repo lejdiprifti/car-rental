@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AuthService } from '@ikubinfo/core/services/auth.service';
+import { LoggerService } from '@ikubinfo/core/utilities/logger.service';
 
 @Component({
   selector: 'ikubinfo-login',
@@ -15,7 +16,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private logger: LoggerService
   ) { }
 
   ngOnInit() {
@@ -26,9 +28,12 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
-    this.authService.login(this.loginForm.value).toPromise().then(data => {
+    this.authService.login(this.loginForm.value).subscribe(data => {
       this.authService.setData(data);
-      this.router.navigate(['/suggestion']);
+      this.router.navigate(['/rental']);
+      this.logger.success('Success', 'You logged in successfully!');
+    }, err=>{
+      this.logger.error('Error', 'Username or password is incorrect!');
     });
   }
 }
