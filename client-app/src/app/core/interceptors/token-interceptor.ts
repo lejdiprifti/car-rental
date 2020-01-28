@@ -22,7 +22,7 @@ export class TokenInterceptor implements HttpInterceptor {
     ): Observable<HttpEvent<any>> {
         if (!(request.url.endsWith('login') || request.url.endsWith('register'))) {
             request = request.clone({
-                headers: request.headers.set("Authorization", this.authService.user.username)
+                headers: request.headers.set("Authorization", "Bearer "+ sessionStorage.getItem("token"))
             });
         }
 

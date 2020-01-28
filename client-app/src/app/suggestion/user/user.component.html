@@ -1,0 +1,72 @@
+<form role="form" [formGroup]="settingsForm">
+  <div [formGroup]="settingsForm" class="form-content">
+     <!--First Name -->
+     <div class="form-group">
+      <input type="text" formControlName="firstName" class="form-control input-underline input-lg"
+        placeholder="First Name" />
+    </div>
+ <!--Last Name -->
+ <div class="form-group">
+  <input type="text" formControlName="lastName" class="form-control input-underline input-lg"
+    placeholder="Last Name" />
+</div>
+    <!--Birthdate -->
+    <div class="form-group">
+      <input type="date" formControlName="birthdate" class="form-control input-underline input-lg "
+       placeholder="Birthdate" format="yyyy-MM-dd" />
+      <div class="required" *ngIf="settingsForm.get('birthdate').dirty && settingsForm.get('birthdate').hasError('tooYoung')">
+        *You must be over 18 years old.
+      </div>
+    </div>
+    <!--Address -->
+    <div class="form-group">
+      <input type="text" formControlName="address" class="form-control input-underline input-lg"
+        placeholder="Address" />
+    </div>
+    <!--Email -->
+    <div class="form-group">
+      <input type="text" formControlName="email" class="form-control input-underline input-lg" placeholder="Email" />
+
+      <div class="required" *ngIf="
+      settingsForm.get('email').dirty &&
+      settingsForm.get('email').hasError('pattern')
+        ">
+        *Invalid email
+      </div>
+       <!--Phone -->
+    <div class="form-group">
+      <input type="text" formControlName="phone" class="form-control input-underline input-lg"
+        placeholder="Phone" />
+    </div>
+    </div>
+    <button [disabled]="settingsForm.invalid" (click)="updateData()" class="btn btn-success">
+      Update Profile
+    </button>
+    <!--Password -->
+    <h5 class="header">Change password</h5>
+    <div [formGroup]="passwordForm"><div class="form-group">
+        <input type="password" formControlName="password" class="form-control input-underline input-lg"
+          placeholder=" New password" />
+        <div class="required" *ngIf="
+        passwordForm.get('password').dirty && passwordForm.get('password').hasError('pattern')">
+          Password must contain at least one number and one uppercase and
+          lowercase letter, and at least 8 or more characters.
+        </div>
+      </div>
+      <!--Repeat Password-->
+      <div class="form-group">
+          <input type="password" formControlName="repeatPassword" class="form-control input-underline input-lg"
+            placeholder="Repeat Password" />
+        </div>
+        <div class="required"
+            *ngIf="passwordForm.get('repeatPassword').dirty && passwordForm.hasError('matchingError')">
+            *Passwords do not match.
+          </div>
+    </div>
+    
+  </div>
+  <button [disabled]="passwordForm.invalid" (click)="updatePassword()" class="btn btn-success">
+    Update Password
+  </button>
+  <button (click)="delete()" class="btn btn-danger" style="margin: 1%; float: right;">Delete Account</button>
+</form>

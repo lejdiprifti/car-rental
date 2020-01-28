@@ -10,6 +10,7 @@ import { LoggerService } from '@ikubinfo/core/utilities/logger.service';
 import { ApiService } from '@ikubinfo/core/utilities/api.service';
 import { AuthGuard } from '@ikubinfo/core/guards/auth-guard';
 import { TokenInterceptor } from '@ikubinfo/core/interceptors/token-interceptor';
+import { UserService } from './services/user.service';
 
 
 @NgModule({
@@ -17,7 +18,7 @@ import { TokenInterceptor } from '@ikubinfo/core/interceptors/token-interceptor'
     HttpClientModule
   ],
   declarations: [],
-  providers: [AuthService, PostService, LoggerService, ApiService, AuthGuard,
+  providers: [AuthService, PostService, LoggerService, ApiService, AuthGuard,UserService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

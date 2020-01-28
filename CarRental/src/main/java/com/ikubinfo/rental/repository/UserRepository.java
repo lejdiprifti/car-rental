@@ -1,5 +1,7 @@
 package com.ikubinfo.rental.repository;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -20,6 +22,19 @@ public class UserRepository {
 		
 	}
 	
+	public List<UserEntity> getAll() {
+		TypedQuery<UserEntity> query = em.createQuery("Select u from UserEntity u where u.active =?1", UserEntity.class);
+		query.setParameter(1, true);
+		return query.getResultList();
+	}
+	
+	public UserEntity getById(Long id) throws NoResultException {
+		TypedQuery<UserEntity> query = em.createQuery("Select u from UserEntity u where u.id = ?1 and u.active =?2", UserEntity.class);
+		query.setParameter(1, id);
+		query.setParameter(2, true);
+		return query.getSingleResult();
+	}
+	
 	public UserEntity getByUsername(String username) throws NoResultException {
 		TypedQuery<UserEntity> query = em.createQuery("Select u from UserEntity u where u.username=?1 and u.active=?2", UserEntity.class);
 		query.setParameter(1, username);
@@ -38,5 +53,10 @@ public class UserRepository {
 	@Transactional
 	public void save(UserEntity user) {
 		em.persist(user);
+	}
+	
+	@Transactional
+	public void edit(UserEntity user) {
+		em.merge(user);
 	}
 }

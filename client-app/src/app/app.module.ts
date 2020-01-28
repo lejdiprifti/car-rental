@@ -8,6 +8,7 @@ import { CoreModule } from '@ikubinfo/core/core.module';
 import { AppRoutingModule } from '@ikubinfo/app-routing.module';
 import { AppComponent } from '@ikubinfo/app.component';
 import { AuthentificationModule } from '@ikubinfo/authentification/authentification.module';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,7 @@ import { AuthentificationModule } from '@ikubinfo/authentification/authentificat
     AuthentificationModule,
     CommonsModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {   // Diagnostic only: inspect router configuration
