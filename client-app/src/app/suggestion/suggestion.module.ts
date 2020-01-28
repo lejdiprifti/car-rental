@@ -9,11 +9,14 @@ import { SuggestionRoutingModule } from '@ikubinfo/suggestion/suggestion-routing
 import { LayoutModule } from '@ikubinfo/layout/layout.module';
 import { FormsModule } from '@angular/forms';
 import { UserComponent } from './user/user.component';
+import { CategoryComponent } from './category/category.component';
+import { PasswordModule, FileUploadModule } from 'primeng/primeng';
+import { CategoriesComponent } from './categories/categories.component';
 
 @NgModule({
-    imports: [CommonsModule, SuggestionRoutingModule, LayoutModule, FormsModule],
+    imports: [CommonsModule, SuggestionRoutingModule, LayoutModule, FormsModule, PasswordModule, FileUploadModule],
     exports: [],
-    declarations: [DashboardComponent, PostComponent, PostsComponent, UserComponent],
+    declarations: [DashboardComponent, PostComponent, PostsComponent, UserComponent, CategoryComponent, CategoriesComponent],
     providers: []
 })
 export class SuggestionModule { }

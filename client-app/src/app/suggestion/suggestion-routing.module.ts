@@ -8,6 +8,8 @@ import { PostsComponent } from '@ikubinfo/suggestion/posts/posts.component';
 import { FullComponent } from '@ikubinfo/layout/full/full.component';
 import { UserComponent } from './user/user.component';
 import { UserGuard } from '@ikubinfo/core/guards/user-guard';
+import { CategoryComponent } from './category/category.component';
+import { CategoriesComponent } from './categories/categories.component';
 
 const suggestionRoutes: Routes = [
     {
@@ -19,6 +21,9 @@ const suggestionRoutes: Routes = [
             { path: 'post', component: PostComponent, canActivate: [AdminGuard] },
             { path: 'post/:id', component: PostComponent, canActivate: [AdminGuard] },
             {path: 'user', component: UserComponent, canActivate: [UserGuard]},
+            {path: 'categories', component: CategoriesComponent, canActivate: [AdminGuard]},
+            {path: 'category', component: CategoryComponent, canActivate: [AdminGuard]},
+            {path: 'category/:id', component: CategoryComponent, canActivate: [AdminGuard]},
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
         ]
     }

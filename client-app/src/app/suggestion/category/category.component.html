@@ -1,0 +1,19 @@
+<ikubinfo-panel header="Category">
+  <div panel-content>
+<form role="form" [formGroup]="categoryForm">
+  <div class="form-content">
+    <div class="form-group">
+     <input type="file" formControlName="photo" class="form-control input-underline input-lg" (change)="uploadFile($event)" />
+    </div>
+    <div class="form-group">
+      <input type="text" formControlName="name" class="form-control input-underline input-lg" placeholder="Name" />
+    </div>
+    <div class="form-group">
+      <input type="text" formControlName="description" class="form-control input-underline input-lg" placeholder="Description" />
+    </div>
+  </div>
+  <button pButton type="submit" (click)="submit()" [disabled]="categoryForm.invalid" class="ui-button-success" label="Submit" icon="pi pi-file"></button>
+    <button pButton type="button" (click)="reset()" class="ui-button-secondary reset" label="Reset" icon="pi pi-times"></button>
+</form>
+</div>
+</ikubinfo-panel>

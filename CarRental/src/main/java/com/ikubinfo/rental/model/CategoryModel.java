@@ -1,14 +1,17 @@
 package com.ikubinfo.rental.model;
 
+import java.util.Arrays;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public class CategoryModel {
 	
 	private Long id;
-	private MultipartFile photo;
+	private MultipartFile file;
 	private String name;
 	private String description;
 	private boolean active; 
+	private byte[] photo;
 	
 	public CategoryModel() {
 		
@@ -22,11 +25,21 @@ public class CategoryModel {
 		this.id = id;
 	}
 
-	public MultipartFile getPhoto() {
+
+
+	public MultipartFile getFile() {
+		return file;
+	}
+
+	public void setFile(MultipartFile file) {
+		this.file = file;
+	}
+
+	public byte[] getPhoto() {
 		return photo;
 	}
 
-	public void setPhoto(MultipartFile photo) {
+	public void setPhoto(byte[] photo) {
 		this.photo = photo;
 	}
 
@@ -56,8 +69,10 @@ public class CategoryModel {
 
 	@Override
 	public String toString() {
-		return "CategoryModel [id=" + id + ", photo=" + photo + ", name=" + name + ", description=" + description
-				+ ", active=" + active + "]";
+		return "CategoryModel [id=" + id + ", file=" + file + ", name=" + name + ", description=" + description
+				+ ", active=" + active + ", photo=" + Arrays.toString(photo) + "]";
 	}
+
+	 
 
 }

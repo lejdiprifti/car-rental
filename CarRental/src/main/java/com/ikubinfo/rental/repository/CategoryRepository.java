@@ -23,12 +23,14 @@ public class CategoryRepository {
 
 	}
 	
+	@Transactional
 	public CategoryEntity getByName(String name) throws NoResultException {
 		TypedQuery<CategoryEntity> query = em.createQuery("Select c from CategoryEntity c where c.name = ?1 and c.active = ?2", CategoryEntity.class);
 		query.setParameter(1, name);
 		query.setParameter(2, true);
 		return query.getSingleResult();
 	}
+	@Transactional
 	public CategoryEntity getById(Long id) throws NoResultException, NonUniqueResultException {
 		TypedQuery<CategoryEntity> query = em
 				.createQuery("Select c from CategoryEntity c where c.id = ?1 and c.active =?2", CategoryEntity.class);
@@ -37,6 +39,7 @@ public class CategoryRepository {
 		return query.getSingleResult();
 	}
 
+	@Transactional
 	public List<CategoryEntity> getAll() {
 		TypedQuery<CategoryEntity> query = em.createQuery("Select c from CategoryEntity c where c.active = ?1",
 				CategoryEntity.class);

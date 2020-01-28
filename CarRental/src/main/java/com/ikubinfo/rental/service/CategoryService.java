@@ -8,6 +8,7 @@ import javax.persistence.NoResultException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ikubinfo.rental.converter.CategoryConverter;
@@ -44,23 +45,19 @@ public class CategoryService {
 		}
 	}
 	
-	public void save(CategoryModel model) throws IOException {
-		if (jwtTokenUtil.getRole().get("id") == "1") {
+	public void save(CategoryModel model, MultipartFile file) throws IOException {
 		try {
 			checkIfExists(model.getName());
 			CategoryEntity entity = new CategoryEntity();
 			entity.setName(model.getName());
-			if (model.getPhoto() != null) {
-			entity.setPhoto(model.getPhoto().getBytes());
+			if (file != null) {
+			entity.setPhoto(file.getBytes());
 			}
 			entity.setActive(true);
 			entity.setDescription(model.getDescription());
 			catRepository.save(entity);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category already exists.");
-		}
-		}else {
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not allowed to perform this action.");
 		}
 	}
 	
@@ -80,7 +77,7 @@ public class CategoryService {
 				entity.setDescription(model.getDescription());
 			}
 			if (model.getPhoto() != null) {
-				entity.setPhoto(model.getPhoto().getBytes());
+				entity.setPhoto(model.getFile().getBytes());
 			}
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");

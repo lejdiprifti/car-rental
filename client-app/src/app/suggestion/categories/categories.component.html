@@ -1,0 +1,10 @@
+<div class="row" *ngFor="let category of categories">
+  <div class="col col-xl-6 col-lg-12">
+    <ikubinfo-panel header="{{category.name}}">
+      <div panel-content>
+        <img width="500px" height="250px" src="data:image/jpeg;base64,{{category.photo}}" alt="{{category.name}}" />
+        <p>{{category.description}}</p>
+      </div>
+    </ikubinfo-panel>
+  </div>
+  </div>

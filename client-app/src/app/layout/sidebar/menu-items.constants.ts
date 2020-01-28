@@ -13,6 +13,12 @@ export const menuItems: Array<MenuItem> = [{
     allowedRoles: [Role.USER]
 },
 {
+    url: '/rental/categories',
+    icon: 'fa fa-list',
+    label: 'Categories',
+    allowedRoles: [Role.ADMIN]
+},
+{
     url: '/rental/posts',
     icon: 'fa-table',
     label: 'Manage posts',
