@@ -1,16 +1,21 @@
 package com.ikubinfo.rental.model;
 
-import java.util.Arrays;
+
+
+import org.springframework.web.multipart.MultipartFile;
 
 public class CarModel {
 	
 	private Long id;
 	private String name;
 	private String type;
-	private byte[] photo;
+	private MultipartFile photo;
+	private String plate;
 	private double price;
 	private String diesel;
+	private String description;
 	private CategoryModel category;
+	private Long categoryId;
 	private boolean availability; 
 	private boolean active;
 	
@@ -42,12 +47,29 @@ public class CarModel {
 		this.type = type;
 	}
 
-	public byte[] getPhoto() {
+
+	public MultipartFile getPhoto() {
 		return photo;
 	}
 
-	public void setPhoto(byte[] photo) {
+	public void setPhoto(MultipartFile photo) {
 		this.photo = photo;
+	}
+
+	public String getPlate() {
+		return plate;
+	}
+
+	public void setPlate(String plate) {
+		this.plate = plate;
+	}
+
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 
 	public double getPrice() {
@@ -90,12 +112,19 @@ public class CarModel {
 		this.active = active;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	@Override
 	public String toString() {
-		return "CarModel [id=" + id + ", name=" + name + ", type=" + type + ", photo=" + Arrays.toString(photo)
-				+ ", price=" + price + ", diesel=" + diesel + ", availability=" + availability + ", active=" + active
-				+ "]";
+		return "CarModel [id=" + id + ", name=" + name + ", type=" + type + ", photo=" + photo + ", plate=" + plate
+				+ ", price=" + price + ", diesel=" + diesel + ", category=" + category + ", availability="
+				+ availability + ", active=" + active + "]";
 	}
-	
-	
+
 }

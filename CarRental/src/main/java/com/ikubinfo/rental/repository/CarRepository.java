@@ -35,6 +35,12 @@ public class CarRepository {
 		return query.getResultList();
 	}
 	
+	public CarEntity getByPlate(String plate) throws NoResultException {
+		TypedQuery<CarEntity> query = em.createQuery("Select c from CarEntity c where c.plate=?1 and c.active =?2", CarEntity.class);
+		query.setParameter(1, plate);
+		query.setParameter(2, true);
+		return query.getSingleResult();
+	}
 	public List<CarEntity> getAllAvailable(){
 		TypedQuery<CarEntity> query = em.createQuery("Select c from CarEntity c where c.availability = ?1 and c.active =?1",CarEntity.class);
 		query.setParameter(1, true);

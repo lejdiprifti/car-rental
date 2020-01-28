@@ -64,10 +64,10 @@ public class CategoryService {
 		}
 	}
 	
-	public void edit(CategoryModel model) throws IOException {
+	public void edit(CategoryModel model, Long id) throws IOException {
 		if (jwtTokenUtil.getRole().get("id") == "1") {
 		try {
-			CategoryEntity entity = catRepository.getById(model.getId());
+			CategoryEntity entity = catRepository.getById(id);
 			if (model.getName() != null) {
 				try {
 					catRepository.getByName(model.getName());
