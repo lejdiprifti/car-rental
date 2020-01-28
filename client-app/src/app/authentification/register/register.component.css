@@ -8,7 +8,9 @@
   right: 0;
   bottom: 0;
   overflow: auto;
-  background: #222;
+  background-image: url("../../../assets/images/forcedperspective.jpg");
+  background-size: cover;
+  background-position: 0%;
   text-align: center;
   color: #fff;
   padding: 3em;

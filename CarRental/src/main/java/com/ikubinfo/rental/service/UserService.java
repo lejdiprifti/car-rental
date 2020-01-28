@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.NoResultException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,22 +34,27 @@ public class UserService {
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 	
+	private static Logger logger = LogManager.getLogger(UserService.class);
+	
 	public UserService() {
 
 	}
 	
 	public UserModel getById(Long id) {
 		try {
+			logger.info("Getting user by id.");
 			return userConverter.toModel(userRepository.getById(id));
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
 		}
 	}
 	public List<UserModel> getAll() {
+			logger.info("Getting all users.");
 			return userConverter.toModel(userRepository.getAll());
 	}
 	public UserModel getByUsername(String username) {
 		try {
+			logger.info("Getting user by username.");
 			return userConverter.toModel(userRepository.getByUsername(username));
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
@@ -56,23 +63,25 @@ public class UserService {
 	
 	public void register(UserModel user) {
 		try {
-			userRepository.getByUsername(user.getUsername());
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is already taken.");
-		} catch (NoResultException e) {
-		UserEntity entity = new UserEntity();
-		entity.setFirstName(user.getFirstName());
-		entity.setLastName(user.getLastName());
-		entity.setUsername(user.getUsername());
-		entity.setPassword(passwordEncoder.encode(user.getPassword()));
-		entity.setEmail(user.getEmail());
-		entity.setPhone(user.getPhone());
-		entity.setAddress(user.getAddress());
-		entity.setBirthdate(user.getBirthdate());
-		entity.setActive(true);
-		RoleEntity role = new RoleEntity();
-		role.setId(2);
-		entity.setRole(role);
-		userRepository.save(entity);
+			checkIfExists(user.getUsername());
+			logger.info("Registering new user.");
+			UserEntity entity = new UserEntity();
+			entity.setFirstName(user.getFirstName());
+			entity.setLastName(user.getLastName());
+			entity.setUsername(user.getUsername());
+			entity.setPassword(passwordEncoder.encode(user.getPassword()));
+			entity.setEmail(user.getEmail());
+			entity.setPhone(user.getPhone());
+			entity.setAddress(user.getAddress());
+			entity.setBirthdate(user.getBirthdate());
+			entity.setActive(true);
+			RoleEntity role = new RoleEntity();
+			role.setId(2);
+			entity.setRole(role);
+			userRepository.save(entity);
+		} catch (Exception e) {
+			logger.error("User already exists.");
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exists.");
 		}
 	}
 	
@@ -100,6 +109,7 @@ public class UserService {
 		if (user.getBirthdate() != null) {
 			entity.setBirthdate(user.getBirthdate());
 		}
+		logger.info("Editing user.");
 		userRepository.edit(entity);
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
@@ -108,11 +118,22 @@ public class UserService {
 	
 	public void delete() {
 		try {
+		logger.info("Deleting user.");
 		UserEntity entity = userRepository.getByUsername(jwtTokenUtil.getUsername());
 		entity.setActive(false);
 		userRepository.edit(entity);
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
+		}
+	}
+	
+	public void checkIfExists(String username) throws Exception {
+		try {
+			logger.info("Checking if user already exists.");
+			userRepository.getByUsername(username);
+			throw new Exception("User already exists.");
+		}catch (NoResultException e) {
+			
 		}
 	}
 }

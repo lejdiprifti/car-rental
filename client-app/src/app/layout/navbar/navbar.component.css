@@ -10,3 +10,7 @@
 :host .navbar .nav-item > a:hover {
   color: #fff;
 }
+
+.logo {
+  width: 50%;
+}

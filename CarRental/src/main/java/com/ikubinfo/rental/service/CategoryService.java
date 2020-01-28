@@ -47,9 +47,7 @@ public class CategoryService {
 	public void save(CategoryModel model) throws IOException {
 		if (jwtTokenUtil.getRole().get("id") == "1") {
 		try {
-			catRepository.getByName(model.getName());
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category already exists.");
-		} catch (NoResultException e) {
+			checkIfExists(model.getName());
 			CategoryEntity entity = new CategoryEntity();
 			entity.setName(model.getName());
 			if (model.getPhoto() != null) {
@@ -58,8 +56,10 @@ public class CategoryService {
 			entity.setActive(true);
 			entity.setDescription(model.getDescription());
 			catRepository.save(entity);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category already exists.");
 		}
-		} else {
+		}else {
 			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not allowed to perform this action.");
 		}
 	}
@@ -101,6 +101,15 @@ public class CategoryService {
 			}
 		} else {
 			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to perform this action.");
+		}
+	}
+	
+	public void checkIfExists(String name) throws Exception{
+		try {
+			catRepository.getByName(name);
+			throw new Exception("Category already exists.");
+		} catch (NoResultException e) {
+			
 		}
 	}
 	
