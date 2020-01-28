@@ -30,7 +30,7 @@ export class CategoryComponent implements OnInit {
   }
 
   submit(): void {
-    if (this.category){
+    if (!this.category){
       this.categoryService.edit(this.getData(), this.category.id).subscribe(res=>{
         this.router.navigate(['rental/dashboard']);
         this.logger.success("Success", "Data saved successfully!");
