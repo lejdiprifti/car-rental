@@ -16,6 +16,7 @@ import com.ikubinfo.rental.entity.CarEntity;
 import com.ikubinfo.rental.model.CarModel;
 import com.ikubinfo.rental.repository.CarRepository;
 import com.ikubinfo.rental.repository.CategoryRepository;
+import com.ikubinfo.rental.security.JwtTokenUtil;
 
 @Service
 public class CarService {
@@ -28,6 +29,9 @@ public class CarService {
 	
 	@Autowired
 	private CategoryRepository categoryRepository;
+	
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
 	
 	private static Logger logger = LogManager.getLogger(CarService.class);
 	
@@ -56,6 +60,7 @@ public class CarService {
 	}
 	
 	public void save(CarModel model) {
+		if (jwtTokenUtil.getRole().get("id") == "1") {
 		try {
 			checkIfExists(model.getPlate());
 			CarEntity entity = new CarEntity();
@@ -73,9 +78,13 @@ public class CarService {
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car already exists.");
 		}
+		} else {
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to perform this action.");
+		}
 	}
 	
 	public void edit(CarModel model, Long id) {
+		if (jwtTokenUtil.getRole().get("id") == "1") {
 		try {
 			CarEntity entity = carRepository.getById(id);
 			if (model.getPlate() != null) {
@@ -94,6 +103,9 @@ public class CarService {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Car/Category not found.");
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car already  exists.");
+		}
+		} else {
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to perform this action.");
 		}
 	}
 	
