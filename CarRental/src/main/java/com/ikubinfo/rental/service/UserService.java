@@ -67,6 +67,7 @@ public class UserService {
 		entity.setEmail(user.getEmail());
 		entity.setPhone(user.getPhone());
 		entity.setAddress(user.getAddress());
+		entity.setBirthdate(user.getBirthdate());
 		entity.setActive(true);
 		RoleEntity role = new RoleEntity();
 		role.setId(2);
@@ -96,6 +97,9 @@ public class UserService {
 		if (user.getPhone() != null) {
 			entity.setPhone(user.getPhone());
 		}
+		if (user.getBirthdate() != null) {
+			entity.setBirthdate(user.getBirthdate());
+		}
 		userRepository.edit(entity);
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
@@ -106,6 +110,7 @@ public class UserService {
 		try {
 		UserEntity entity = userRepository.getByUsername(jwtTokenUtil.getUsername());
 		entity.setActive(false);
+		userRepository.edit(entity);
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
 		}

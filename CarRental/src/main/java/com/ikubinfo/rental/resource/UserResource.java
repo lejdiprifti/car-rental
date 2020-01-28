@@ -2,15 +2,15 @@ package com.ikubinfo.rental.resource;
 
 import java.util.List;
 
-import javax.websocket.server.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,13 +36,13 @@ public class UserResource {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<UserModel> getById(@PathParam("id") Long id){
+	public ResponseEntity<UserModel> getById(@PathVariable("id") Long id){
 		return new ResponseEntity<UserModel>(userService.getById(id), HttpStatus.OK);
 	}
 	
-	@PutMapping
+	@PutMapping(consumes="application/json")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void edit(UserModel user) {
+	public void edit(@RequestBody UserModel user) {
 		userService.edit(user);
 	}
 	

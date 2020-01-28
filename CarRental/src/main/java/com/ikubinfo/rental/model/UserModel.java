@@ -1,5 +1,7 @@
 package com.ikubinfo.rental.model;
 
+import java.util.Date;
+
 public class UserModel {
 	
 	private Long id;
@@ -7,6 +9,7 @@ public class UserModel {
 	private String password;
 	private String firstName;
 	private String lastName;
+	private Date birthdate;
 	private String email;
 	private String address;
 	private String phone;
@@ -55,6 +58,14 @@ public class UserModel {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public Date getBirthdate() {
+		return birthdate;
+	}
+
+	public void setBirthdate(Date birthdate) {
+		this.birthdate = birthdate;
 	}
 
 	public String getAddress() {

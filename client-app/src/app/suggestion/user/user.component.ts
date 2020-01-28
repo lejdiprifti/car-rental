@@ -125,6 +125,15 @@ export class UserComponent implements OnInit {
    if (this.settingsForm.value.address !== ""){
      this.updateUser.address=this.settingsForm.value.address;
    }
+   if (this.settingsForm.value.firstName !== ""){
+    this.updateUser.firstName = this.settingsForm.value.firstName;
+   }
+   if (this.settingsForm.value.lastName !== ""){
+     this.updateUser.lastName = this.settingsForm.value.lastName;
+   }
+   if (this.settingsForm.value.phone !== ""){
+     this.updateUser.phone = this.settingsForm.value.phone;
+   }
    this.confirmationService.confirm({
      message: 'Do you want to save your data?',
      header: 'Save Confirmation',

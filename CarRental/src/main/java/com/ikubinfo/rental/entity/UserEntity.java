@@ -1,5 +1,7 @@
 package com.ikubinfo.rental.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,8 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
+
 @Table(name="user", schema="rental")
 public class UserEntity {
 	
@@ -29,6 +34,9 @@ public class UserEntity {
 	
 	@Column(name="last_name")
 	private String lastName;
+	
+	@Temporal(TemporalType.DATE)
+	private Date birthdate;
 	
 	@Column(name="address")
 	private String address;
@@ -90,6 +98,14 @@ public class UserEntity {
 		this.lastName = lastName;
 	}
 
+	public Date getBirthdate() {
+		return birthdate;
+	}
+
+	public void setBirthdate(Date birthdate) {
+		this.birthdate = birthdate;
+	}
+
 	public String getAddress() {
 		return address;
 	}
@@ -133,8 +149,10 @@ public class UserEntity {
 	@Override
 	public String toString() {
 		return "UserEntity [id=" + id + ", username=" + username + ", password=" + password + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", address=" + address + ", phone=" + phone + ", email=" + email
-				+ ", role=" + role + ", active=" + active + "]";
-	}	
+				+ ", lastName=" + lastName + ", birthdate=" + birthdate + ", address=" + address + ", phone=" + phone
+				+ ", email=" + email + ", role=" + role + ", active=" + active + "]";
+	}
+
+	
 	
 }

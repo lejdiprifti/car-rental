@@ -1,6 +1,5 @@
 package com.ikubinfo.rental.security;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.function.Function;
@@ -18,14 +17,12 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JwtTokenUtil {
 
-	private static final long serialVersionUID = -2550185165626007488L;
-
 	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
 	@Value("${jwt.secret}")
 	private String secret;
 
-	private LinkedHashMap role;
+	private LinkedHashMap<?, ?> role;
 
 	private String username;
 
@@ -34,8 +31,8 @@ public class JwtTokenUtil {
 		return getClaimFromToken(token, Claims::getSubject);
 	}
 
-	public LinkedHashMap getRoleFromToken(String token) {
-		return (LinkedHashMap) Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().get("role");
+	public LinkedHashMap<?, ?> getRoleFromToken(String token) {
+		return (LinkedHashMap<?, ?>) Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().get("role");
 	}
 
 	// retrieve expiration date from jwt token
@@ -91,7 +88,7 @@ public class JwtTokenUtil {
 		return this.username;
 	}
 
-	public LinkedHashMap getRole() {
+	public LinkedHashMap<?, ?> getRole() {
 		return this.role;
 	}
 }

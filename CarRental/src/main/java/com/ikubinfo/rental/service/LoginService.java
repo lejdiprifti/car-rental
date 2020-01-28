@@ -14,21 +14,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.ikubinfo.rental.converter.RoleConverter;
-import com.ikubinfo.rental.converter.UserConverter;
 import com.ikubinfo.rental.model.LoginRequest;
 import com.ikubinfo.rental.model.LoginResponse;
 import com.ikubinfo.rental.model.UserModel;
-import com.ikubinfo.rental.repository.UserRepository;
 import com.ikubinfo.rental.security.JwtTokenUtil;
 
 @Service
 public class LoginService implements UserDetailsService {
-	
-	@Autowired
-	private UserRepository userRepository;
-	
-	@Autowired
-	private UserConverter userConverter;
 	
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
