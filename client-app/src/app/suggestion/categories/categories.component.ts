@@ -29,4 +29,17 @@ export class CategoriesComponent implements OnInit {
   addCategory(){
     this.router.navigate(['/rental/category']);
   }
+
+  delete(id: number): void{
+    this.categoryService.delete(id).subscribe(res => {
+      this.logger.success('Success', 'Category was deleted successfully!');
+      this.getAll();
+    }, err=>{
+      this.logger.error('Error', 'Category could not be deleted.');
+    })
+  }
+
+  edit(id: number): void {
+    this.router.navigate(['/rental/category/' + id]);
+  }
 }

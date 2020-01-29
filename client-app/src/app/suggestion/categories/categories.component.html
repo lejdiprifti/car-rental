@@ -3,12 +3,12 @@
   <div class="col col-xl-6 col-lg-12" *ngFor="let category of categories">
     <p-card header="{{category.name}}" [style]="{width: '360px'}" styleClass="ui-card-shadow">
     <p-header>
-        <img src="Card" src="data:image/jpeg;base64,{{category.photo}}">
+        <img src="data:image/jpeg;base64,{{category.photo}}">
     </p-header>
     <div>{{category.description}}</div>
     <p-footer>
-        <button pButton type="button" label="Edit" icon="pi pi-check" style="margin-right: .25em"></button>
-        <button pButton type="button" label="Delete" icon="pi pi-times" class="ui-button-danger"></button>
+        <button pButton type="button" label="Edit" icon="pi pi-check" style="margin-right: .25em" (click)="edit(category.id)"></button>
+        <button pButton type="button" label="Delete" icon="pi pi-times" class="ui-button-danger" (click)="delete(category.id)"></button>
     </p-footer>
 </p-card>
   </div>

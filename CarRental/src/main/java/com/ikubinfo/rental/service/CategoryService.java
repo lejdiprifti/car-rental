@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.NoResultException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -29,11 +31,14 @@ public class CategoryService {
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 	
+	private static Logger logger = LogManager.getLogger(CategoryService.class);
+	
 	public CategoryService() {
 		
 	}
 	
 	public List<CategoryModel> getAll() {
+		logger.info("Getting all the categories.");
 		return catConverter.toModel(catRepository.getAll());
 	}
 	
@@ -47,7 +52,7 @@ public class CategoryService {
 	
 	public void save(CategoryModel model, MultipartFile file) throws IOException {
 		try {
-			checkIfExists(model.getName());
+			checkIfExists(model.getName(), null);
 			CategoryEntity entity = new CategoryEntity();
 			entity.setName(model.getName());
 			if (file != null) {
@@ -61,24 +66,25 @@ public class CategoryService {
 		}
 	}
 	
-	public void edit(CategoryModel model, Long id) throws IOException {
-		if (jwtTokenUtil.getRole().get("id") == "1") {
+	public void edit(CategoryModel model, MultipartFile file, Long id) throws IOException {
+		if ((int) jwtTokenUtil.getRole().get("id") == 1) {
 		try {
 			CategoryEntity entity = catRepository.getById(id);
 			if (model.getName() != null) {
 				try {
-					catRepository.getByName(model.getName());
-					throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category already exists.");
-				} catch (NoResultException e) {
+					checkIfExists(model.getName(), entity.getName());
 					entity.setName(model.getName());
+				} catch (Exception e) {
+					throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category already exists.");
 				}
 			}
 			if (model.getDescription() != null) {
 				entity.setDescription(model.getDescription());
 			}
-			if (model.getPhoto() != null) {
-				entity.setPhoto(model.getFile().getBytes());
+			if (file != null) {
+				entity.setPhoto(file.getBytes());
 			}
+			catRepository.edit(entity);
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
 		}
@@ -88,7 +94,7 @@ public class CategoryService {
 	}
 	
 	public void delete(Long id) {
-		if (jwtTokenUtil.getRole().get("id") == "1") {
+		if ((int) jwtTokenUtil.getRole().get("id") == 1) {
 			try {
 				CategoryEntity entity = catRepository.getById(id);
 				entity.setActive(false);
@@ -101,10 +107,16 @@ public class CategoryService {
 		}
 	}
 	
-	public void checkIfExists(String name) throws Exception{
+	public void checkIfExists(String name, String ownName) throws Exception{
 		try {
+			if (ownName == null) {
 			catRepository.getByName(name);
 			throw new Exception("Category already exists.");
+			} else {
+				//when you need to update the category, check if there is another category with the same name not the one being updated.
+				catRepository.checkIfExistsAnother(name, ownName);
+				throw new Exception("Category already exists.");
+			}
 		} catch (NoResultException e) {
 			
 		}

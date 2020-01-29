@@ -25,8 +25,8 @@ public save(formData: FormData): Observable<any>{
   return this.httpClient.post('http://localhost:8080/category', formData);
 }
 
-public edit(category: Category, id: number): Observable<void>{
-  return this.apiService.put(this.url+'/'+id, category);
+public edit(formData: FormData, id: number): Observable<any>{
+  return this.httpClient.put('http://localhost:8080/category/' + id, formData);
 }
 
 public delete(id: number): Observable<void>{
