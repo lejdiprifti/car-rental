@@ -14,11 +14,12 @@ import { PasswordModule, FileUploadModule, CardModule, ToggleButtonModule } from
 import { CategoriesComponent } from './categories/categories.component';
 import {DataViewModule} from 'primeng/dataview';
 import { CarsComponent } from './cars/cars.component';
+import { CarComponent } from './car/car.component';
 
 @NgModule({
     imports: [CommonsModule, ToggleButtonModule, SuggestionRoutingModule,DataViewModule, LayoutModule,CardModule, FormsModule, PasswordModule, FileUploadModule],
     exports: [],
-    declarations: [DashboardComponent, PostComponent, PostsComponent, CarsComponent, UserComponent, CategoryComponent, CategoriesComponent],
+    declarations: [DashboardComponent,CarComponent, PostComponent, PostsComponent, CarsComponent, UserComponent, CategoryComponent, CategoriesComponent],
     providers: []
 })
 export class SuggestionModule { }

@@ -37,7 +37,9 @@ export class CarsComponent implements OnInit {
       {field: 'description', header: 'Description'},
       {field: 'availability', header: 'Availability'},
       {field: 'year', header: 'Production Year'},
-      {field: 'category', header: 'Category'}
+      {field: 'category', header: 'Category'},
+      {field: 'plate', header: 'Plate'},
+      {field: 'price', header: 'Price per day'}
     ];
 
   }
@@ -68,5 +70,8 @@ export class CarsComponent implements OnInit {
         })
     }
   })
-}
+  }
+  addCar(): void {
+    this.router.navigate(['/rental/car']);
+  }
 }

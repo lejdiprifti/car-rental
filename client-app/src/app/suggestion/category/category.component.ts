@@ -46,7 +46,7 @@ export class CategoryComponent implements OnInit {
             type: "application/json"
           }));
           this.categoryService.edit(formData, this.category.id).subscribe(res => {
-            this.router.navigate(['rental/dashboard']);
+            this.router.navigate(['rental/categories']);
             this.logger.success("Success", "Data saved successfully!");
           }, err => {
             this.logger.error("Error", "Category name exists.");
@@ -69,7 +69,7 @@ export class CategoryComponent implements OnInit {
             type: "application/json"
           }));
           return this.categoryService.save(formData).subscribe(res => {
-            this.router.navigate(['rental/dashboard']);
+            this.router.navigate(['rental/categories']);
             this.logger.success("Success", "Category was successfully created.");
           }, err => {
             this.logger.error("Error", "Category name already exists.");

@@ -67,6 +67,7 @@ public class CarService {
 			CarEntity entity = new CarEntity();
 			entity.setAvailability(true);
 			entity.setActive(true);
+			entity.setName(model.getName());
 			entity.setPhoto(file.getBytes());
 			entity.setDescription(model.getDescription());
 			entity.setDiesel(model.getDiesel());

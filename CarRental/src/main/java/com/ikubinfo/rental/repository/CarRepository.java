@@ -32,7 +32,7 @@ public class CarRepository {
 	
 	@Transactional
 	public List<CarEntity> getAll() {
-		TypedQuery<CarEntity> query = em.createQuery("Select c from CarEntity c where c.active =?2", CarEntity.class);
+		TypedQuery<CarEntity> query = em.createQuery("Select c from CarEntity c where c.active =?1", CarEntity.class);
 		query.setParameter(1,true);
 		return query.getResultList();
 	}
