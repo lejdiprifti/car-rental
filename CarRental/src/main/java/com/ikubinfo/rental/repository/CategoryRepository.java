@@ -57,10 +57,10 @@ public class CategoryRepository {
 		em.merge(entity);
 	}
 	
-	public void checkIfExistsAnother(String name, String ownName) throws NoResultException {
-		TypedQuery<String> query = em.createQuery("Select c.name from CategoryEntity c where c.name = ?1 and c.name != ?2 and c.active = ?3", String.class);
+	public void checkIfExistsAnother(String name, Long id) throws NoResultException {
+		TypedQuery<String> query = em.createQuery("Select c.name from CategoryEntity c where c.name = ?1 and c.id != ?2 and c.active = ?3", String.class);
 		query.setParameter(1, name);
-		query.setParameter(2, ownName);
+		query.setParameter(2, id);
 		query.setParameter(3, true);
 		query.getSingleResult();
 	}

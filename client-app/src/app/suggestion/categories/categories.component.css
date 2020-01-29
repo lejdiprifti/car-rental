@@ -1,4 +1,11 @@
-.row {
-    margin-left: 1%;
+.panel {
+    margin-left: 8%;
     margin-top: 1%;
+    transition: 0.7s;
+    height: 50%;
+}
+.panel:hover {
+    opacity: 0.8;
+    transform: scale(1.02);
+    cursor: pointer;
 }

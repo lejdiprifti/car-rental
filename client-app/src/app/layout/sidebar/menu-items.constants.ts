@@ -11,6 +11,11 @@ export const menuItems: Array<MenuItem> = [{
     icon: 'fa fa-user',
     label: 'User',
     allowedRoles: [Role.USER]
+},{
+    url: '/rental/cars',
+    icon: 'fa fa-list',
+    label: 'Cars',
+    allowedRoles: [Role.ADMIN]
 },
 {
     url: '/rental/categories',

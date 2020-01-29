@@ -31,7 +31,7 @@ export class CategoryComponent implements OnInit {
   }
 
   submit(): void {
-    if (this.category) {
+    if (this.category.id !== undefined) {
       this.confirmationService.confirm({
         message: 'Are you sure you want to save the changes?',
         header: 'Accept Confirmation',

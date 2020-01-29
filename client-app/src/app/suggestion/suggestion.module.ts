@@ -12,11 +12,13 @@ import { UserComponent } from './user/user.component';
 import { CategoryComponent } from './category/category.component';
 import { PasswordModule, FileUploadModule, CardModule } from 'primeng/primeng';
 import { CategoriesComponent } from './categories/categories.component';
+import {DataViewModule} from 'primeng/dataview';
+import { CarsComponent } from './cars/cars.component';
 
 @NgModule({
-    imports: [CommonsModule, SuggestionRoutingModule, LayoutModule,CardModule, FormsModule, PasswordModule, FileUploadModule],
+    imports: [CommonsModule, SuggestionRoutingModule,DataViewModule, LayoutModule,CardModule, FormsModule, PasswordModule, FileUploadModule],
     exports: [],
-    declarations: [DashboardComponent, PostComponent, PostsComponent, UserComponent, CategoryComponent, CategoriesComponent],
+    declarations: [DashboardComponent, PostComponent, PostsComponent, CarsComponent, UserComponent, CategoryComponent, CategoriesComponent],
     providers: []
 })
 export class SuggestionModule { }

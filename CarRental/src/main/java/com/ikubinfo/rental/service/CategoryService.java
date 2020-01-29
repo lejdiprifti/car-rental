@@ -72,7 +72,7 @@ public class CategoryService {
 			CategoryEntity entity = catRepository.getById(id);
 			if (model.getName() != null) {
 				try {
-					checkIfExists(model.getName(), entity.getName());
+					checkIfExists(model.getName(), id);
 					entity.setName(model.getName());
 				} catch (Exception e) {
 					throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category already exists.");
@@ -107,14 +107,15 @@ public class CategoryService {
 		}
 	}
 	
-	public void checkIfExists(String name, String ownName) throws Exception{
+	public void checkIfExists(String name, Long id) throws Exception{
 		try {
-			if (ownName == null) {
+			if (id == null) {
 			catRepository.getByName(name);
+			logger.error("Category already exists.");
 			throw new Exception("Category already exists.");
 			} else {
 				//when you need to update the category, check if there is another category with the same name not the one being updated.
-				catRepository.checkIfExistsAnother(name, ownName);
+				catRepository.checkIfExistsAnother(name, id);
 				throw new Exception("Category already exists.");
 			}
 		} catch (NoResultException e) {

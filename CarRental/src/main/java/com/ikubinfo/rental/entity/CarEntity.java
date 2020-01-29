@@ -27,6 +27,9 @@ public class CarEntity {
 	@Column(name="plate")
 	private String plate;
 	
+	@Column(name="year")
+	private int year;
+	
 	@Column(name="type")
 	private String type;
 	
@@ -117,6 +120,14 @@ public class CarEntity {
 		this.category = category;
 	}
 
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
 	public boolean isAvailability() {
 		return availability;
 	}
@@ -143,9 +154,10 @@ public class CarEntity {
 
 	@Override
 	public String toString() {
-		return "CarEntity [id=" + id + ", name=" + name + ", plate=" + plate + ", type=" + type + ", description="
-				+ description + ", photo=" + Arrays.toString(photo) + ", price=" + price + ", diesel=" + diesel
-				+ ", category=" + category + ", availability=" + availability + ", active=" + active + "]";
+		return "CarEntity [id=" + id + ", name=" + name + ", plate=" + plate + ", year=" + year + ", type=" + type
+				+ ", description=" + description + ", photo=" + Arrays.toString(photo) + ", price=" + price
+				+ ", diesel=" + diesel + ", category=" + category + ", availability=" + availability + ", active="
+				+ active + "]";
 	}
 
 	

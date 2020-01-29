@@ -1,7 +1,7 @@
 <button pButton type="button" label="Add" icon="pi pi-plus" style="margin-right: .25em" (click)="addCategory()"></button>
 <div class="row">
-  <div class="col col-xl-6 col-lg-12" *ngFor="let category of categories">
-    <p-card header="{{category.name}}" [style]="{width: '360px'}" styleClass="ui-card-shadow">
+  <div class="panel" *ngFor="let category of categories">
+    <p-card header="{{category.name}}" [style]="{width: '380px'}" styleClass="ui-card-shadow">
     <p-header>
         <img src="data:image/jpeg;base64,{{category.photo}}">
     </p-header>

@@ -10,6 +10,7 @@ import { UserComponent } from './user/user.component';
 import { UserGuard } from '@ikubinfo/core/guards/user-guard';
 import { CategoryComponent } from './category/category.component';
 import { CategoriesComponent } from './categories/categories.component';
+import { CarsComponent } from './cars/cars.component';
 
 const suggestionRoutes: Routes = [
     {
@@ -24,6 +25,7 @@ const suggestionRoutes: Routes = [
             {path: 'categories', component: CategoriesComponent, canActivate: [AdminGuard]},
             {path: 'category', component: CategoryComponent, canActivate: [AdminGuard]},
             {path: 'category/:id', component: CategoryComponent, canActivate: [AdminGuard]},
+            {path: 'cars', component: CarsComponent, canActivate: [AdminGuard]},
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
         ]
     }
