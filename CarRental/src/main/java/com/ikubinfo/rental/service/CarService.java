@@ -121,6 +121,9 @@ public class CarService {
 			if (model.getDiesel() != null) {
 			entity.setDiesel(model.getDiesel());
 			}
+			if (model.getCategoryId() != null) {
+				entity.setCategory(categoryRepository.getById(model.getCategoryId()));
+			}
 			if (model.getYear() > 0) {
 				entity.setYear(model.getYear());
 			}

@@ -1,14 +1,13 @@
-<button pButton type="button" class.active="{{editable}}" (click)="edit()" class="ui-button-secondary reset" label="Edit" icon="pi pi-edit"></button>
 <ikubinfo-panel header="Car">
   <div panel-content>
 <form role="form" [formGroup]="carForm">
   <div class="form-content">
+    <div *ngIf="car !== null">
+      <img src="data:image/jpeg;base64,{{car.photo}}">
+      </div>
     <ikubinfo-input label="Photo">
     <div class="form-group">
      <input type="file" formControlName="photo" class="form-control input-underline input-lg" (change)="uploadFile($event)" />
-     <div *ngIf="car !== null">
-     <img src="data:image/jpeg;base64,{{car.photo}}">
-     </div>
     </div>
     </ikubinfo-input>
     <ikubinfo-input label="Name">
@@ -24,7 +23,7 @@
     </ikubinfo-input>
     <ikubinfo-input label="Year">
     <div class="form-group">
-      <input pInputText pKeyFilter="int" disabled='{{editable}}' formControlName="year" class="form-control input-underline input-lg" placeholder="Production year" />
+      <input pInputText pKeyFilter="int" formControlName="year" class="form-control input-underline input-lg" placeholder="Production year" />
     </div>
     </ikubinfo-input>
     <ikubinfo-input label="Type of fuel">
@@ -57,12 +56,12 @@
   </ikubinfo-input>
   <ikubinfo-input label="Availability">
     <div class="form-group">
-  <p-toggleButton [(ngModel)]="available" onLabel="Available" offLabel="Rented" onIcon="pi pi-check" offIcon="pi pi-times" [style]="{'width':'150px'}"></p-toggleButton>
+  <p-toggleButton [(ngModel)]="available" formControlName="availability" onLabel="Available" offLabel="Rented" onIcon="pi pi-check" offIcon="pi pi-times" [style]="{'width':'150px'}"></p-toggleButton>
     </div>
 </ikubinfo-input>
 </div>
-  <button pButton type="submit" class.active="{{editable}}" (click)="submit()" [disabled]="carForm.invalid" class="ui-button-success" label="Submit" icon="pi pi-file"></button>
-    <button pButton type="button" class.active="{{editable}}" (click)="reset()" class="ui-button-secondary reset" label="Reset" icon="pi pi-times"></button>
+  <button pButton type="submit" (click)="submit()" [disabled]="carForm.invalid" class="ui-button-success" label="Submit" icon="pi pi-file"></button>
+    <button pButton type="button" id="reset" (click)="reset()" class="ui-button-secondary reset" label="Reset" icon="pi pi-times"></button>
 </form>
 </div>
 </ikubinfo-panel>

@@ -21,7 +21,7 @@ export class CarComponent implements OnInit {
   brands: Array<string>;
   categories: Array<Category>;
   diesels: Array<string>;
-  editable: string;
+  editable: boolean;
   available: boolean;
   blockSpecial: RegExp = /^[^:>#*]+|([^:>#*][^>#*]+[^:>#*])$/
   constructor(private fb: FormBuilder, private router: Router, private confirmationService: ConfirmationService,
@@ -30,7 +30,7 @@ export class CarComponent implements OnInit {
 
   ngOnInit() {
     this.car = {};
-    this.editable = 'true';
+    this.editable = false;
     this.loadForm();
     this.getCategories();
     this.diesels = [
@@ -80,13 +80,12 @@ export class CarComponent implements OnInit {
     this.carForm.get('year').setValue(data.year);
     this.carForm.get('diesel').setValue(data.diesel);
     this.carForm.get('availability').setValue(this.available);
-    this.carForm.get('category').setValue(data.categoryId);
+    this.carForm.get('category').setValue(data.category.id);
     this.carForm.get('plate').setValue(data.plate);
   }
   
   edit(): void {
-    this.editable = 'false';
-    this.loadForm();
+    this.editable = false;
     this.reset();
   }
 
@@ -99,7 +98,7 @@ export class CarComponent implements OnInit {
         accept: () => {
           let formData = new FormData();
           formData.append("file", (this.carForm.get('photo').value || this.car.photo));
-          formData.append('properties', new Blob([JSON.stringify({
+          formData.append('model', new Blob([JSON.stringify({
             "name": this.carForm.get('name').value,
             "description": this.carForm.get('description').value,
             "type": this.carForm.get('type').value,
@@ -129,7 +128,7 @@ export class CarComponent implements OnInit {
         accept: () => {
           let formData = new FormData();
           formData.append("file", (this.carForm.get('photo').value || this.car.photo));
-          formData.append('properties', new Blob([JSON.stringify({
+          formData.append('model', new Blob([JSON.stringify({
             "name": this.carForm.get('name').value,
             "description": this.carForm.get('description').value,
             "type": this.carForm.get('type').value,

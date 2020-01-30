@@ -1,3 +1,16 @@
 .active {
     visibility: none;
 }
+
+#reset {
+    margin-left: 83%;
+}
+
+.error {
+    font-size: 10px;
+    color:red;
+}
+img {
+    margin: 1%;
+    width: 300px;
+}
