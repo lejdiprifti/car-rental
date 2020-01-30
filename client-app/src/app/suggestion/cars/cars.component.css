@@ -1,7 +1,21 @@
 button {
-    margin-bottom: 1%;
+    margin-top: 1%;
 }
 
 #carPhoto{
     width: 150px;
+    background-color: rgb(182, 182, 182);
+    border-radius: 5%;
+    float: left;
+    margin-top: 1%;
+}
+
+.green {
+    background-color: rgb(163, 241, 163);
+    margin-bottom: 1%;
+}
+
+.red {
+    background-color: rgb(163, 241, 163);
+    margin-bottom: 1%;
 }

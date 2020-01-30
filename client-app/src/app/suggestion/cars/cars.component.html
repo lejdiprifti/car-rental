@@ -11,7 +11,7 @@
                     <input type="search" pInputText placeholder="Search by brand" (input)="dv.filter($event.target.value)">
                 </div>
             </div>
-            <div class="ui-g-6 ui-md-4" style="text-align:right">
+            <div class="ui-g-6 ui-md-4 text" style="text-align:right;">
                 <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
             </div>
         </div>
@@ -21,16 +21,14 @@
     <div class="ui-g-12">
         <div class="car-details">
             <div>
-                <img src="data:image/jpeg;base64,{{car.photo}}" width="100px">
-                <div class="ui-g">
+              <button style="float:right;" label="Details" class="ui-button-raised ui-button-secondary" pButton type="button" icon="pi pi-search" (click)="selectCar($event, car)"></button>
+              <img id="carPhoto" src="data:image/jpeg;base64,{{car.photo}}" width="100px">
+                <div  class="ui-g" style="text-align: center; float:right; margin-right: 350px;">
                     <div class="ui-g-12">Name: <b>{{car.name}}</b></div>
                     <div class="ui-g-12">Year: <b>{{car.year}}</b></div>
                     <div class="ui-g-12">Brand: <b>{{car.type}}</b></div>
-                    <div class="ui-g-12">Plate: <b>{{car.plate}}</b></div>
-                    <div class="ui-g-12">Availability: <b>{{car.availability}}</b></div>
                 </div>
             </div>
-            <button pButton type="button" icon="pi pi-search" (click)="selectCar($event, car)"></button>
         </div>
     </div>
 </ng-template>
