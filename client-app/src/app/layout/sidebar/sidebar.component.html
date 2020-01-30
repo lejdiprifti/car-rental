@@ -1,0 +1,12 @@
+<nav class="sidebar" [ngClass]="{ sidebarPushRight: isActive, collapsed: collapsed }">
+  <div class="list-group">
+    <a [routerLink]="item.url" *ngFor="let item of items" [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-fw" [ngClass]="item.icon"></i>&nbsp;
+      <span>{{item.label}}</span>
+    </a>
+  </div>
+  <div class="toggle-button" [ngClass]="{ collapsed: collapsed }" (click)="toggleCollapsed()">
+    <i class="fa fa-fw fa-angle-double-{{ collapsed ? 'right' : 'left' }}"></i>&nbsp;
+    <span>Collapse Sidebar</span>
+  </div>
+</nav>

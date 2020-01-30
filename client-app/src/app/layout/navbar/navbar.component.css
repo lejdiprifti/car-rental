@@ -1,0 +1,16 @@
+:host .navbar {
+  background-color: #222;
+}
+:host .navbar .navbar-brand {
+  color: #fff;
+}
+:host .navbar .nav-item > a {
+  color: #999;
+}
+:host .navbar .nav-item > a:hover {
+  color: #fff;
+}
+
+.logo {
+  width: 50%;
+}

@@ -1,0 +1,9 @@
+<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
+
+<ikubinfo-navbar>
+</ikubinfo-navbar>
+<ikubinfo-sidebar (collapsedEvent)="receiveCollapsed($event)"></ikubinfo-sidebar>
+<section class="main-container" [ngClass]="{collapsed: collapedSideBar}">
+  <router-outlet></router-outlet>
+  <ikubinfo-footer></ikubinfo-footer>
+</section>

@@ -1,0 +1,120 @@
+<div class="login-page">
+  <div class="row justify-content-md-center">
+    <div class="col-md-4">
+      <img src="assets/images/carrentallogo.jpg" width="250px" class="user-avatar" />
+      <h1>Car Rental</h1>
+      <form role="form" [formGroup]="registerForm">
+        <div class="form-content">
+          <div class="form-group">
+            <input type="text" formControlName="firstName" class="form-control input-underline input-lg"
+              placeholder="First Name" />
+            <div class="required"
+              *ngIf="registerForm.get('firstName').dirty && registerForm.get('firstName').hasError('required')">
+              *First name is required.
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="text" formControlName="lastName" class="form-control input-underline input-lg"
+              placeholder="Last Name" />
+            <div class="required"
+              *ngIf="registerForm.get('lastName').dirty && registerForm.get('lastName').hasError('required')">
+              *Last name is required.
+            </div>
+          </div>
+          <!--Username -->
+          <div class="form-group">
+            <input type="text" formControlName="username" class="form-control input-underline input-lg"
+              placeholder="Username" />
+            <div class="required"
+              *ngIf="registerForm.get('username').dirty && registerForm.get('username').hasError('required')">
+              *Username is required.
+            </div>
+          </div>
+
+          <!--Birthdate -->
+          <div class="form-group">
+            <input type="date" formControlName="birthdate" class="form-control input-underline input-lg"
+              placeholder="Birthdate" />
+            <div class="required" *ngIf="
+                registerForm.get('birthdate').dirty &&
+                registerForm.get('birthdate').hasError('required')
+              ">
+              *Birthdate is required.
+            </div>
+            <div class="required" *ngIf="
+                registerForm.get('birthdate').dirty &&
+                registerForm.get('birthdate').hasError('tooYoung')
+              ">
+              *You must be over 18 years old.
+            </div>
+          </div>
+          <!--Address -->
+          <div class="form-group">
+            <input type="text" formControlName="address" class="form-control input-underline input-lg"
+              placeholder="Address" />
+            <div class="required" *ngIf="
+                registerForm.get('address').dirty &&
+                registerForm.get('address').hasError('required')
+              ">
+              *Address is required.
+            </div>
+          </div>
+          <!--Email -->
+          <div class="form-group">
+            <input type="text" formControlName="email" class="form-control input-underline input-lg"
+              placeholder="Email" />
+            <div class="required" *ngIf="
+                registerForm.get('email').dirty &&
+                registerForm.get('email').hasError('required')
+              ">
+              *Email is required.
+            </div>
+            <div class="required" *ngIf="
+                registerForm.get('email').dirty &&
+                registerForm.get('email').hasError('pattern')
+              ">
+              *Invalid email
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="text" formControlName="phone" class="form-control input-underline input-lg"
+              placeholder="Phone no." />
+            <div class="required" *ngIf="
+                registerForm.get('phone').dirty &&
+                registerForm.get('phone').hasError('required')
+              ">
+              *Phone number is required.
+            </div>
+          </div>
+          <!--Password -->
+          <div [formGroup]="passwordForm"> 
+            <div class="form-group">
+            <input type="password" pPassword formControlName="password" class="form-control input-underline input-lg"
+              placeholder="Password" />
+            <div class="required" *ngIf="
+            passwordForm.get('password').dirty && passwordForm.get('password').hasError('pattern')">
+              Password must contain at least one number and one uppercase and
+              lowercase letter, and at least 8 or more characters.
+            </div>
+         </div>
+          <div class="form-group">
+            <input type="password" formControlName="repeatPassword" class="form-control input-underline input-lg"
+              placeholder="Repeat Password" />
+          </div>
+          <div class="required"
+              *ngIf="passwordForm.get('repeatPassword').dirty && passwordForm.hasError('matchingError')">
+              *Passwords do not match.
+            </div>
+        </div>
+         
+          </div>
+          <button [disabled]="registerForm.invalid" (click)="register()" class="btn rounded-btn">
+            Register
+          </button>
+          <button class="btn rounded-btn" [routerLink]="['/login']">
+            Log in
+          </button>
+      </form>
+    </div>
+  </div>
+  </div>
