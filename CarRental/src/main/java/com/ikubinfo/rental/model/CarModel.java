@@ -20,7 +20,7 @@ public class CarModel {
 	private CategoryModel category;
 	private Long categoryId;
 	private byte[] photo;
-	private boolean availability; 
+	private boolean availability;
 	private boolean active;
 	
 	public CarModel() {

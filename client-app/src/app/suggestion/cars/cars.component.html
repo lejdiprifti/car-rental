@@ -1,33 +1,66 @@
-<button pButton type="button" label="Add" class="ui-button-raised" icon="pi pi-plus" (click)="addCar()"></button>
-<div class="row">
-  <div class="col col-xl-12 col-lg-12">
-    <ikubinfo-panel header="Cars">
-      <div panel-content>
-        <p-table [columns]="cols" [value]="cars" [paginator]="true" [rows]="10" [(contextMenuSelection)]="selectedPost"
-          [contextMenu]="cm">
-          <ng-template pTemplate="header" let-columns>
-            <tr>
-              <th *ngFor="let col of columns">
-                {{col.header}}
-              </th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-rowData let-columns="columns">
-            <tr [pContextMenuRow]="rowData">
-              <td *ngFor="let col of columns">
-<<<<<<< HEAD
-                <img *ngIf="col.field === 'photo'" src = "data:image/jpeg;base64,{{rowData[col.field].photo}}" />
-=======
-                <img *ngIf="col.field === 'photo'" src = "data:image/jpeg;base64,{{car.photo}}" />
->>>>>>> 933af9bba33acae060737a26a0dc4e93f67d2e32
-                <p *ngIf="col.field !== 'photo' && col.field !== 'category'">{{rowData[col.field]}}</p>
-                <p *ngIf="col.field === 'category'">{{rowData[col.field].name}}</p>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
-        <p-contextMenu #cm [model]="items"></p-contextMenu>
-      </div>
-    </ikubinfo-panel>
-  </div>
+<p-dataView #dv [value]="cars" [paginator]="true" [rows]="20" paginatorPosition="both" filterBy="brand"
+[sortField]="sortField" [sortOrder]="sortOrder">
+<p-header>
+    <div class="ui-helper-clearfix">
+        <div class="ui-g">
+            <div class="ui-g-12 ui-md-4">
+                <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By" (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown>
+            </div>
+            <div class="ui-g-6 ui-md-4 filter-container">
+                <div style="position:relative">
+                    <input type="search" pInputText placeholder="Search by brand" (input)="dv.filter($event.target.value)">
+                </div>
+            </div>
+            <div class="ui-g-6 ui-md-4" style="text-align:right">
+                <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+            </div>
+        </div>
+    </div>
+</p-header>
+<ng-template let-car pTemplate="listItem">
+    <div class="ui-g-12">
+        <div class="car-details">
+            <div>
+                <img src="data:image/jpeg;base64,{{car.photo}}" width="100px">
+                <div class="ui-g">
+                    <div class="ui-g-12">Name: <b>{{car.name}}</b></div>
+                    <div class="ui-g-12">Year: <b>{{car.year}}</b></div>
+                    <div class="ui-g-12">Brand: <b>{{car.type}}</b></div>
+                    <div class="ui-g-12">Plate: <b>{{car.plate}}</b></div>
+                    <div class="ui-g-12">Availability: <b>{{car.availabilit}}</b></div>
+                </div>
+            </div>
+            <button pButton type="button" icon="pi pi-search" (click)="selectCar($event, car)"></button>
+        </div>
+    </div>
+</ng-template>
+<ng-template let-car pTemplate="gridItem">
+    <div style="padding:.5em" class="ui-g-12 ui-md-3">
+        <p-panel [header]="car.name" [style]="{'text-align':'center'}">
+          <img src="data:image/jpeg;base64,{{car.photo}}" width="180px">
+            <div class="car-detail">{{car.year}} - {{car.type}}</div>
+            <hr class="ui-widget-content" style="border-top:0">
+            <button pButton type="button" icon="pi pi-search" (click)="selectCar($event, car)" style="margin-top:0"></button>
+        </p-panel>
+    </div>
+</ng-template>
+</p-dataView>
+
+<p-dialog header="Car Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '225px'}"  (onAfterHide)="onDialogHide()">
+<div class="ui-g" *ngIf="selectedCar">
+    <div class="ui-g-12" style="text-align:center">
+      <img src="data:image/jpeg;base64,{{selectedCar.photo}}">
+    </div>
+    <div class="ui-g-4">Name: </div>
+    <div class="ui-g-8">{{selectedCar.name}}</div>
+
+    <div class="ui-g-4">Brand: </div>
+    <div class="ui-g-8">{{selectedCar.type}}</div>
+
+    <div class="ui-g-4">Year: </div>
+    <div class="ui-g-8">{{selectedCar.year}}</div>
+
+    <div class="ui-g-4">Plate: </div>
+    <div class="ui-g-8">{{selectedCar.plate}}</div>
 </div>
+</p-dialog>

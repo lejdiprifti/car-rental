@@ -1,15 +1,61 @@
-<button pButton type="button" label="Add" icon="pi pi-plus" style="margin-right: .25em" (click)="addCategory()"></button>
-<div class="row">
-  <div class="panel" *ngFor="let category of categories">
-    <p-card header="{{category.name}}" [style]="{width: '380px'}" styleClass="ui-card-shadow">
-    <p-header>
-        <img src="data:image/jpeg;base64,{{category.photo}}">
-    </p-header>
-    <div>{{category.description}}</div>
-    <p-footer>
-        <button pButton type="button" label="Edit" icon="pi pi-check" style="margin-right: .25em" (click)="edit(category.id)"></button>
-        <button pButton type="button" label="Delete" icon="pi pi-times" class="ui-button-danger" (click)="delete(category.id)"></button>
-    </p-footer>
-</p-card>
+<p-table [columns]="cols" [value]="categories" selectionMode="single" [(selection)]="selectedCategory" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
+  <ng-template pTemplate="caption">
+      List of categories
+  </ng-template>
+  <ng-template pTemplate="header" let-columns>
+      <tr>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{col.header}}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr [pSelectableRow]="rowData">
+          <td *ngFor="let col of columns">
+            <img id="categoryPhoto" *ngIf="col.field === 'photo'" src="data:image/jpeg;base64,{{rowData[col.field]}}" />
+            <p *ngIf="col.field !== 'photo'"> {{rowData[col.field]}}</p>
+          </td>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="summary" let-rowData>
+      <div style="text-align:left">
+          <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Add"></button>
+      </div>
+  </ng-template>    
+</p-table>
+
+<p-dialog header="Category Details" [(visible)]="displayDialog" [focusOnShow]="false" [responsive]="true" showEffect="fade" [modal]="true"  [style]="{width: '400px'}">
+  <div class="ui-g ui-fluid" *ngIf="category">
+      <div class="ui-g-12">
+          <div class="ui-g-4">
+              <label for="name">Name</label>
+          </div>
+          <div class="ui-g-8">
+              <input pInputText id="name" [(ngModel)]="category.name" autofocus required/>
+          </div>
+      </div>
+      <div class="ui-g-12">
+          <div class="ui-g-4">
+              <label for="description">Description</label>
+          </div>
+          <div class="ui-g-8">
+            <textarea placeholder="Write a brief description here..." pInputTextarea id="description" required [(ngModel)]="category.description"></textarea>
+          </div>
+      </div>
+      <div class="ui-g-12">
+        <div class="ui-g-4">
+            <label for="photo">Photo</label>
+        </div>
+        <div class="ui-g-8">
+            <input type="file" id="photo" [(ngModel)]="category.photo" (change)="uploadFile($event)" />
+        </div>
+    </div>
   </div>
-  </div>
+  <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+          <button type="button" pButton icon="fa fa-close" (click)="delete()" label="Delete"></button>
+          <button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
+      </div>
+  </p-footer>
+</p-dialog>

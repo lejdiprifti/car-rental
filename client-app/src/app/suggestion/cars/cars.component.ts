@@ -16,37 +16,51 @@ export class CarsComponent implements OnInit {
   cars: Array<Car>;
 
   selectedCar: Car;
-  items: MenuItem[];
 
-  cols: any[];
+  displayDialog: boolean;
+
+  sortOptions: SelectItem[];
+
+  sortKey: string;
+
+  sortField: string;
+
+  sortOrder: number;
 
   constructor(private carService: CarService, private logger: LoggerService, private router: Router,
     private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
     this.loadCars();
-    this.items = [
-      { label: 'Edit', icon: 'pi pi-pencil', command: (event) => this.edit(this.selectedCar) },
-      { label: 'Delete', icon: 'pi pi-times', command: (event) => this.delete(this.selectedCar) }
-    ];
 
-    this.cols = [
-<<<<<<< HEAD
-      {field: 'photo', header: 'Photo'},
-=======
->>>>>>> 933af9bba33acae060737a26a0dc4e93f67d2e32
-      { field: 'name', header: 'Name' },
-      { field: 'type', header: 'Brand' },
-      { field: 'diesel', header: 'Diesel'},
-      {field: 'description', header: 'Description'},
-      {field: 'availability', header: 'Availability'},
-      {field: 'year', header: 'Production Year'},
-      {field: 'category', header: 'Category'},
-      {field: 'plate', header: 'Plate'},
-      {field: 'price', header: 'Price per day'}
+    this.sortOptions = [
+      { label: 'Newest First', value: '!year' },
+      { label: 'Oldest First', value: 'year' },
+      { label: 'Brand', value: 'type' }
     ];
-
   }
+  selectCar(event: Event, car: Car) {
+        this.selectedCar = car;
+        this.displayDialog = true;
+        event.preventDefault();
+    }
+
+    onSortChange(event) {
+        let value = event.value;
+
+        if (value.indexOf('!') === 0) {
+            this.sortOrder = -1;
+            this.sortField = value.substring(1, value.length);
+        }
+        else {
+            this.sortOrder = 1;
+            this.sortField = value;
+        }
+    }
+
+    onDialogHide() {
+        this.selectedCar = null;
+    }
 
   loadCars(): void {
     this.carService.getAll().subscribe(res => {
@@ -69,11 +83,11 @@ export class CarsComponent implements OnInit {
         this.carService.delete(car.id).subscribe(res => {
           this.logger.success('Success', 'Car was deleted successfully!');
           this.loadCars();
-        }, err=>{
+        }, err => {
           this.logger.error('Error', 'Car could not be deleted.');
         })
-    }
-  })
+      }
+    })
   }
   addCar(): void {
     this.router.navigate(['/rental/car']);

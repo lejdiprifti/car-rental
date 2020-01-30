@@ -1,11 +1,9 @@
-.panel {
-    margin-left: 8%;
-    margin-top: 1%;
-    transition: 0.7s;
-    height: 50%;
+#categoryPhoto {
+    width: 200px;
+    align-content: center;
 }
-.panel:hover {
-    opacity: 0.8;
-    transform: scale(1.02);
-    cursor: pointer;
+
+#description {
+    width: 219px;
+    height: 180px;
 }
