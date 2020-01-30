@@ -40,7 +40,7 @@ public class CarResource {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<CarModel> getById(Long id){
+	public ResponseEntity<CarModel> getById(@PathVariable("id") Long id){
 		return new ResponseEntity<CarModel>(carService.getById(id), HttpStatus.OK);
 	}
 	

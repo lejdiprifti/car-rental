@@ -70,8 +70,8 @@ export class CarsComponent implements OnInit {
     })
   }
 
-  edit(car: Car): void {
-    this.router.navigate(['/rental/car/' + car.id]);
+  viewDetails(id: number): void {
+    this.router.navigate(['/rental/car/' + id]);
   }
 
   delete(car: Car): void {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CarService } from '@ikubinfo/core/services/car.service';
 import { LoggerService } from '@ikubinfo/core/utilities/logger.service';
@@ -20,25 +20,26 @@ export class CarComponent implements OnInit {
   file: File;
   brands: Array<string>;
   categories: Array<Category>;
+  diesels: Array<string>;
+  editable: string;
+  available: boolean;
+  blockSpecial: RegExp = /^[^:>#*]+|([^:>#*][^>#*]+[^:>#*])$/
   constructor(private fb: FormBuilder, private router: Router, private confirmationService: ConfirmationService,
     private carService: CarService, private categoryService: CategoryService,
      private active: ActivatedRoute, private logger: LoggerService) { }
 
   ngOnInit() {
     this.car = {};
-    this.carForm = this.fb.group({
-      name: ['', Validators.required],
-      photo: [''],
-      description: ['', [Validators.required, Validators.minLength(50), Validators.maxLength(255)]],
-      year: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
-      type: ['', Validators.required],
-      diesel: ['', Validators.required],
-      availability: [''],
-      category: ['', Validators.required],
-      plate: ['', [ Validators.required, Validators.minLength(5)]],
-      price: ['', Validators.required]
-    })
+    this.editable = 'true';
+    this.loadForm();
     this.getCategories();
+    this.diesels = [
+      'Diesel',
+      'Petrol',
+      'Kerosene',
+      'Hydrogen',
+      'Biogas'
+    ];
     this.brands = [
       'Mercedes-Benz',
       'Ford',
@@ -50,10 +51,26 @@ export class CarComponent implements OnInit {
       'Chevrolet',
       'Rolls Royce'
   ]
+  this.loadData();
   }
 
   reset(): void {
     this.fillForm(this.car);
+  }
+
+  loadForm(): void {
+    this.carForm = this.fb.group({
+      name: new FormControl({value:'', disabled:this.editable}, Validators.required),
+      photo: [{value:'', disabled:this.editable}],
+      description: [{value:'', disabled:this.editable}, [Validators.required, Validators.minLength(50), Validators.maxLength(255)]],
+      year: [{value:'', disabled:this.editable}, [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
+      type: [{value:'', disabled:this.editable}, Validators.required],
+      diesel: [{value:'', disabled:this.editable}, Validators.required],
+      availability: [{value:'', disabled:this.editable}],
+      category: [{value:'', disabled:this.editable}, Validators.required],
+      plate: [{value:'', disabled:this.editable}, [ Validators.required, Validators.minLength(5)]],
+      price: [{value:'', disabled:this.editable}, Validators.required]
+    })
   }
 
   fillForm(data: Car = {}): void {
@@ -62,9 +79,15 @@ export class CarComponent implements OnInit {
     this.carForm.get('type').setValue(data.type);
     this.carForm.get('year').setValue(data.year);
     this.carForm.get('diesel').setValue(data.diesel);
-    this.carForm.get('availability').setValue(data.availability);
+    this.carForm.get('availability').setValue(this.available);
     this.carForm.get('category').setValue(data.categoryId);
     this.carForm.get('plate').setValue(data.plate);
+  }
+  
+  edit(): void {
+    this.editable = 'false';
+    this.loadForm();
+    this.reset();
   }
 
   submit(): void {
@@ -82,7 +105,7 @@ export class CarComponent implements OnInit {
             "type": this.carForm.get('type').value,
             "diesel": this.carForm.get('diesel').value,
             "categoryId": this.carForm.get('category').value,
-            "availability": this.carForm.get('availability').value,
+            "availability": this.available,
             "year": this.carForm.get('year').value,
             "plate": this.carForm.get('plate').value,
             "price": this.carForm.get('price').value
@@ -112,7 +135,7 @@ export class CarComponent implements OnInit {
             "type": this.carForm.get('type').value,
             "diesel": this.carForm.get('diesel').value,
             "categoryId": this.carForm.get('category').value,
-            "availability": this.carForm.get('availability').value,
+            "availability": this.available,
             "year": this.carForm.get('year').value,
             "plate": this.carForm.get('plate').value,
             "price": this.carForm.get('price').value
@@ -139,11 +162,11 @@ export class CarComponent implements OnInit {
         this.carForm.get('description').setValue(this.car.description);
         this.carForm.get('year').setValue(this.car.year);
         this.carForm.get('diesel').setValue(this.car.diesel);
-        this.carForm.get('availability').setValue(this.car.availability);
         this.carForm.get('category').setValue(this.car.categoryId);
         this.carForm.get('type').setValue(this.car.type);
         this.carForm.get('plate').setValue(this.car.plate);
         this.carForm.get('price').setValue(this.car.price);
+        this.available = this.car.availability;
       },
         err => {
           this.logger.error("Error", "Something bad happened.");

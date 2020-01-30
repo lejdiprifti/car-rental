@@ -1,35 +1,49 @@
+<button pButton type="button" class.active="{{editable}}" (click)="edit()" class="ui-button-secondary reset" label="Edit" icon="pi pi-edit"></button>
 <ikubinfo-panel header="Car">
   <div panel-content>
 <form role="form" [formGroup]="carForm">
   <div class="form-content">
+    <ikubinfo-input label="Photo">
     <div class="form-group">
      <input type="file" formControlName="photo" class="form-control input-underline input-lg" (change)="uploadFile($event)" />
      <div *ngIf="car !== null">
      <img src="data:image/jpeg;base64,{{car.photo}}">
      </div>
     </div>
-    <div class="form-group">
-      <input type="text" formControlName="name" class="form-control input-underline input-lg" placeholder="Name" />
-    </div>
+    </ikubinfo-input>
+    <ikubinfo-input label="Name">
+      <div class="form-group">
+        <input pInputText formControlName="name" class="form-control input-underline input-lg" placeholder="Name" />
+      </div>
+      </ikubinfo-input>
     <ikubinfo-input label="Brand">
-      <select class="custom-select"  formControlName="type">
+      <select class="custom-select" formControlName="type">
         <option value="" disabled>Pick the brand</option>
         <option *ngFor="let brand of brands" [ngValue]="brand">{{brand}}</option>
       </select>
     </ikubinfo-input>
+    <ikubinfo-input label="Year">
     <div class="form-group">
-      <input type="number" formControlName="year" class="form-control input-underline input-lg" placeholder="Production year" />
+      <input pInputText pKeyFilter="int" disabled='{{editable}}' formControlName="year" class="form-control input-underline input-lg" placeholder="Production year" />
     </div>
+    </ikubinfo-input>
+    <ikubinfo-input label="Type of fuel">
+      <select class="custom-select"  formControlName="diesel" placeholder="Fuel">
+        <option value="" disabled>Choose the type of fuel</option>
+        <option *ngFor="let diesel of diesels" [ngValue]="diesel">{{diesel}}</option>
+      </select>
+    </ikubinfo-input>
+    <ikubinfo-input label="Plate">
     <div class="form-group">
-      <input type="text" formControlName="diesel" class="form-control input-underline input-lg" placeholder="Diesel" />
+      <input type="text" pInputText [pKeyFilter]="blockSpecial" formControlName="plate" class="form-control input-underline input-lg" placeholder="Plate" />
     </div>
+    </ikubinfo-input>
+    <ikubinfo-input label="Description">
     <div class="form-group">
-      <input type="text" formControlName="plate" class="form-control input-underline input-lg" placeholder="Plate" />
+      <textarea pInputTextArea formControlName="description" class="form-control input-underline input-lg" placeholder="Description" autoResize="autoResize"></textarea>
+      <p class="error" *ngIf="carForm.invalid">*Please, write only 50 to 255 characters.</p>
     </div>
-    <div class="form-group">
-      <input type="text" formControlName="description" class="form-control input-underline input-lg" placeholder="Description" />
-      <p class="error" *ngIf="carForminvalid">*Please, write only 50 to 255 characters.</p>
-    </div>
+    </ikubinfo-input>
     <ikubinfo-input label="Category">
       <select class="custom-select"  formControlName="category" placeholder="Category">
         <option value="" disabled>Choose the category</option>
@@ -38,12 +52,17 @@
     </ikubinfo-input>
     <ikubinfo-input label="Price per day">
     <div class="form-group">
-      <input type="number" formControlName="price" class="form-control input-underline input-lg" placeholder="lek/day" />
+      <input pInputText pKeyFilter="money" formControlName="price" disabled='{{editable}}' class="form-control input-underline input-lg" placeholder="lek/day" />
     </div>
   </ikubinfo-input>
-  </div>
-  <button pButton type="submit" (click)="submit()" [disabled]="carForm.invalid" class="ui-button-success" label="Submit" icon="pi pi-file"></button>
-    <button pButton type="button" (click)="reset()" class="ui-button-secondary reset" label="Reset" icon="pi pi-times"></button>
+  <ikubinfo-input label="Availability">
+    <div class="form-group">
+  <p-toggleButton [(ngModel)]="available" onLabel="Available" offLabel="Rented" onIcon="pi pi-check" offIcon="pi pi-times" [style]="{'width':'150px'}"></p-toggleButton>
+    </div>
+</ikubinfo-input>
+</div>
+  <button pButton type="submit" class.active="{{editable}}" (click)="submit()" [disabled]="carForm.invalid" class="ui-button-success" label="Submit" icon="pi pi-file"></button>
+    <button pButton type="button" class.active="{{editable}}" (click)="reset()" class="ui-button-secondary reset" label="Reset" icon="pi pi-times"></button>
 </form>
 </div>
 </ikubinfo-panel>

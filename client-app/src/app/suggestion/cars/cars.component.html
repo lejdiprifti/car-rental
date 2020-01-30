@@ -21,7 +21,7 @@
     <div class="ui-g-12">
         <div class="car-details">
             <div>
-              <button style="float:right;" label="Details" class="ui-button-raised ui-button-secondary" pButton type="button" icon="pi pi-search" (click)="selectCar($event, car)"></button>
+              <button style="float:right;" label="Details" class="ui-button-raised ui-button-secondary" pButton type="button" icon="pi pi-search" (click)="viewDetails(car.id)"></button>
               <img id="carPhoto" src="data:image/jpeg;base64,{{car.photo}}" width="100px">
                 <div  class="ui-g" style="text-align: center; float:right; margin-right: 350px;">
                     <div class="ui-g-12">Name: <b>{{car.name}}</b></div>
