@@ -15,7 +15,11 @@
           <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr [pContextMenuRow]="rowData">
               <td *ngFor="let col of columns">
+<<<<<<< HEAD
                 <img *ngIf="col.field === 'photo'" src = "data:image/jpeg;base64,{{rowData[col.field].photo}}" />
+=======
+                <img *ngIf="col.field === 'photo'" src = "data:image/jpeg;base64,{{car.photo}}" />
+>>>>>>> 933af9bba33acae060737a26a0dc4e93f67d2e32
                 <p *ngIf="col.field !== 'photo' && col.field !== 'category'">{{rowData[col.field]}}</p>
                 <p *ngIf="col.field === 'category'">{{rowData[col.field].name}}</p>
               </td>

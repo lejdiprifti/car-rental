@@ -65,7 +65,6 @@ public class CategoryResource {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void edit(@PathVariable("id") Long id, @RequestPart("properties") CategoryModel model, @PathParam("file") MultipartFile file) throws IOException {
 		categoryService.edit(model,file, id);
-		//comment
 	}
 
 	@DeleteMapping(path = "/{id}")

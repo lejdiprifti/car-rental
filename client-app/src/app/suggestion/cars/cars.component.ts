@@ -31,7 +31,10 @@ export class CarsComponent implements OnInit {
     ];
 
     this.cols = [
+<<<<<<< HEAD
       {field: 'photo', header: 'Photo'},
+=======
+>>>>>>> 933af9bba33acae060737a26a0dc4e93f67d2e32
       { field: 'name', header: 'Name' },
       { field: 'type', header: 'Brand' },
       { field: 'diesel', header: 'Diesel'},
