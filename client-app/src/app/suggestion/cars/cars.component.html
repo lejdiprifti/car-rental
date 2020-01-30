@@ -1,4 +1,4 @@
-<p-dataView #dv [value]="cars" [paginator]="true" [rows]="20" paginatorPosition="both" filterBy="brand"
+<p-dataView #dv [value]="cars" [paginator]="true" [rows]="20" paginatorPosition="both" filterBy="type"
 [sortField]="sortField" [sortOrder]="sortOrder">
 <p-header>
     <div class="ui-helper-clearfix">
@@ -27,7 +27,7 @@
                     <div class="ui-g-12">Year: <b>{{car.year}}</b></div>
                     <div class="ui-g-12">Brand: <b>{{car.type}}</b></div>
                     <div class="ui-g-12">Plate: <b>{{car.plate}}</b></div>
-                    <div class="ui-g-12">Availability: <b>{{car.availabilit}}</b></div>
+                    <div class="ui-g-12">Availability: <b>{{car.availability}}</b></div>
                 </div>
             </div>
             <button pButton type="button" icon="pi pi-search" (click)="selectCar($event, car)"></button>
