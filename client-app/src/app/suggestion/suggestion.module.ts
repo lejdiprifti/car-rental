@@ -10,14 +10,17 @@ import { LayoutModule } from '@ikubinfo/layout/layout.module';
 import { FormsModule } from '@angular/forms';
 import { UserComponent } from './user/user.component';
 import { CategoryComponent } from './category/category.component';
-import { PasswordModule, FileUploadModule, CardModule, ToggleButtonModule, DialogModule, SplitButtonModule,PanelModule, InplaceModule, KeyFilterModule, DropdownModule } from 'primeng/primeng';
+import { PasswordModule, FileUploadModule, CardModule, ToggleButtonModule, ProgressSpinnerModule,DialogModule, SplitButtonModule,PanelModule, InplaceModule, KeyFilterModule, DropdownModule } from 'primeng/primeng';
 import { CategoriesComponent } from './categories/categories.component';
 import {DataViewModule} from 'primeng/dataview';
 import { CarsComponent } from './cars/cars.component';
 import { CarComponent } from './car/car.component';
+import {FullCalendarModule} from '@fullcalendar/angular';
+
+
 
 @NgModule({
-    imports: [CommonsModule,DialogModule,SplitButtonModule,DropdownModule,ToggleButtonModule,KeyFilterModule,InplaceModule,PanelModule, ToggleButtonModule, SuggestionRoutingModule,DataViewModule, LayoutModule,CardModule, FormsModule, PasswordModule, FileUploadModule],
+    imports: [CommonsModule,DialogModule, SplitButtonModule,  FullCalendarModule, ProgressSpinnerModule,DropdownModule,ToggleButtonModule,KeyFilterModule,InplaceModule,PanelModule, ToggleButtonModule, SuggestionRoutingModule,DataViewModule, LayoutModule,CardModule, FormsModule, PasswordModule, FileUploadModule],
     exports: [],
     declarations: [DashboardComponent,CarComponent, PostComponent, PostsComponent, CarsComponent, UserComponent, CategoryComponent, CategoriesComponent],
     providers: []

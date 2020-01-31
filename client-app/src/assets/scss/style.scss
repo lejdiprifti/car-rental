@@ -4,7 +4,8 @@
 @import "utils";
 @import "rtl";
 @import "responsive";
-
+@import '~@fullcalendar/core/main.css';
+@import '~@fullcalendar/daygrid/main.css';
 @media print {
     .breadcrumb {
         display: none !important;

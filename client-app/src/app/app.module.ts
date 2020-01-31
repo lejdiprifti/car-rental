@@ -10,6 +10,8 @@ import { AppComponent } from '@ikubinfo/app.component';
 import { AuthentificationModule } from '@ikubinfo/authentification/authentification.module';
 import { DatePipe } from '@angular/common';
 
+
+
 @NgModule({
   declarations: [
     AppComponent
