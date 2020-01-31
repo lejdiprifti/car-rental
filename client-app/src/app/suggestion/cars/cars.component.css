@@ -1,5 +1,6 @@
-button {
+.button {
     margin-top: 1%;
+    float: right;
 }
 
 #carPhoto{
@@ -18,4 +19,23 @@ button {
 .red {
     background-color: rgb(163, 241, 163);
     margin-bottom: 1%;
+}
+
+#popUpImage {
+    width: 150px;
+}
+
+#availability {
+    width: 32px;
+}
+
+#availableImage{
+    width: 32px;
+    float: right;
+}
+
+#availableDiv {
+    float: right;
+    margin-top: 40px;
+    margin-right: 200px;
 }

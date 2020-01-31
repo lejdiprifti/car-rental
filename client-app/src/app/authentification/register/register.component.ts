@@ -92,6 +92,7 @@ static passwordMatch(group: FormGroup):any{
     this.registerUser.lastName = this.registerForm.value.lastName;
     this.registerUser.email = this.registerForm.value.email;
     this.registerUser.phone = this.registerForm.value.phone;
+    this.registerUser.birthdate = this.registerForm.value.birthdate;
     this.registerService.register(this.registerUser).subscribe(res=> {
       this.logger.success("Success", "You registered successfully.")
       this.router.navigate(["/login"]);

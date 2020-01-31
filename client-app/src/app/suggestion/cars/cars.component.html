@@ -21,12 +21,16 @@
     <div class="ui-g-12">
         <div class="car-details">
             <div>
-              <button style="float:right;" label="Details" class="ui-button-raised ui-button-secondary" pButton type="button" icon="pi pi-search" (click)="viewDetails(car.id)"></button>
+                <p-splitButton [ngStyle]='myStyle()' label="Details" icon="pi pi-file" (onDropdownClick)="selectCarToEdit($event, car)" (onClick)="selectCar($event,car)" [model]="items" icon="pi pi-search" styleClass="ui-button-secondary"></p-splitButton>
               <img id="carPhoto" src="data:image/jpeg;base64,{{car.photo}}" width="100px">
-                <div  class="ui-g" style="text-align: center; float:right; margin-right: 350px;">
+              <div id="availableDiv">
+                <img id="availableImage" src="../../../assets/images/general/{{car.availability}}.png" alt="Availability">
+                </div>
+                <div  class="ui-g" style="margin-left: 350px; margin-right: 150px; text-align: justify;">
                     <div class="ui-g-12">Name: <b>{{car.name}}</b></div>
                     <div class="ui-g-12">Year: <b>{{car.year}}</b></div>
                     <div class="ui-g-12">Brand:<b>{{car.type}}</b></div>
+                    <hr>
                 </div>
             </div>
         </div>
@@ -37,28 +41,41 @@
         <p-panel [header]="car.name" [style]="{'text-align':'center'}">
           <img src="data:image/jpeg;base64,{{car.photo}}" width="180px">
             <div class="car-detail">{{car.year}} - {{car.type}}</div>
+            <img id="availability" src="../../../assets/images/general/{{car.availability}}.png" alt="Availability">
             <hr class="ui-widget-content" style="border-top:0">
-            <button pButton type="button" icon="pi pi-search" (click)="selectCar($event, car)" style="margin-top:0"></button>
+            <p-splitButton label="Details" icon="pi pi-file" (onDropdownClick)="selectCarToEdit($event, car)" (onClick)="selectCar($event,car)" [model]="items" icon="pi pi-search" styleClass="ui-button-primary"></p-splitButton>
         </p-panel>
     </div>
 </ng-template>
 </p-dataView>
 
-<p-dialog header="Car Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '225px'}"  (onAfterHide)="onDialogHide()">
+<p-dialog header="Car Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="stylePopUp()"  (onAfterHide)="onDialogHide()">
 <div class="ui-g" *ngIf="selectedCar">
     <div class="ui-g-12" style="text-align:center">
-      <img src="data:image/jpeg;base64,{{selectedCar.photo}}">
+      <img id="popUpImage" src="data:image/jpeg;base64,{{selectedCar.photo}}">
     </div>
-    <div class="ui-g-4">Name: </div>
+    <div class="ui-g-4"><b>Name:</b> </div>
     <div class="ui-g-8">{{selectedCar.name}}</div>
 
-    <div class="ui-g-4">Brand: </div>
+    <div class="ui-g-4"><b>Brand: </b></div>
     <div class="ui-g-8">{{selectedCar.type}}</div>
 
-    <div class="ui-g-4">Year: </div>
+    <div class="ui-g-4"><b>Year:</b> </div>
     <div class="ui-g-8">{{selectedCar.year}}</div>
 
-    <div class="ui-g-4">Plate: </div>
+    <div class="ui-g-4"><b>Plate: </b></div>
     <div class="ui-g-8">{{selectedCar.plate}}</div>
+
+    <div class="ui-g-4"><b>Description: </b></div>
+    <div class="ui-g-8">{{selectedCar.description}}</div>
+
+    <div class="ui-g-4"><b>Availability: </b></div>
+    <div class="ui-g-8"><img id="availability" src="../../../assets/images/general/{{selectedCar.availability}}.png" alt="Availability"></div>
+
+    <div class="ui-g-4"><b>Fuel: </b></div>
+    <div class="ui-g-8">{{selectedCar.diesel}}</div>
+
+    <div class="ui-g-4"><b>Price: </b></div>
+    <div class="ui-g-8">{{selectedCar.price}} lek/day</div>
 </div>
 </p-dialog>

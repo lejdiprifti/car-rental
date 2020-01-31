@@ -27,18 +27,30 @@ export class CarsComponent implements OnInit {
 
   sortOrder: number;
 
+  items: MenuItem[];
+
   constructor(private carService: CarService, private logger: LoggerService, private router: Router,
     private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
+    this.items = [
+      {label: 'Update', icon: 'pi pi-refresh', command: () => {
+          this.edit(this.selectedCar.id);
+      }},
+      {label: 'Delete', icon: 'pi pi-times', command: () => {
+          this.delete(this.selectedCar);
+      }}
+  ];
     this.loadCars();
 
     this.sortOptions = [
       { label: 'Newest First', value: '!year' },
       { label: 'Oldest First', value: 'year' },
-      { label: 'Brand', value: 'type' }
+      { label: 'Brand', value: 'type' },
+      { label: 'Availability', value: 'availability'}
     ];
   }
+
   selectCar(event: Event, car: Car) {
         this.selectedCar = car;
         this.displayDialog = true;
@@ -70,7 +82,12 @@ export class CarsComponent implements OnInit {
     })
   }
 
-  viewDetails(id: number): void {
+  selectCarToEdit(event: Event, car: Car){
+    this.selectedCar = car;
+    event.preventDefault();
+  }
+
+  edit(id: number): void {
     this.router.navigate(['/rental/car/' + id]);
   }
 
@@ -91,5 +108,13 @@ export class CarsComponent implements OnInit {
   }
   addCar(): void {
     this.router.navigate(['/rental/car']);
+  }
+
+  myStyle(): object {
+    return {'float': 'right', 'margin-top': '40px'};
+  }
+
+  stylePopUp(): object {
+    return {'width': '550px', 'height': '500px'};
   }
 }

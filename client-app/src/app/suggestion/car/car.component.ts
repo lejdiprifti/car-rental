@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { Router, ActivatedRoute } from '@angular/router';
 import { CarService } from '@ikubinfo/core/services/car.service';
 import { LoggerService } from '@ikubinfo/core/utilities/logger.service';
-import { ConfirmationService } from 'primeng/primeng';
+import { ConfirmationService, SelectItem } from 'primeng/primeng';
 import { Car } from '@ikubinfo/core/models/car';
 import { CategoryService } from '@ikubinfo/core/services/category.service';
 import { Category } from '@ikubinfo/core/models/category';
@@ -18,7 +18,7 @@ export class CarComponent implements OnInit {
   carForm: FormGroup;
   car: Car;
   file: File;
-  brands: Array<string>;
+  brands: SelectItem[];
   categories: Array<Category>;
   diesels: Array<string>;
   editable: boolean;
@@ -41,16 +41,17 @@ export class CarComponent implements OnInit {
       'Biogas'
     ];
     this.brands = [
-      'Mercedes-Benz',
-      'Ford',
-      'Fiat',
-      'Honda',
-      'KIA',
-      'Ferrari',
-      'Lamborghini',
-      'Chevrolet',
-      'Rolls Royce'
-  ]
+      {label: 'Audi', value: 'Audi'},
+      {label: 'BMW', value: 'BMW'},
+      {label: 'Fiat', value: 'Fiat'},
+      {label: 'Ford', value: 'Ford'},
+      {label: 'Honda', value: 'Honda'},
+      {label: 'Jaguar', value: 'Jaguar'},
+      {label: 'Mercedes', value: 'Mercedes'},
+      {label: 'Renault', value: 'Renault'},
+      {label: 'VW', value: 'VW'},
+      {label: 'Volvo', value: 'Volvo'}
+  ];
   this.loadData();
   }
 
