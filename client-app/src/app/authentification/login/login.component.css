@@ -41,7 +41,7 @@
   -webkit-border-radius: 50px;
   border-radius: 50px;
   color:rgba(255, 255, 255, 0.8);
-  background: rgb(238, 214, 3);
+  background: rgba(252, 193, 0, 0.959);
   border: 2px solid rgba(255, 255, 255, 0.8);
   font-size: 18px;
   line-height: 40px;
@@ -52,7 +52,7 @@
 .login-page .rounded-btn:active,
 .login-page .rounded-btn:visited {
   color: rgba(255, 255, 255, 1);
-  background: rgb(228, 205, 0);
+  background: rgba(252, 193, 0, 0.877);
   border: 2px solid rgba(255, 255, 255, 1);
   outline: none;
 }
@@ -116,4 +116,30 @@
 .register p {
   font-size: 14px;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.logo {
+  position: absolute;
+  top: 0px;
+  left: 34px;
+}
+
+.logo img {
+  width: 140px;
+}
+
+#royal {
+  text-transform: uppercase;
+}
+
+.social {
+  position: absolute;
+  top: 40px;
+  right: 200px;
+  width: 300px;
+}
+
+.social img {
+  width: 24px;
+  margin-right: 2%;
 }
