@@ -1,1 +1,49 @@
-<full-calendar deepChangeDetection="true" editable="true" [events]="events"  [plugins]="calendarPlugins"></full-calendar>
+<div id="panel">
+    <div id="information">
+        <p>Something</p>
+    </div>
+<div class="calendar">
+<full-calendar deepChangeDetection="true"  [header]="{
+    left: 'prev,next today',
+    center: 'title',
+    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+  }" editable="true" [events]="events"  [plugins]="calendarPlugins"></full-calendar>
+</div>
+</div>
+<div id="dataview">
+    <p-table #dt [columns]="cols" [value]="cars" [paginator]="true" [rows]="10">
+        <ng-template pTemplate="caption">
+            <div style="text-align: right">        
+                <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns">
+                    {{col.header}}
+                </th>
+            </tr>
+            <tr>
+                <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                    <input *ngSwitchCase="'plate'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, 'contains')">
+                    <div *ngSwitchCase="'year'">
+                        Value > {{yearFilter}}
+                        <i class="fa fa-close" (click)="yearFilter=null;dt.filter(null, col.field, col.filterMatchMode)" style="cursor:pointer" *ngIf="yearFilter"></i>
+                        <p-slider [style]="{'width':'100%','margin-top':'8px'}" [(ngModel)]="yearFilter" [min]="1970" [max]="2010" (onChange)="onYearChange($event, dt)"></p-slider>
+                    </div>
+                    <p-dropdown *ngSwitchCase="'type'" [options]="brands" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'equals')"></p-dropdown>
+                    <p-multiSelect *ngSwitchCase="'color'" [options]="colors" defaultLabel="All Colors" (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
+                    <input *ngSwitchCase="'price'" pInputText type="text" placeholder="Custom - Greater Than" (input)="dt.filter($event.target.value, col.field, 'custom')">
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr [pSelectableRow]="rowData">
+                <td *ngFor="let col of columns">
+                    {{rowData[col.field]}}
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    </div>
