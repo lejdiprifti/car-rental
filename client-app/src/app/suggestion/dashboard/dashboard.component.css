@@ -1,13 +1,9 @@
 .calendar {
     float: right;
-    width: 50%;
+    width: 40%;
+    height: 35%;
 }
 
 #infomation {
     float: left;
-}
-
-#dataview {
-    float: inline-end;
-    margin-top: 5%;
 }

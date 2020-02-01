@@ -1,16 +1,19 @@
 <div id="panel">
-    <div id="information">
-        <p>Something</p>
+    <div id="information" class="ui-g-6">
+        <p>All you need is a convenient and easy to work with free Car Rental website template and your automotive project sees light soon after. If you are in the transportation business, you could not be at a better place.
+            Modern and sophisticated are two of the main characteristics of Car Rental template. It is pretty self-explanatory, but you can also use the product for taxi businesses and other vehicle booking services.
+            Modern and sophisticated are two of the main characteristics of Car Rental template. It is pretty self-explanatory, but you can also use the product for taxi businesses and other vehicle booking services.
+            
+            The well-formed template has a flexible layout with a spiffy booking form. Users can go straight to renting a car from you or further investigate your website. Whoever is new, give them a chance to learn more about your services and the whips you offer. It will be impossible for them to resist and rent from you straight away.</p>
     </div>
-<div class="calendar">
+<div class="ui-g-6">
 <full-calendar deepChangeDetection="true"  [header]="{
-    left: 'prev,next today',
+    left: 'prev,next',
     center: 'title',
-    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+    right: 'today'
   }" editable="true" [events]="events"  [plugins]="calendarPlugins"></full-calendar>
 </div>
-</div>
-<div id="dataview">
+<div id="dataview" class="ui-g-12">
     <p-table #dt [columns]="cols" [value]="cars" [paginator]="true" [rows]="10">
         <ng-template pTemplate="caption">
             <div style="text-align: right">        
@@ -47,3 +50,4 @@
         </ng-template>
     </p-table>
     </div>
+</div>

@@ -38,7 +38,27 @@ export class DashboardComponent implements OnInit {
           "title": "Long Event",
           "start": "2020-02-02",
           "end": "2020-02-05"
-      },
+      },{
+        "title": "Long Event 2",
+        "start": "2020-02-02",
+        "end": "2020-02-05"
+    },{
+      "title": "Long Event 3",
+      "start": "2020-02-02",
+      "end": "2020-02-05"
+  },{
+    "title": "Long Event 4",
+    "start": "2020-02-09",
+    "end": "2020-02-12"
+},{
+  "title": "Long Event 3",
+  "start": "2020-02-05",
+  "end": "2020-02-09"
+},{
+  "title": "Long Event 3",
+  "start": "2020-02-26",
+  "end": "2020-02-28"
+},
       {
           "title": "Repeating Event",
           "start": "2016-01-09T16:00:00"
