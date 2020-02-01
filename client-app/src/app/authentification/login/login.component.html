@@ -1,8 +1,13 @@
 <div class="login-page">
   <div class="row justify-content-md-center">
-    <div class="col-md-4">
-      <img src="assets/images/carrentallogo.jpg" width="280px" class="user-avatar" />
-      <h1>Welcome to Car Rental!</h1>
+    <div class="ui-g-5 register">
+      <p>The Royal Essence of Journey</p>
+      <h3>Flexible. Accesible. Affordable.</h3>
+      <p>We offer you the best comfort at the best price. Have the best feelings on your trip.</p>
+      <button class="btn rounded-btn" [routerLink]="['/register']">Register now</button>
+    </div>
+    <div class="ui-g-4 login">
+      <h3>Book your car today!</h3>
       <form role="form" [formGroup]="loginForm" (ngSubmit)="login()">
         <div class="form-content">
           <div class="form-group">
@@ -13,8 +18,6 @@
           </div>
         </div>
         <button [disabled]="loginForm.invalid" class="btn rounded-btn">Log in</button>
-        &nbsp;
-        <button class="btn rounded-btn" [routerLink]="['/register']">Register</button>
       </form>
     </div>
   </div>

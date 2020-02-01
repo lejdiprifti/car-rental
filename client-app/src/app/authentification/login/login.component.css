@@ -40,8 +40,8 @@
 .login-page .rounded-btn {
   -webkit-border-radius: 50px;
   border-radius: 50px;
-  color: rgba(255, 255, 255, 0.8);
-  background: #222;
+  color:rgba(255, 255, 255, 0.8);
+  background: rgb(238, 214, 3);
   border: 2px solid rgba(255, 255, 255, 0.8);
   font-size: 18px;
   line-height: 40px;
@@ -52,6 +52,7 @@
 .login-page .rounded-btn:active,
 .login-page .rounded-btn:visited {
   color: rgba(255, 255, 255, 1);
+  background: rgb(228, 205, 0);
   border: 2px solid rgba(255, 255, 255, 1);
   outline: none;
 }
@@ -93,4 +94,26 @@
   font-size: 35px;
 }
 
+.register {
+  margin-top: 12%;
+  text-align: left;
+}
 
+.login {
+  margin-top: 10%;
+}
+
+.login h3 {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.register h3 {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.register p {
+  font-size: 14px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
