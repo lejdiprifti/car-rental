@@ -5,6 +5,8 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { SelectItem } from 'primeng/components/common/selectitem';
 import { Car } from '@ikubinfo/core/models/car';
 import { CarService } from '@ikubinfo/core/services/car.service';
+import { User } from '@ikubinfo/core/models/user';
+import { AuthService } from '@ikubinfo/core/services/auth.service';
 @Component({
   selector: 'ikubinfo-dashboard',
   templateUrl: './dashboard.component.html',
@@ -23,11 +25,14 @@ export class DashboardComponent implements OnInit {
     colors: SelectItem[];
 
     yearFilter: number;
+    user: User;
 
     yearTimeout: any;
-  constructor(private carService: CarService) { }
+  constructor(private carService: CarService, private authService: AuthService) { }
 
   ngOnInit() {
+this.user = this.authService.user;
+
     this.loadCars();
     this.events = [
       {

@@ -7,3 +7,54 @@
 #infomation {
     float: left;
 }
+
+#carsAvailable, #carsRented, #userActive, #bookings{
+    margin-top: 10px;
+}
+
+
+#carsAvailable {
+    background-color: rgb(24, 250, 61);
+    float: left;
+}
+
+#carsRented {
+    background-color: rgb(255, 52, 52);
+    float: right;
+}
+
+#userActive {
+    background-color: rgb(0, 99, 247);
+}
+
+#userActive img {
+    width: 64px;
+}
+
+#bookings {
+    background-color: beige;
+    float: right;
+}
+
+#bookings img {
+    width: 64px;
+}
+
+#carsRented img {
+    width: 64px;
+}
+
+#carsAvailable img {
+    width: 64px;
+}
+
+.text {
+    float: right;
+}
+
+#welcome{
+    background-color: rgb(255, 190, 71);
+    color: rgb(255, 115, 0);
+    text-align: center;
+    font-weight: 700;
+}

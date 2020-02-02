@@ -1,10 +1,36 @@
 <div id="panel">
     <div id="information" class="ui-g-6">
-        <p>All you need is a convenient and easy to work with free Car Rental website template and your automotive project sees light soon after. If you are in the transportation business, you could not be at a better place.
-            Modern and sophisticated are two of the main characteristics of Car Rental template. It is pretty self-explanatory, but you can also use the product for taxi businesses and other vehicle booking services.
-            Modern and sophisticated are two of the main characteristics of Car Rental template. It is pretty self-explanatory, but you can also use the product for taxi businesses and other vehicle booking services.
-            
-            The well-formed template has a flexible layout with a spiffy booking form. Users can go straight to renting a car from you or further investigate your website. Whoever is new, give them a chance to learn more about your services and the whips you offer. It will be impossible for them to resist and rent from you straight away.</p>
+        <div class="ui-g-12 card header" id="welcome">
+            <h1>Welcome, {{user.firstName}}!</h1>
+        </div>
+        <div class="ui-g-6 card header" id="carsAvailable">
+            <img src = "assets/images/general/traffic-jam.png" alt="Cars" />
+            <div class=" ui-g-6 text">
+            <h1>12</h1>
+            <p>Cars Available</p>
+            </div>
+        </div>
+        <div class="ui-g-6 card header" id="carsRented">
+            <img src = "assets/images/general/access.png" alt="Cars" />
+            <div class=" ui-g-6 text">
+            <h1>12</h1>
+            <p>Cars Rented</p>
+            </div>
+        </div>
+        <div id="userActive" class="card header ui-g-6">
+            <img src = "assets/images/general/driver.png" alt="Cars" class="ui-g-6" />
+            <div class=" ui-g-6 text">
+            <h1>12</h1>
+            <p>Cars Available</p>
+            </div>
+        </div>
+        <div id="bookings" class="card header ui-g-6">
+            <img src = "assets/images/general/plan.png" alt="Cars" class="ui-g-6" />
+            <div class=" ui-g-6 text">
+            <h1>12</h1>
+            <p>Bookings</p>
+            </div>
+        </div>
     </div>
 <div class="ui-g-6">
 <full-calendar deepChangeDetection="true"  [header]="{
