@@ -14,17 +14,17 @@
 
 
 #carsAvailable {
-    background-color: rgb(24, 250, 61);
+    background-color:  rgb(114, 255, 101);
     float: left;
 }
 
 #carsRented {
-    background-color: rgb(255, 52, 52);
+    background-color: rgb(253, 97, 118);
     float: right;
 }
 
 #userActive {
-    background-color: rgb(0, 99, 247);
+    background-color: #fff132;
 }
 
 #userActive img {
@@ -53,8 +53,8 @@
 }
 
 #welcome{
-    background-color: rgb(255, 190, 71);
-    color: rgb(255, 115, 0);
+    background-color:  rgb(255, 146, 110);
+    color: white;
     text-align: center;
     font-weight: 700;
 }
