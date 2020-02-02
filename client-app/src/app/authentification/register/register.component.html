@@ -1,8 +1,27 @@
 <div class="login-page">
   <div class="row justify-content-md-center">
-    <div class="col-md-4">
-      <img src="assets/images/carrentallogo.jpg" width="250px" class="user-avatar" />
-      <h1>Car Rental</h1>
+    <div class="ui-g-4 logo">
+      <img src="assets/images/general/carrental.png" alt="logo">
+    </div>
+    <div class="social">
+      <img src="assets/images/general/instagram.png" alt="instagram">
+      <img src="assets/images/general/facebook.png" alt="facebook">
+      <img src="assets/images/general/youtube.png" alt="youtube">
+      <img src="assets/images/general/linkedin.png" alt="linkedin">
+    </div>
+    <div class="ui-g-5 register">
+      <p id="royal">The Royal Essence of Journey</p>
+      <h3>Flexible. Accesible. Affordable.</h3>
+      <p>We offer you the best comfort at the best price. The way renting should be!</p>
+      <div id="signin">
+      <p>Do you have an account already?</p>
+      <button class="btn rounded-btn" [routerLink]="['/login']">
+        Log in
+      </button>
+      </div>
+    </div>
+    <div class="ui-g-4 login">
+      <h3>Fill in to rent now!</h3>
       <form role="form" [formGroup]="registerForm">
         <div class="form-content">
           <div class="form-group">
@@ -110,9 +129,6 @@
           </div>
           <button [disabled]="registerForm.invalid" (click)="register()" class="btn rounded-btn">
             Register
-          </button>
-          <button class="btn rounded-btn" [routerLink]="['/login']">
-            Log in
           </button>
       </form>
     </div>

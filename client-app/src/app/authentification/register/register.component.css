@@ -41,7 +41,7 @@
   -webkit-border-radius: 50px;
   border-radius: 50px;
   color: rgba(255, 255, 255, 0.8);
-  background: #222;
+  background: rgba(252, 193, 0, 0.959);
   border: 2px solid rgba(255, 255, 255, 0.8);
   font-size: 18px;
   line-height: 40px;
@@ -53,6 +53,7 @@
 .login-page .rounded-btn:visited {
   color: rgba(255, 255, 255, 1);
   border: 2px solid rgba(255, 255, 255, 1);
+  background-color: rgba(252, 193, 0, 0.877);;
   outline: none;
 }
 .login-page h1 {
@@ -93,4 +94,67 @@
 .required {
   font-size: 10px;
   color: red;
+}
+
+.login-page h1{
+  font-size: 35px;
+}
+
+.register {
+  margin-top: 12%;
+  text-align: left;
+}
+
+.login {
+  margin-top: 10%;
+}
+
+.login h3 {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.register h3 {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.register p {
+  font-size: 14px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.logo {
+  position: absolute;
+  top: 40px;
+  left: 34px;
+}
+
+.logo img {
+  width: 140px;
+}
+
+#royal {
+  text-transform: uppercase;
+}
+
+
+.social {
+  position: absolute;
+  top: 40px;
+  right: 200px;
+  width: 300px;
+}
+
+.social img {
+  width: 24px;
+  margin-right: 3%;
+}
+
+#signin{
+  margin-top: 10%;
+}
+
+#signin p {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
