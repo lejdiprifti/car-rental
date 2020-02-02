@@ -1,7 +1,7 @@
 .calendar {
     float: right;
     width: 40%;
-    height: 35%;
+    height: 100%;
 }
 
 #infomation {
@@ -28,7 +28,7 @@
 }
 
 #userActive img {
-    width: 64px;
+    width: 80px;
 }
 
 #bookings {
@@ -37,19 +37,19 @@
 }
 
 #bookings img {
-    width: 64px;
+    width: 80px;
 }
 
 #carsRented img {
-    width: 64px;
+    width: 80px;
 }
 
 #carsAvailable img {
-    width: 64px;
+    width: 80px;
 }
 
-.text {
-    float: right;
+.text h1 {
+    font-family: monospace;
 }
 
 #welcome{
