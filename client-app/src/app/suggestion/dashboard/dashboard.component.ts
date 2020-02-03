@@ -7,6 +7,9 @@ import { Car } from '@ikubinfo/core/models/car';
 import { CarService } from '@ikubinfo/core/services/car.service';
 import { User } from '@ikubinfo/core/models/user';
 import { AuthService } from '@ikubinfo/core/services/auth.service';
+import { ReservationService } from '@ikubinfo/core/services/reservation.service';
+import { Reservation } from '@ikubinfo/core/models/reservation';
+import { LoggerService } from '@ikubinfo/core/utilities/logger.service';
 @Component({
   selector: 'ikubinfo-dashboard',
   templateUrl: './dashboard.component.html',
@@ -15,6 +18,7 @@ import { AuthService } from '@ikubinfo/core/services/auth.service';
 export class DashboardComponent implements OnInit {
   events: any[];
   options: any;
+  reservations: Array<Reservation>;
   calendarPlugins = [dayGridPlugin,timeGridPlugin, interactionPlugin];
   cars: Car[];
 
@@ -28,57 +32,15 @@ export class DashboardComponent implements OnInit {
     user: User;
 
     yearTimeout: any;
-  constructor(private carService: CarService, private authService: AuthService) { }
+  constructor(private carService: CarService, private authService: AuthService, 
+    private reservationService: ReservationService, private logger: LoggerService) { }
 
   ngOnInit() {
 this.user = this.authService.user;
 
     this.loadCars();
-    this.events = [
-      {
-          "title": "All Day Event",
-          "start": "2016-01-01"
-      },
-      {
-          "title": "Long Event",
-          "start": "2020-02-02",
-          "end": "2020-02-05"
-      },{
-        "title": "Long Event 2",
-        "start": "2020-02-02",
-        "end": "2020-02-05"
-    },{
-      "title": "Long Event 3",
-      "start": "2020-02-02",
-      "end": "2020-02-05"
-  },{
-    "title": "Long Event 4",
-    "start": "2020-02-09",
-    "end": "2020-02-12"
-},{
-  "title": "Long Event 3",
-  "start": "2020-02-05",
-  "end": "2020-02-09"
-},{
-  "title": "Long Event 3",
-  "start": "2020-02-26",
-  "end": "2020-02-28"
-},
-      {
-          "title": "Repeating Event",
-          "start": "2016-01-09T16:00:00"
-      },
-      {
-          "title": "Repeating Event",
-          "start": "2016-01-16T16:00:00"
-      },
-      {
-          "title": "Conference",
-          "start": "2016-01-11",
-          "end": "2016-01-13"
-      }
-  ];
-
+    this.events = [];
+    this.loadEvents();
   
     this.options = {
       plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
@@ -88,7 +50,7 @@ this.user = this.authService.user;
           center: 'title',
           right: 'month,agendaWeek,agendaDay'
       },
-      editable: true
+      editable: false
   };
 
     this.brands = [
@@ -105,32 +67,29 @@ this.user = this.authService.user;
         ];
 
         this.colors = [
-            { label: 'White', value: 'White' },
-            { label: 'Green', value: 'Green' },
-            { label: 'Silver', value: 'Silver' },
-            { label: 'Black', value: 'Black' },
-            { label: 'Red', value: 'Red' },
-            { label: 'Maroon', value: 'Maroon' },
-            { label: 'Brown', value: 'Brown' },
-            { label: 'Orange', value: 'Orange' },
-            { label: 'Blue', value: 'Blue' }
+            { label: 'Diesel', value: 'Diesel' },
+            { label: 'Petrol', value: 'Petrol' }, 
+            { label: 'Kerosene', value: 'Kerosene' },
+            { label: 'Hydrogen', value: 'Hydrogen' },
+            { label: 'Biogas', value: 'Biogas' }
         ];
 
         this.cols = [
-            { field: 'plate', header: 'Plate' },
-            { field: 'year', header: 'Year' },
-            { field: 'type', header: 'Brand' },
-            { field: 'color', header: 'Color' }
+            { field: 'user', header: 'User' },
+            { field: 'car', header: 'Car' },
+            { field: 'car.type', header: 'Brand' },
+            { field: 'startDate', header: 'Start Date' },
+            {field: 'endDate', header: 'End Date'}
         ];
     }
 
-    onYearChange(event, dt) {
+    onDateChange(event, dt) {
         if (this.yearTimeout) {
             clearTimeout(this.yearTimeout);
         }
 
         this.yearTimeout = setTimeout(() => {
-            dt.filter(event.value, 'year', 'gt');
+            dt.filter(event.value, 'startDate', 'gt');
         }, 250);
     }
 
@@ -138,7 +97,22 @@ this.user = this.authService.user;
       this.carService.getAll().subscribe(res => {
         this.cars = res;
       }, err => {
-        
+        this.logger.error("Error", "Cars could not be found.");
+      })
+    }
+
+    loadEvents():void {
+      this.reservationService.getAll().subscribe(res=>{
+        this.reservations = res;
+        this.reservations.forEach(el => {
+          this.events.push({
+            'title': el.user.firstName + ' '+ el.user.lastName + ' - ' + el.car.name + ' '+ el.car.type,
+            'start': el.startDate,
+            'end': el.endDate
+          })
+        })
+      }, err=> {
+        this.logger.error('Error', 'Reservations could not be found.');
       })
     }
 

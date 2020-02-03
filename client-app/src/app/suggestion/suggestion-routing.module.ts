@@ -18,7 +18,7 @@ const suggestionRoutes: Routes = [
         path: '',
         component: FullComponent,
         children: [
-            { path: 'dashboard', component: DashboardComponent },
+            { path: 'dashboard', component: DashboardComponent, canActivate: [AdminGuard] },
             { path: 'posts', component: PostsComponent, canActivate: [AdminGuard] },
             { path: 'post', component: PostComponent, canActivate: [AdminGuard] },
             { path: 'post/:id', component: PostComponent, canActivate: [AdminGuard] },
@@ -26,10 +26,9 @@ const suggestionRoutes: Routes = [
             {path: 'categories', component: CategoriesComponent, canActivate: [AdminGuard]},
             {path: 'category', component: CategoryComponent, canActivate: [AdminGuard]},
             {path: 'category/:id', component: CategoryComponent, canActivate: [AdminGuard]},
-            {path: 'cars', component: CarsComponent, canActivate: [AdminGuard]},
+            {path: 'cars', component: CarsComponent},
             {path: 'car/:id', component: CarComponent, canActivate: [AdminGuard]},
-            {path: 'car', component: CarComponent, canActivate: [AdminGuard]},
-            { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+            {path: 'car', component: CarComponent, canActivate: [AdminGuard]}
         ]
     }
 ];

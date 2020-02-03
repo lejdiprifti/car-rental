@@ -5,28 +5,26 @@ export const menuItems: Array<MenuItem> = [{
     url: '/rental/dashboard',
     icon: 'fa-dashboard',
     label: 'Dashboard',
-    allowedRoles: [Role.ADMIN, Role.USER]
-}, {
+    allowedRoles: [Role.ADMIN]
+}, { url: '/rental/cars',
+     icon: 'fas fa-car',
+     label: 'Dashboard',
+     allowedRoles: [Role.USER]
+},
+{
     url: '/rental/user',
     icon: 'fa fa-user',
     label: 'User',
     allowedRoles: [Role.USER]
 },{
     url: '/rental/cars',
-    icon: 'fa fa-list',
+    icon: 'fas fa-car',
     label: 'Cars',
     allowedRoles: [Role.ADMIN]
 },
 {
     url: '/rental/categories',
-    icon: 'fa fa-list',
+    icon: 'fas fa-sitemap',
     label: 'Categories',
     allowedRoles: [Role.ADMIN]
-},
-{
-    url: '/rental/posts',
-    icon: 'fa-table',
-    label: 'Manage posts',
-    allowedRoles: [Role.ADMIN]
-
 }]

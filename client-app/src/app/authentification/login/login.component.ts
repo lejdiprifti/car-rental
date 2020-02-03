@@ -30,7 +30,11 @@ export class LoginComponent implements OnInit {
   login(): void {
     this.authService.login(this.loginForm.value).subscribe((data:any) => {
       this.authService.setData(data);
-      this.router.navigate(['/rental']);
+      if (this.authService.user.role.name === 'ADMIN') {
+        this.router.navigate(['/rental/dashboard']);
+      } else {
+        this.router.navigate(['/rental/cars']);
+      }
       this.logger.success('Success', 'You logged in successfully!');
     }, err=>{
       this.logger.error('Error', 'Username or password is incorrect!');

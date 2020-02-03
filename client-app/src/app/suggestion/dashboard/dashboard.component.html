@@ -1,8 +1,5 @@
 <div id="panel">
     <div id="information" class="ui-g-6">
-        <div class="ui-g-12 card header" id="welcome">
-            <h1>Welcome, {{user.firstName}}!</h1>
-        </div>
         <div class="ui-g-6 card header" id="carsAvailable">
             <img src = "assets/images/general/traffic-jam.png" alt="Cars" />
             <div class=" ui-g-6 text">
@@ -37,10 +34,10 @@
     left: 'prev,next',
     center: 'title',
     right: 'today'
-  }" editable="true" [events]="events"  [plugins]="calendarPlugins"></full-calendar>
+  }" [events]="events"  [plugins]="calendarPlugins"></full-calendar>
 </div>
 <div id="dataview" class="ui-g-12">
-    <p-table #dt [columns]="cols" [value]="cars" [paginator]="true" [rows]="10">
+    <p-table #dt [columns]="cols" [value]="reservations" [paginator]="true" [rows]="10">
         <ng-template pTemplate="caption">
             <div style="text-align: right">        
                 <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
@@ -55,14 +52,14 @@
             </tr>
             <tr>
                 <th *ngFor="let col of columns" [ngSwitch]="col.field">
-                    <input *ngSwitchCase="'plate'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, 'contains')">
+                    <input *ngSwitchCase="'user'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, 'contains')">
                     <div *ngSwitchCase="'year'">
                         Value > {{yearFilter}}
                         <i class="fa fa-close" (click)="yearFilter=null;dt.filter(null, col.field, col.filterMatchMode)" style="cursor:pointer" *ngIf="yearFilter"></i>
-                        <p-slider [style]="{'width':'100%','margin-top':'8px'}" [(ngModel)]="yearFilter" [min]="1970" [max]="2010" (onChange)="onYearChange($event, dt)"></p-slider>
+                        <p-slider [style]="{'width':'100%','margin-top':'8px'}" [(ngModel)]="yearFilter" [min]="1970" [max]="2020" (onChange)="onYearChange($event, dt)"></p-slider>
                     </div>
                     <p-dropdown *ngSwitchCase="'type'" [options]="brands" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'equals')"></p-dropdown>
-                    <p-multiSelect *ngSwitchCase="'color'" [options]="colors" defaultLabel="All Colors" (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
+                    <p-multiSelect *ngSwitchCase="'diesel'" [options]="colors" defaultLabel="All Fuels" (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
                     <input *ngSwitchCase="'price'" pInputText type="text" placeholder="Custom - Greater Than" (input)="dt.filter($event.target.value, col.field, 'custom')">
                 </th>
             </tr>
@@ -70,7 +67,11 @@
         <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr [pSelectableRow]="rowData">
                 <td *ngFor="let col of columns">
-                    {{rowData[col.field]}}
+                   <p *ngIf="col.field === 'user'"> {{rowData[col.field].firstName}} {{rowData[col.field].lastName}}</p>
+                   <p *ngIf="col.field === 'car'">{{rowData[col.field].name}}</p>
+                   <p *ngIf="col.field === 'car.type'">{{rowData[col.field]}}</p>
+                   <p *ngIf="col.field === 'startDate'">{{rowData[col.field]}}</p>
+                   <p *ngIf="col.field === 'endDate'">{{rowData[col.field]}}</p>
                 </td>
             </tr>
         </ng-template>

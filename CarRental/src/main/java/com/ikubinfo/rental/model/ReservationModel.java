@@ -7,8 +7,10 @@ public class ReservationModel {
 	private Long id;
 	private UserModel user;
 	private CarModel car;
+	private Long carId;
 	private Date startDate;
 	private Date endDate;
+	private Date created_at;
 	private boolean active;
 	
 	public ReservationModel() {
@@ -63,11 +65,30 @@ public class ReservationModel {
 		this.active = active;
 	}
 
+	public Date getCreated_at() {
+		return created_at;
+	}
+
+	public void setCreated_at(Date created_at) {
+		this.created_at = created_at;
+	}
+
+	public Long getCarId() {
+		return carId;
+	}
+
+	public void setCarId(Long carId) {
+		this.carId = carId;
+	}
+
 	@Override
 	public String toString() {
-		return "ReservationModel [id=" + id + ", user=" + user + ", car=" + car + ", startDate=" + startDate
-				+ ", endDate=" + endDate + ", active=" + active + "]";
+		return "ReservationModel [id=" + id + ", user=" + user + ", car=" + car + ", carId=" + carId + ", startDate="
+				+ startDate + ", endDate=" + endDate + ", created_at=" + created_at + ", active=" + active + "]";
 	}
+
+
+
 	
 	
 }

@@ -12,6 +12,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name="reservation", schema="rental")
 public class ReservationEntity {
@@ -28,11 +30,15 @@ public class ReservationEntity {
 	@JoinColumn(name="car_id")
 	private CarEntity car;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(pattern="yyyy-MM-dd'T'HH:mm", timezone = "UTC")
 	private Date startDate;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date endDate;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date created_at;
 	
 	private boolean active; 
 	
@@ -88,10 +94,19 @@ public class ReservationEntity {
 		this.active = active;
 	}
 
+	public Date getCreated_at() {
+		return created_at;
+	}
+
+	public void setCreated_at(Date created_at) {
+		this.created_at = created_at;
+	}
+
 	@Override
 	public String toString() {
 		return "ReservationEntity [id=" + id + ", user=" + user + ", car=" + car + ", startDate=" + startDate
-				+ ", endDate=" + endDate + ", active=" + active + "]";
+				+ ", endDate=" + endDate + ", created_at=" + created_at + ", active=" + active + "]";
 	}
+
 	
 }
