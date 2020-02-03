@@ -55,9 +55,14 @@
                     <input *ngSwitchCase="'user'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, 'contains')">
                     <input *ngSwitchCase="'name'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, 'contains')">
                     <div *ngSwitchCase="'startDate'">
-                        Date > {{yearFilter | date:'medium'}}
+                        Date > {{yearFilter | date}}
                         <i class="fa fa-close" (click)="yearFilter=null;dt.filter(null, col.field, col.filterMatchMode)" style="cursor:pointer" *ngIf="yearFilter"></i>
                         <p-slider [style]="{'width':'100%','margin-top':'8px'}" [(ngModel)]="yearFilter" [min]="1577836800000" [max]="1609459200000" (onChange)="onDateChange($event, dt)"></p-slider>
+                    </div>
+                    <div *ngSwitchCase="'endDate'">
+                        Date < {{endDateFilter | date}}
+                        <i class="fa fa-close" (click)="endDateFilter=null;dt.filter(null, col.field, col.filterMatchMode)" style="cursor:pointer" *ngIf="endDateFilter"></i>
+                        <p-slider [style]="{'width':'100%','margin-top':'8px'}" [(ngModel)]="endDateFilter" [min]="1577836800000" [max]="1609459200000" (onChange)="onEndDateChange($event, dt)"></p-slider>
                     </div>
                     <p-dropdown *ngSwitchCase="'type'" [options]="brands" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'equals')"></p-dropdown>
                     <p-multiSelect *ngSwitchCase="'diesel'" [options]="colors" defaultLabel="All Fuels" (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>

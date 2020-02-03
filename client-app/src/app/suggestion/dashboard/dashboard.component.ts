@@ -94,6 +94,16 @@ this.user = this.authService.user;
         }, 250);
     }
 
+    onEndDateChange(event, dt) {
+      if (this.yearTimeout) {
+          clearTimeout(this.yearTimeout);
+      }
+
+      this.yearTimeout = setTimeout(() => {
+          dt.filter(event.value, 'endDate', 'ls');
+      }, 250);
+  }
+
     loadEvents():void {
       this.reservationService.getAll().subscribe(res=>{
         this.reservations = res;
