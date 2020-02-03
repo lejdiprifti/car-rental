@@ -1,5 +1,6 @@
 package com.ikubinfo.rental.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class ReservationModel {
@@ -8,8 +9,8 @@ public class ReservationModel {
 	private UserModel user;
 	private CarModel car;
 	private Long carId;
-	private Date startDate;
-	private Date endDate;
+	private LocalDateTime startDate;
+	private LocalDateTime endDate;
 	private Date created_at;
 	private boolean active;
 	
@@ -41,19 +42,19 @@ public class ReservationModel {
 		this.car = car;
 	}
 
-	public Date getStartDate() {
+	public LocalDateTime getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(LocalDateTime startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public LocalDateTime getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(LocalDateTime endDate) {
 		this.endDate = endDate;
 	}
 

@@ -1,5 +1,6 @@
 package com.ikubinfo.rental.entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -30,12 +31,9 @@ public class ReservationEntity {
 	@JoinColumn(name="car_id")
 	private CarEntity car;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	@JsonFormat(pattern="yyyy-MM-dd'T'HH:mm", timezone = "UTC")
-	private Date startDate;
+	private LocalDateTime startDate;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date endDate;
+	private LocalDateTime endDate;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date created_at;
@@ -70,19 +68,20 @@ public class ReservationEntity {
 		this.car = car;
 	}
 
-	public Date getStartDate() {
+	
+	public LocalDateTime getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(LocalDateTime startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public LocalDateTime getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(LocalDateTime endDate) {
 		this.endDate = endDate;
 	}
 
@@ -104,9 +103,11 @@ public class ReservationEntity {
 
 	@Override
 	public String toString() {
-		return "ReservationEntity [id=" + id + ", user=" + user + ", car=" + car + ", startDate=" + startDate
-				+ ", endDate=" + endDate + ", created_at=" + created_at + ", active=" + active + "]";
+		return "ReservationEntity [id=" + id + ", user=" + user + ", car=" + car + ", created_at=" + created_at
+				+ ", active=" + active + "]";
 	}
+
+	
 
 	
 }
