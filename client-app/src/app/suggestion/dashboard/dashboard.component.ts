@@ -10,6 +10,7 @@ import { AuthService } from '@ikubinfo/core/services/auth.service';
 import { ReservationService } from '@ikubinfo/core/services/reservation.service';
 import { Reservation } from '@ikubinfo/core/models/reservation';
 import { LoggerService } from '@ikubinfo/core/utilities/logger.service';
+import {formatDate } from '@angular/common';
 @Component({
   selector: 'ikubinfo-dashboard',
   templateUrl: './dashboard.component.html',
@@ -19,6 +20,7 @@ export class DashboardComponent implements OnInit {
   events: any[];
   options: any;
   reservations: Array<Reservation>;
+  bookings: Array<any>;
   calendarPlugins = [dayGridPlugin,timeGridPlugin, interactionPlugin];
   cars: Car[];
 
@@ -28,7 +30,7 @@ export class DashboardComponent implements OnInit {
 
     colors: SelectItem[];
 
-    yearFilter: number;
+    yearFilter: Date;
     user: User;
 
     yearTimeout: any;
@@ -37,11 +39,10 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
 this.user = this.authService.user;
-
-    this.loadCars();
     this.events = [];
+    this.bookings= [];
+    this.reservations = [];
     this.loadEvents();
-  
     this.options = {
       plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       defaultDate: '2017-02-01',
@@ -76,29 +77,21 @@ this.user = this.authService.user;
 
         this.cols = [
             { field: 'user', header: 'User' },
-            { field: 'car', header: 'Car' },
-            { field: 'car.type', header: 'Brand' },
+            { field: 'name', header: 'Car' },
             { field: 'startDate', header: 'Start Date' },
-            {field: 'endDate', header: 'End Date'}
+            {field: 'endDate', header: 'End Date'},
+            {field: 'price', header: 'Total Fee'}
         ];
     }
 
     onDateChange(event, dt) {
-        if (this.yearTimeout) {
-            clearTimeout(this.yearTimeout);
+        if (this.yearTimeout.getTime()) {
+            clearTimeout(this.yearTimeout.getTime());
         }
 
         this.yearTimeout = setTimeout(() => {
             dt.filter(event.value, 'startDate', 'gt');
         }, 250);
-    }
-
-    loadCars(): void {
-      this.carService.getAll().subscribe(res => {
-        this.cars = res;
-      }, err => {
-        this.logger.error("Error", "Cars could not be found.");
-      })
     }
 
     loadEvents():void {
@@ -110,9 +103,22 @@ this.user = this.authService.user;
             'start': el.startDate,
             'end': el.endDate
           })
+          this.organizeRezervations();
         })
       }, err=> {
         this.logger.error('Error', 'Reservations could not be found.');
+      })
+    }
+
+    organizeRezervations(): void {
+      this.reservations.forEach(el => {
+        this.bookings.push({
+          'user': el.user.firstName + ' ' + el.user.lastName,
+          'name': el.car.name + ' - ' + el.car.type,
+          'startDate':formatDate( el.startDate, 'dd-MM-yyyy hh:mm', 'en-US'),
+          'endDate': formatDate( el.endDate, 'dd-MM-yyyy hh:mm', 'en-US'),
+          'price': (el.car.price * Math.round((Math.abs((new Date(el.endDate).getTime() - new Date(el.startDate).getTime())/(24*60*60*1000)))))
+        })
       })
     }
 
