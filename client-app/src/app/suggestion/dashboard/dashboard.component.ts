@@ -131,6 +131,10 @@ this.user = this.authService.user;
       }
     }
 
+    filterBookingsByPrice(event) {
+        this.bookings = this.filteredBookings;
+        this.bookings = this.bookings.filter(el => el.price > event.target.value);
+    }
 }
 
 
