@@ -55,9 +55,9 @@
                     <input *ngSwitchCase="'user'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, 'contains')">
                     <input *ngSwitchCase="'name'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, 'contains')">
                     <div *ngSwitchCase="'startDate'">
-                        Date > {{yearFilter}}
+                        Date > {{yearFilter | date:'medium'}}
                         <i class="fa fa-close" (click)="yearFilter=null;dt.filter(null, col.field, col.filterMatchMode)" style="cursor:pointer" *ngIf="yearFilter"></i>
-                        <p-slider [style]="{'width':'100%','margin-top':'8px'}" [(ngModel)]="yearFilter" [min]="2020-01-01 00:00" [max]="2022-01-01 00:00" (onChange)="onDateChange($event, dt)"></p-slider>
+                        <p-slider [style]="{'width':'100%','margin-top':'8px'}" [(ngModel)]="yearFilter" [min]="1577836800000" [max]="1609459200000" (onChange)="onDateChange($event, dt)"></p-slider>
                     </div>
                     <p-dropdown *ngSwitchCase="'type'" [options]="brands" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'equals')"></p-dropdown>
                     <p-multiSelect *ngSwitchCase="'diesel'" [options]="colors" defaultLabel="All Fuels" (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
@@ -68,7 +68,8 @@
         <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr [pSelectableRow]="rowData">
                 <td *ngFor="let col of columns">
-                   <p> {{rowData[col.field]}}</p>
+                   <p *ngIf="col.field !== 'startDate' && col.field !== 'endDate'"> {{rowData[col.field]}}</p>
+                   <p *ngIf="col.field === 'startDate' || col.field === 'endDate'">{{rowData[col.field] | date: 'medium'}}</p>
                 </td>
             </tr>
         </ng-template>

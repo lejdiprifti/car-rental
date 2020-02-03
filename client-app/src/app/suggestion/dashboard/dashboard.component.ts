@@ -30,7 +30,7 @@ export class DashboardComponent implements OnInit {
 
     colors: SelectItem[];
 
-    yearFilter: Date;
+    yearFilter: number;
     user: User;
 
     yearTimeout: any;
@@ -85,8 +85,8 @@ this.user = this.authService.user;
     }
 
     onDateChange(event, dt) {
-        if (this.yearTimeout.getTime()) {
-            clearTimeout(this.yearTimeout.getTime());
+        if (this.yearTimeout) {
+            clearTimeout(this.yearTimeout);
         }
 
         this.yearTimeout = setTimeout(() => {
@@ -111,12 +111,14 @@ this.user = this.authService.user;
     }
 
     organizeRezervations(): void {
+      console.log(new Date('2020-01-01T00:00:00.000Z').getTime());
+      console.log(new Date('2021-01-01T00:00:00.000Z').getTime());
       this.reservations.forEach(el => {
         this.bookings.push({
           'user': el.user.firstName + ' ' + el.user.lastName,
           'name': el.car.name + ' - ' + el.car.type,
-          'startDate':formatDate( el.startDate, 'dd-MM-yyyy hh:mm', 'en-US'),
-          'endDate': formatDate( el.endDate, 'dd-MM-yyyy hh:mm', 'en-US'),
+          'startDate':new Date(el.startDate).getTime(),
+          'endDate': new Date(el.endDate).getTime(),
           'price': (el.car.price * Math.round((Math.abs((new Date(el.endDate).getTime() - new Date(el.startDate).getTime())/(24*60*60*1000)))))
         })
       })
