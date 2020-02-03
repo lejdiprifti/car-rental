@@ -21,6 +21,7 @@ export class DashboardComponent implements OnInit {
   options: any;
   reservations: Array<Reservation>;
   bookings: Array<any>;
+  filteredBookings: Array<any>;
   calendarPlugins = [dayGridPlugin,timeGridPlugin, interactionPlugin];
   cars: Car[];
 
@@ -32,7 +33,8 @@ export class DashboardComponent implements OnInit {
 
     yearFilter: number;
     user: User;
-
+    date: Date = null;
+    endDate: Date = null;
     yearTimeout: any;
   constructor(private carService: CarService, private authService: AuthService, 
     private reservationService: ReservationService, private logger: LoggerService) { }
@@ -84,25 +86,7 @@ this.user = this.authService.user;
         ];
     }
 
-    onDateChange(event, dt) {
-        if (this.yearTimeout) {
-            clearTimeout(this.yearTimeout);
-        }
-
-        this.yearTimeout = setTimeout(() => {
-            dt.filter(event.value, 'startDate', 'gt');
-        }, 250);
-    }
-
-    onEndDateChange(event, dt) {
-      if (this.yearTimeout) {
-          clearTimeout(this.yearTimeout);
-      }
-
-      this.yearTimeout = setTimeout(() => {
-          dt.filter(event.value, 'endDate', 'ls');
-      }, 250);
-  }
+   
 
     loadEvents():void {
       this.reservationService.getAll().subscribe(res=>{
@@ -113,16 +97,15 @@ this.user = this.authService.user;
             'start': el.startDate,
             'end': el.endDate
           })
-          this.organizeRezervations();
         })
+        this.organizeRezervations();
+        this.filteredBookings = this.bookings;
       }, err=> {
         this.logger.error('Error', 'Reservations could not be found.');
       })
     }
 
     organizeRezervations(): void {
-      console.log(new Date('2020-01-01T00:00:00.000Z').getTime());
-      console.log(new Date('2021-01-01T00:00:00.000Z').getTime());
       this.reservations.forEach(el => {
         this.bookings.push({
           'user': el.user.firstName + ' ' + el.user.lastName,
@@ -134,4 +117,20 @@ this.user = this.authService.user;
       })
     }
 
+    filterBookings(event): void {
+      if (this.date && !this.endDate){
+      this.bookings = this.filteredBookings;
+      this.bookings = this.bookings.filter(el => this.date.getTime() < new Date(el.startDate).getTime())
+      } else if (this.endDate && !this.date){
+        this.bookings = this.filteredBookings;
+        this.bookings = this.bookings.filter(el => this.endDate.getTime() > new Date(el.endDate).getTime())
+      } else if (this.date && this.endDate){
+        this.bookings = this.filteredBookings;
+        this.bookings = this.bookings.filter(el => this.date.getTime() < new Date(el.startDate).getTime())
+        this.bookings = this.bookings.filter(el => this.endDate.getTime() > new Date(el.endDate).getTime())
+      }
+    }
+
 }
+
+
