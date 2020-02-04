@@ -128,6 +128,8 @@ this.user = this.authService.user;
         this.bookings = this.filteredBookings;
         this.bookings = this.bookings.filter(el => this.date.getTime() < new Date(el.startDate).getTime())
         this.bookings = this.bookings.filter(el => this.endDate.getTime() > new Date(el.endDate).getTime())
+      } else {
+        this.bookings = this.filteredBookings;
       }
     }
 
