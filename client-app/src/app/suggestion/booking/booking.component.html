@@ -14,20 +14,20 @@
   <ikubinfo-input label="Pick-up">
     <div class="form-group">
       <p-calendar class="time" placeholder="What time?" [(ngModel)]="startTime" formControlName="startDate" (click)="calculateFee()" [timeOnly]="true"></p-calendar>
-      <p-calendar class="date" placeholder="What date?" [(ngModel)]="startDate" (click)="calculateFee()" showButtonBar="true" [disabledDates]="invalidDates" formControlName="startDate" [readonlyInput]="true"></p-calendar>
+      <p-calendar class="date" [minDate]="minDate" placeholder="What date?" [(ngModel)]="startDate" (click)="calculateFee()" showButtonBar="true" [disabledDates]="reservedDates" formControlName="startDate" [readonlyInput]="true"></p-calendar>
     </div>
   </ikubinfo-input>
   <ikubinfo-input label="Drop-off">
     <div class="form-group">
       <p-calendar class="time" placeholder="What time?" [(ngModel)]="endTime" formControlName="endTime" (click)="calculateFee()" [timeOnly]="true"></p-calendar>
-      <p-calendar class="date" placeholder="What date?" [(ngModel)]="endDate" (click)="calculateFee()" showButtonBar="true" [disabledDates]="invalidDates" formControlName="endDate" [readonlyInput]="true"></p-calendar>
+      <p-calendar class="date" placeholder="What date?" [minDate]="minDate" [(ngModel)]="endDate" (click)="calculateFee()" showButtonBar="true" [disabledDates]="reservedDates" formControlName="endDate" [readonlyInput]="true"></p-calendar>
     </div>
   </ikubinfo-input>
   <ikubinfo-input label="Total Fee">
     <div class="form-group">
       <div class="ui-inputgroup">
         <span class="ui-inputgroup-addon">Lek</span>
-        <input type="text" formControlName="fee" pKeyFilter="money" disabled pInputText placeholder="Price">   
+        <input type="text" formControlName="fee" pKeyFilter="money" pInputText placeholder="Price">   
         <span class="ui-inputgroup-addon">.00</span>      
       </div>
     </div>

@@ -7,7 +7,7 @@ import { Car } from '@ikubinfo/core/models/car';
 import { LoggerService } from '@ikubinfo/core/utilities/logger.service';
 import { Reservation } from '@ikubinfo/core/models/reservation';
 import { ReservationService } from '@ikubinfo/core/services/reservation.service';
-import { Time } from '@angular/common';
+import { Time, formatDate } from '@angular/common';
 
 @Component({
   selector: 'ikubinfo-booking',
@@ -20,11 +20,12 @@ export class BookingComponent implements OnInit {
   car: Car;
   reservation: Reservation;
   cars: Array<Car>;
-  reservedDates: Array<Date[]>;
+  reservedDates: Array<Date>;
   startDate: Date;
   endDate: Date;
   startTime: Date;
   endTime: Date;
+  minDate: Date;
   reservations: Array<Reservation>;
   constructor(private fb: FormBuilder, private router: Router,
     private logger: LoggerService, private reservationService: ReservationService,
@@ -37,13 +38,14 @@ export class BookingComponent implements OnInit {
       endDate: ['', Validators.required],
       startTime: ['', Validators.required],
       endTime: ['', Validators.required],
-      fee: ['']
+      fee: [{value:'', disabled: true}]
     })
     this.car = {};
     this.getCarById();
     this.getReservedDatesByCar();
     this.getAllCars();
     this.reservedDates= [];
+    this.minDate = new Date();
   }
 
   getCarById(): void {
@@ -66,9 +68,7 @@ export class BookingComponent implements OnInit {
   getReservedDatesByCar(): void {
     this.carService.getReservationsByCar(Number(this.active.snapshot.paramMap.get("carId"))).subscribe(res => {
       this.reservations = res;
-      this.reservations.forEach(el => {
-        this.reservedDates.push([new Date(el.startDate), new Date(el.endDate)])
-      })
+      this.defineReservedDates();
     }, err=> {
       this.logger.error('Error', 'Reservations could not be found.');
     })
@@ -86,8 +86,43 @@ export class BookingComponent implements OnInit {
 
   calculateFee(): void {
     if (this.startDate && this.endDate && this.startTime && this.endTime) {
-      let fee = ((this.endDate.getTime() + this.endTime.getMilliseconds()) - (this.startDate.getTime() + this.startTime.getMilliseconds())) * (this.car.price / 86400000);
+      let start = formatDate(this.startTime, 'hh:mm:a', 'en-US');
+      let end = formatDate(this.endTime, 'hh:mm:a', 'en-US');
+      let startArray = start.split(':');
+      let endArray = end.split(':');
+      let startTiming: number;
+      if (startArray[2] === 'PM'){
+        if (startArray[0] !== '12') {
+        startTiming = ((Number(startArray[0])+12 * 3600) + (Number(startArray[1])*60)) * 1000;
+        } else {
+          startTiming = ((Number(startArray[0]) * 3600) + (Number(startArray[1])*60)) * 1000;
+        }
+      } else {
+        startTiming = ((Number(startArray[0]) * 3600) + (Number(startArray[1])*60)) * 1000;
+      }
+
+      let endTiming: number;
+      if (endArray[2] === 'PM'){
+        if (endArray[0] !== '12') {
+        endTiming = ((Number(endArray[0])+12 * 3600) + (Number(endArray[1])*60)) * 1000;
+        } else {
+          endTiming = ((Number(endArray[0]) * 3600) + (Number(endArray[1])*60)) * 1000;
+        }
+      } else {
+        endTiming = ((Number(endArray[0]) * 3600) + (Number(endArray[1])*60)) * 1000;
+        }
+      let fee = ((this.endDate.getTime() + endTiming) - (this.startDate.getTime() + startTiming)) * (this.car.price / 86400000);
       this.bookingForm.get('fee').setValue(fee);
     }
+  }
+
+  defineReservedDates(): void {
+    this.reservations.forEach(el => {
+      let startDate = new Date(el.startDate);
+      let endDate = new Date(el.endDate);
+      for (let i=startDate.getTime(); i<=endDate.getTime(); i=i+86400000){
+        this.reservedDates.push(new Date(i));
+      }
+    })
   }
 }
