@@ -1,0 +1,38 @@
+<ikubinfo-panel header="Booking">
+  <div panel-content>
+<form role="form" [formGroup]="bookingForm">
+  <img src="data:image/jpeg;base64,{{car.photo}}">
+  <ikubinfo-input label="Car">
+    <div class="form-group">
+      <select class="custom-select" formControlName="car" placeholder="Car">
+        <option value="" disabled>Choose the car</option>
+        <option *ngFor="let car of cars" [ngValue]="car.id">{{car.name}} - {{car.type}}</option>
+      </select>
+    </div>
+  </ikubinfo-input>
+
+  <ikubinfo-input label="Pick-up">
+    <div class="form-group">
+      <p-calendar class="time" placeholder="What time?" [(ngModel)]="startTime" formControlName="startDate" (click)="calculateFee()" [timeOnly]="true"></p-calendar>
+      <p-calendar class="date" placeholder="What date?" [(ngModel)]="startDate" (click)="calculateFee()" showButtonBar="true" [disabledDates]="invalidDates" formControlName="startDate" [readonlyInput]="true"></p-calendar>
+    </div>
+  </ikubinfo-input>
+  <ikubinfo-input label="Drop-off">
+    <div class="form-group">
+      <p-calendar class="time" placeholder="What time?" [(ngModel)]="endTime" formControlName="endTime" (click)="calculateFee()" [timeOnly]="true"></p-calendar>
+      <p-calendar class="date" placeholder="What date?" [(ngModel)]="endDate" (click)="calculateFee()" showButtonBar="true" [disabledDates]="invalidDates" formControlName="endDate" [readonlyInput]="true"></p-calendar>
+    </div>
+  </ikubinfo-input>
+  <ikubinfo-input label="Total Fee">
+    <div class="form-group">
+      <div class="ui-inputgroup">
+        <span class="ui-inputgroup-addon">Lek</span>
+        <input type="text" formControlName="fee" pKeyFilter="money" disabled pInputText placeholder="Price">   
+        <span class="ui-inputgroup-addon">.00</span>      
+      </div>
+    </div>
+  </ikubinfo-input>
+  <button pButton type="button" label="Confirm" [disabled]="bookingForm.invalid" class="ui-button-raised ui-button-success"></button>
+  </form>
+  </div>
+  </ikubinfo-panel>

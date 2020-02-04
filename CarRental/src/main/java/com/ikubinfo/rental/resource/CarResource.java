@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ikubinfo.rental.model.CarModel;
+import com.ikubinfo.rental.model.ReservationModel;
 import com.ikubinfo.rental.service.CarService;
+import com.ikubinfo.rental.service.ReservationService;
 
 @RestController
 @RequestMapping(path="/cars", produces="application/json")
@@ -29,6 +31,9 @@ public class CarResource {
 	
 	@Autowired
 	private CarService carService;
+	
+	@Autowired
+	private ReservationService reservationService;
 	
 	public CarResource() {
 		
@@ -44,6 +49,11 @@ public class CarResource {
 		return new ResponseEntity<CarModel>(carService.getById(id), HttpStatus.OK);
 	}
 	
+	@GetMapping("/{id}/reservations")
+	public ResponseEntity<List<ReservationModel>> getReservationsByCar(@PathVariable("id") Long carId){
+		return new ResponseEntity<List<ReservationModel>>(reservationService.getByCar(carId), HttpStatus.OK);
+	}
+	
 	@PostMapping(consumes= {"multipart/form-data", "application/json"})
 	@ResponseStatus(HttpStatus.CREATED)
 	public void save(@RequestPart("properties") CarModel model, @RequestPart("file") MultipartFile file) {
@@ -55,6 +65,7 @@ public class CarResource {
 	public void edit(@RequestPart CarModel model, @PathVariable("id") Long id, @PathParam("file") MultipartFile file) {
 		carService.edit(model,file, id);
 	}
+
 	
 	@DeleteMapping(path="/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)

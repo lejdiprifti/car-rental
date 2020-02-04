@@ -45,6 +45,14 @@ public class ReservationRepository {
 	}
 	
 	@Transactional
+	public List<ReservationEntity> getByCar(Long carId) {
+		TypedQuery<ReservationEntity> query = em.createQuery("Select r from ReservationEntity r where r.car.id = ?1 and r.active = ?2", ReservationEntity.class);
+		query.setParameter(1, carId);
+		query.setParameter(2, true);
+		return query.getResultList();
+	}
+	
+	@Transactional
 	public boolean checkIfAvailable(Long carId, LocalDateTime startDate, LocalDateTime endDate) {
 		TypedQuery<ReservationEntity> query = em.createQuery("Select r from ReservationEntity r where r.car.id = ?1 and r.endDate > ?2 and r.startDate < ?3 and r.active= ?4", ReservationEntity.class);
 		query.setParameter(1, carId);

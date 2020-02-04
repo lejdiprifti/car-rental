@@ -56,6 +56,10 @@ public class ReservationService {
 		}
 	}
 	
+	public List<ReservationModel> getByCar(Long carId){
+			return reservationConverter.toModel(reservationRepository.getByCar(carId));	
+	}
+	
 	
 	public void save(ReservationModel model) {
 		if (model.getEndDate().isAfter(model.getStartDate())) {

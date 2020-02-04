@@ -54,7 +54,7 @@
 </p-dataView>
 
 <p-dialog header="Car Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="stylePopUp()"  (onAfterHide)="onDialogHide()">
-<div class="ui-g" *ngIf="selectedCar">
+<div class="dialog ui-g" *ngIf="selectedCar">
     <div class="ui-g-12" style="text-align:center">
       <img id="popUpImage" src="data:image/jpeg;base64,{{selectedCar.photo}}">
     </div>
@@ -81,6 +81,10 @@
 
     <div class="ui-g-4"><b>Price: </b></div>
     <div class="ui-g-8">{{selectedCar.price}} lek/day</div>
+
+    <div class="ui-g-4" *ngIf="checkIfUser()">
+    <button  pButton type="button" label="Book now" class="ui-button-raised ui-button-success"></button>
+</div>
 </div>
 </p-dialog>
 </div>

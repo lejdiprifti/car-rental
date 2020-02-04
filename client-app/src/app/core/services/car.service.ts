@@ -3,6 +3,7 @@ import { ApiService } from '../utilities/api.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Car } from '../models/car';
+import { Reservation } from '../models/reservation';
 
 @Injectable({
   providedIn: 'root'
@@ -30,5 +31,9 @@ constructor(private apiService: ApiService, private httpClient: HttpClient) { }
 
   delete(id: number): Observable<void>{
     return this.apiService.delete(this.url + '/' + id);
+  }
+
+  getReservationsByCar(carId: number): Observable<Array<Reservation>>{
+    return this.apiService.get(this.url + '/' + carId+'/reservations');
   }
 }

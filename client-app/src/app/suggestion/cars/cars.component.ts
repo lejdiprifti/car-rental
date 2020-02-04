@@ -6,6 +6,8 @@ import { LoggerService } from '@ikubinfo/core/utilities/logger.service';
 import { MenuItem } from 'primeng/components/common/menuitem';
 import { Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/primeng';
+import { User } from '@ikubinfo/core/models/user';
+import { AuthService } from '@ikubinfo/core/services/auth.service';
 @Component({
   selector: 'ikubinfo-cars',
   templateUrl: './cars.component.html',
@@ -29,18 +31,14 @@ export class CarsComponent implements OnInit {
 
   items: MenuItem[];
 
+  user: User;
+
   constructor(private carService: CarService, private logger: LoggerService, private router: Router,
-    private confirmationService: ConfirmationService) { }
+    private confirmationService: ConfirmationService, private authService: AuthService) { }
 
   ngOnInit() {
-    this.items = [
-      {label: 'Update', icon: 'pi pi-refresh', command: () => {
-          this.edit(this.selectedCar.id);
-      }},
-      {label: 'Delete', icon: 'pi pi-times', command: () => {
-          this.delete(this.selectedCar);
-      }}
-  ];
+    this.user= this.authService.user;
+    this.loadItems();
     this.loadCars();
 
     this.sortOptions = [
@@ -116,5 +114,32 @@ export class CarsComponent implements OnInit {
 
   stylePopUp(): object {
     return {'width': '550px', 'height': '500px'};
+  }
+
+  checkIfUser(): boolean {
+    if (this.user.role.id === 2){ 
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  loadItems(): void {
+    if (this.checkIfUser()){
+      this.items = [
+        {label: 'Book now', icon: 'fa fa-edit', command: () => {
+            this.router.navigate(['/rental/reservation/'+this.selectedCar.id])
+        }}
+    ];
+    } else {
+      this.items = [
+        {label: 'Update', icon: 'pi pi-refresh', command: () => {
+            this.edit(this.selectedCar.id);
+        }},
+        {label: 'Delete', icon: 'pi pi-times', command: () => {
+            this.delete(this.selectedCar);
+        }}
+    ];
+    }
   }
 }

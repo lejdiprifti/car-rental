@@ -22,7 +22,7 @@
 }
 
 #popUpImage {
-    width: 150px;
+    width: 500px;
 }
 
 #availability {
@@ -59,4 +59,8 @@
     90% {
         stroke: #ffa700;
     }
+}
+
+.dialog {
+    height: 600px;
 }
