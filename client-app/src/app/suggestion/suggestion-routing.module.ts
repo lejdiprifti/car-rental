@@ -13,6 +13,7 @@ import { CategoriesComponent } from './categories/categories.component';
 import { CarsComponent } from './cars/cars.component';
 import { CarComponent } from './car/car.component';
 import { BookingComponent } from './booking/booking.component';
+import { BookingsComponent } from './bookings/bookings.component';
 
 const suggestionRoutes: Routes = [
     {
@@ -30,6 +31,7 @@ const suggestionRoutes: Routes = [
             {path: 'cars', component: CarsComponent},
             {path: 'car/:id', component: CarComponent, canActivate: [AdminGuard]},
             {path: 'car', component: CarComponent, canActivate: [AdminGuard]},
+            {path: 'reservations', component: BookingsComponent},
             {path: 'reservation/:carId', component: BookingComponent, canActivate: [UserGuard]}
         ]
     }

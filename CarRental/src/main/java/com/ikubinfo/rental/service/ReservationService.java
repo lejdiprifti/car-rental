@@ -1,8 +1,10 @@
 package com.ikubinfo.rental.service;
 
+import java.io.IOException;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.mail.MessagingException;
 import javax.persistence.NoResultException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ import com.ikubinfo.rental.repository.CarRepository;
 import com.ikubinfo.rental.repository.ReservationRepository;
 import com.ikubinfo.rental.repository.UserRepository;
 import com.ikubinfo.rental.security.JwtTokenUtil;
+
+import freemarker.template.TemplateException;
 
 @Service
 public class ReservationService {
@@ -35,6 +39,9 @@ public class ReservationService {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	public ReservationService() {
 		
@@ -61,7 +68,7 @@ public class ReservationService {
 	}
 	
 	
-	public void save(ReservationModel model) {
+	public void save(ReservationModel model) throws MessagingException, IOException, TemplateException {
 		if (model.getEndDate().isAfter(model.getStartDate())) {
 		if (reservationRepository.checkIfAvailable(model.getCarId(), model.getStartDate(), model.getEndDate()) == true) {
 			ReservationEntity entity = new ReservationEntity();
@@ -72,6 +79,7 @@ public class ReservationService {
 			entity.setCar(carRepository.getById(model.getCarId()));
 			entity.setUser(userRepository.getByUsername(jwtTokenUtil.getUsername()));
 			reservationRepository.save(entity);
+			emailService.sendEmailTo(entity, model.getFee());
 		} else {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Chosen car is not available.");
 		}
@@ -82,9 +90,9 @@ public class ReservationService {
 	
 	public void edit(ReservationModel model, Long id) {
 		if (model.getEndDate().isAfter(model.getStartDate())) {
-		if (reservationRepository.checkIfAvailable(model.getCar().getId(), model.getStartDate(), model.getEndDate()) == true) {
+			ReservationEntity entity = reservationRepository.getById(id);
+		if (reservationRepository.checkIfAvailable(entity.getCar().getId(), model.getStartDate(), model.getEndDate()) == true) {
 			try {
-				ReservationEntity entity = reservationRepository.getById(id);
 				entity.setStartDate(model.getStartDate());
 				entity.setEndDate(model.getEndDate());
 				entity.setCreated_at(new GregorianCalendar().getTime());

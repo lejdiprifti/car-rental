@@ -1,6 +1,9 @@
 package com.ikubinfo.rental.resource;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ikubinfo.rental.model.ReservationModel;
 import com.ikubinfo.rental.service.ReservationService;
+
+import freemarker.template.TemplateException;
 
 @RestController
 @RequestMapping(path="/reservations", produces="application/json")
@@ -42,7 +47,7 @@ public class ReservationResource {
 	
 	@PostMapping(consumes="application/json")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void save(@RequestBody ReservationModel model) {
+	public void save(@RequestBody ReservationModel model) throws MessagingException, IOException, TemplateException {
 		reservationService.save(model);
 	}
 	

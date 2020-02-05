@@ -1,0 +1,64 @@
+<div id="progress" *ngIf = "reservations.length === 0">
+  <p-progressSpinner></p-progressSpinner>
+  </div>
+  <div *ngIf="reservations.length > 0">
+<p-table [columns]="cols" [value]="reservations" selectionMode="single" [(selection)]="selectedReservation" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="5">
+  <ng-template pTemplate="caption">
+      List of reservations
+  </ng-template>
+  <ng-template pTemplate="header" let-columns>
+      <tr>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{col.header}}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr [pSelectableRow]="rowData">
+          <td *ngFor="let col of columns">
+            <img id="categoryPhoto" *ngIf="col.field === 'photo'" src="data:image/jpeg;base64,{{rowData['car'].photo}}" />
+            <p *ngIf="col.field === 'name'"> {{rowData['car'].name}}</p>
+            <p *ngIf="col.field === 'type'"> {{rowData['car'].type}}</p>
+            <p *ngIf="col.field !== 'fee'">{{rowData[col.field] | date: 'medium'}}</p>
+            <p *ngIf="col.field === 'fee'">{{rowData[col.field]}}</p>
+          </td>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="summary" let-rowData>
+  </ng-template>    
+</p-table>
+
+<p-dialog header="Reservation Details" [(visible)]="displayDialog" [focusOnShow]="false" [responsive]="true" showEffect="fade" [modal]="true"  [style]="{width: '500px'}">
+  <div class="ui-g ui-fluid reservation" *ngIf="reservation">
+    <div class="ui-g-12">
+              <label>Pick-up</label>
+              <div>
+              <p-calendar class="time" placeholder="What time?" [(ngModel)]="startTime"  (click)="calculateFee()" [timeOnly]="true"></p-calendar>
+              </div>
+              <div class="date">
+              <p-calendar class="date" [minDate]="minDate" placeholder="What date?" [(ngModel)]="startDate" (click)="calculateFee()" [disabledDates]="reservedDates" [readonlyInput]="true"></p-calendar>
+      </div>
+            </div>
+      <div class="ui-g-12">
+        <label>Drop-off</label>
+        <div>
+        <p-calendar class="time" placeholder="What time?" [(ngModel)]="endTime"  (click)="calculateFee()" [timeOnly]="true"></p-calendar>
+        </div>
+        <div class="date">
+        <p-calendar class="date" placeholder="What date?" [minDate]="minDate" [(ngModel)]="endDate" (click)="calculateFee()" [disabledDates]="reservedDates"  [readonlyInput]="true"></p-calendar>
+</div>
+      </div>
+<div class="ui-g-12">
+  <label>Total Fee</label>
+  <input id="fee" type="text" disabled [(ngModel)]='fee'  pKeyFilter="money" pInputText placeholder="Price">  
+</div>
+  </div>
+  <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+          <button type="button" pButton icon="fa fa-close" (click)="delete()" label="Delete"></button>
+          <button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
+      </div>
+  </p-footer>
+</p-dialog>
+</div>

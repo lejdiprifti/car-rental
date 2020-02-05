@@ -8,6 +8,7 @@ export interface Reservation {
     user?: User,
     startDate?: Date,
     endDate?: Date,
+    fee?: number,
     created_at?: Date,
     active?: boolean
 }

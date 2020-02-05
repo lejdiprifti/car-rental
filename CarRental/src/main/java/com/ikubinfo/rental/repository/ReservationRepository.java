@@ -39,7 +39,7 @@ public class ReservationRepository {
 	
 	@Transactional
 	public List<ReservationEntity> getByUser(String username) throws NoResultException {
-		TypedQuery<ReservationEntity> query = em.createQuery("Select r from ReservationEntity r where r.user.username = ?1", ReservationEntity.class);
+		TypedQuery<ReservationEntity> query = em.createQuery("Select r from ReservationEntity r where r.user.username = ?1 Order by r.startDate ASC", ReservationEntity.class);
 		query.setParameter(1, username);
 		return query.getResultList();
 	}

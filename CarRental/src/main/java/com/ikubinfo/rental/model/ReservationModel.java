@@ -12,6 +12,7 @@ public class ReservationModel {
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;
 	private Date created_at;
+	private double fee;
 	private boolean active;
 	
 	public ReservationModel() {
@@ -82,11 +83,22 @@ public class ReservationModel {
 		this.carId = carId;
 	}
 
+	public double getFee() {
+		return fee;
+	}
+
+	public void setFee(double fee) {
+		this.fee = fee;
+	}
+
 	@Override
 	public String toString() {
 		return "ReservationModel [id=" + id + ", user=" + user + ", car=" + car + ", carId=" + carId + ", startDate="
-				+ startDate + ", endDate=" + endDate + ", created_at=" + created_at + ", active=" + active + "]";
+				+ startDate + ", endDate=" + endDate + ", created_at=" + created_at + ", fee=" + fee + ", active="
+				+ active + "]";
 	}
+
+	
 
 
 

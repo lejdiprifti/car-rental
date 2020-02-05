@@ -85,6 +85,7 @@ export class BookingComponent implements OnInit {
     this.reservation.carId = Number(this.active.snapshot.paramMap.get("carId"));
      let date = new Date(Date.UTC(this.startDate.getFullYear(), this.startDate.getMonth(), this.startDate.getDate(), this.startTime.getHours(), this.startTime.getMinutes()));
     this.reservation.startDate = date;
+    this.reservation.fee = this.bookingForm.get('fee').value;
     this.reservation.endDate = new Date(Date.UTC(this.endDate.getFullYear(), this.endDate.getMonth(), this.endDate.getDate(), this.endTime.getHours(), this.endTime.getMinutes()));
     this.reservationService.add(this.reservation).subscribe(res => {
       this.logger.success('Success', 'You reserved the car from ' + formatDate(this.reservation.startDate, 'dd-mm-yyyy hh:mm', 'en-US', 'UTC') +' until '+formatDate(this.reservation.endDate, 'dd-mm-yyyy hh-mm', 'en-US', 'UTC'));

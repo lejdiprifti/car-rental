@@ -10,6 +10,11 @@ export const menuItems: Array<MenuItem> = [{
      icon: 'fas fa-car',
      label: 'Dashboard',
      allowedRoles: [Role.USER]
+},{
+    url: '/rental/reservations',
+    icon: 'fa fa-list',
+    label: 'Reservations',
+    allowedRoles: [Role.USER, Role.ADMIN]
 },
 {
     url: '/rental/user',

@@ -33,6 +33,9 @@ export class CarsComponent implements OnInit {
 
   user: User;
 
+  date: Date;
+  endDate: Date;
+
   constructor(private carService: CarService, private logger: LoggerService, private router: Router,
     private confirmationService: ConfirmationService, private authService: AuthService) { }
 
@@ -146,4 +149,6 @@ export class CarsComponent implements OnInit {
   book(): void {
     this.router.navigate(['/rental/reservation/'+this.selectedCar.id]);
   }
+
+  //filters to be done
 }
