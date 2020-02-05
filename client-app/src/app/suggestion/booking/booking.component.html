@@ -27,12 +27,11 @@
     <div class="form-group">
       <div class="ui-inputgroup">
         <span class="ui-inputgroup-addon">Lek</span>
-        <input type="text" formControlName="fee" pKeyFilter="money" pInputText placeholder="Price">   
-        <span class="ui-inputgroup-addon">.00</span>      
+        <input type="text" formControlName="fee" pKeyFilter="money" pInputText placeholder="Price">    
       </div>
     </div>
   </ikubinfo-input>
-  <button pButton type="button" label="Confirm" [disabled]="bookingForm.invalid" class="ui-button-raised ui-button-success"></button>
+  <button [disabled]="bookingForm.invalid" pButton type="button" label="Confirm" (click)="book()" class="ui-button-raised ui-button-success"></button>
   </form>
   </div>
   </ikubinfo-panel>

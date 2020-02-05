@@ -142,4 +142,8 @@ export class CarsComponent implements OnInit {
     ];
     }
   }
+
+  book(): void {
+    this.router.navigate(['/rental/reservation/'+this.selectedCar.id]);
+  }
 }

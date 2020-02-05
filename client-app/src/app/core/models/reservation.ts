@@ -9,5 +9,5 @@ export interface Reservation {
     startDate?: Date,
     endDate?: Date,
     created_at?: Date,
-    active: boolean
+    active?: boolean
 }

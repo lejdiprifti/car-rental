@@ -83,7 +83,7 @@
     <div class="ui-g-8">{{selectedCar.price}} lek/day</div>
 
     <div class="ui-g-4" *ngIf="checkIfUser()">
-    <button  pButton type="button" label="Book now" class="ui-button-raised ui-button-success"></button>
+    <button  pButton type="button" label="Book now" (click)="book()" class="ui-button-raised ui-button-success"></button>
 </div>
 </div>
 </p-dialog>

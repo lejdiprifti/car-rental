@@ -8,6 +8,7 @@ import { LoggerService } from '@ikubinfo/core/utilities/logger.service';
 import { Reservation } from '@ikubinfo/core/models/reservation';
 import { ReservationService } from '@ikubinfo/core/services/reservation.service';
 import { Time, formatDate } from '@angular/common';
+import { ConfirmationService } from 'primeng/primeng';
 
 @Component({
   selector: 'ikubinfo-booking',
@@ -29,7 +30,7 @@ export class BookingComponent implements OnInit {
   reservations: Array<Reservation>;
   constructor(private fb: FormBuilder, private router: Router,
     private logger: LoggerService, private reservationService: ReservationService,
-    private carService: CarService, private active: ActivatedRoute) { }
+    private carService: CarService, private active: ActivatedRoute, private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
     this.bookingForm = this.fb.group({
@@ -41,6 +42,7 @@ export class BookingComponent implements OnInit {
       fee: [{value:'', disabled: true}]
     })
     this.car = {};
+    this.reservation = {};
     this.getCarById();
     this.getReservedDatesByCar();
     this.getAllCars();
@@ -75,13 +77,23 @@ export class BookingComponent implements OnInit {
   }
 
   book(): void {
-    this.reservation.carId = Number(this.active.snapshot.paramMap.get("id"));
-    this.reservation.startDate = this.startDate;
-    this.reservation.endDate = this.endDate;
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to reserve the car?',
+      header: 'Booking Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+    this.reservation.carId = Number(this.active.snapshot.paramMap.get("carId"));
+     let date = new Date(Date.UTC(this.startDate.getFullYear(), this.startDate.getMonth(), this.startDate.getDate(), this.startTime.getHours(), this.startTime.getMinutes()));
+    this.reservation.startDate = date;
+    this.reservation.endDate = new Date(Date.UTC(this.endDate.getFullYear(), this.endDate.getMonth(), this.endDate.getDate(), this.endTime.getHours(), this.endTime.getMinutes()));
     this.reservationService.add(this.reservation).subscribe(res => {
-      this.logger.success('Success', 'You reserved the car from' + this.reservation.startDate+' until '+this.reservation.endDate);
+      this.logger.success('Success', 'You reserved the car from ' + formatDate(this.reservation.startDate, 'dd-mm-yyyy hh:mm', 'en-US', 'UTC') +' until '+formatDate(this.reservation.endDate, 'dd-mm-yyyy hh-mm', 'en-US', 'UTC'));
       this.router.navigate(['/rental/cars']);
+    }, err=> {
+      this.logger.error('Error', 'Chosen car is not available at that time.');
     })
+  }
+})
   }
 
   calculateFee(): void {
@@ -112,7 +124,7 @@ export class BookingComponent implements OnInit {
         endTiming = ((Number(endArray[0]) * 3600) + (Number(endArray[1])*60)) * 1000;
         }
       let fee = ((this.endDate.getTime() + endTiming) - (this.startDate.getTime() + startTiming)) * (this.car.price / 86400000);
-      this.bookingForm.get('fee').setValue(fee);
+      this.bookingForm.get('fee').setValue(fee.toFixed(2));
     }
   }
 

@@ -36,7 +36,7 @@ public class ReservationResource {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<ReservationModel> getById(Long id){
+	public ResponseEntity<ReservationModel> getById(@PathVariable("id") Long id){
 		return new ResponseEntity<ReservationModel>(reservationService.getById(id), HttpStatus.OK);
 	}
 	
