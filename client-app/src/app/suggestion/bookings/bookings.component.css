@@ -18,6 +18,19 @@
     margin-top: 5px;
 }
 
+.time{
+    margin-top: 5px;
+}
+
+.active {
+    background-color: rgb(206, 255, 132) !important;
+    color: #222;
+}
+
+.canceled {
+    opacity: 0.7;
+}
+
 
 #progress{
     margin-top: 20%;

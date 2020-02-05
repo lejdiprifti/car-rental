@@ -49,6 +49,8 @@ export class BookingsComponent implements OnInit {
   getMyReservations(): void {
     this.reservationService.getAll().subscribe(res => {
       this.reservations = res;
+      this.reservations.sort((a,b) => {return Number(a.active) - Number(b.active)})
+      this.reservations.reverse();
       this.reservations.forEach(el => {
         this.startDate = new Date(el.startDate);
         this.startTime = new Date(el.startDate);
@@ -135,12 +137,33 @@ export class BookingsComponent implements OnInit {
   }
 
   defineReservedDates(): void {
+    this.reservedDates = [];
     this.reservations.forEach(el => {
+    if (el.active === true){
       let startDate = new Date(el.startDate);
       let endDate = new Date(el.endDate);
       for (let i=startDate.getTime(); i<=endDate.getTime(); i=i+86400000){
         this.reservedDates.push(new Date(i));
       }
+    }
     })
+  }
+
+  delete(): void {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to cancel this reservation?',
+      header: 'Accept Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        this.reservationService.cancel(this.selectedReservation.id).subscribe(res => {
+          this.logger.info('Info','Reservation was canceled.');
+          this.getMyReservations();
+        }, err=>{
+          this.logger.error('Error', 'Reservation could not be canceled. Try later!');
+        })
+      }
+    })
+    this.reservation = null;
+    this.displayDialog = false;
   }
 }

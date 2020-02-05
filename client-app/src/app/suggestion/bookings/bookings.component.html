@@ -15,7 +15,7 @@
       </tr>
   </ng-template>
   <ng-template pTemplate="body" let-rowData let-columns="columns">
-      <tr [pSelectableRow]="rowData">
+      <tr [pSelectableRow]="rowData" [ngClass]="rowData.active === true ? 'active' : 'canceled'">
           <td *ngFor="let col of columns">
             <img id="categoryPhoto" *ngIf="col.field === 'photo'" src="data:image/jpeg;base64,{{rowData['car'].photo}}" />
             <p *ngIf="col.field === 'name'"> {{rowData['car'].name}}</p>
@@ -31,22 +31,27 @@
 
 <p-dialog header="Reservation Details" [(visible)]="displayDialog" [focusOnShow]="false" [responsive]="true" showEffect="fade" [modal]="true"  [style]="{width: '500px'}">
   <div class="ui-g ui-fluid reservation" *ngIf="reservation">
+    <img src = "assets/images/general/calendar.png"/>
     <div class="ui-g-12">
-              <label>Pick-up</label>
-              <div>
-              <p-calendar class="time" placeholder="What time?" [(ngModel)]="startTime"  (click)="calculateFee()" [timeOnly]="true"></p-calendar>
+              <b>Pick-up</b>
+              <div class="time">
+                <p>Time</p>
+              <p-calendar placeholder="What time?" [(ngModel)]="startTime"  (click)="calculateFee()" [timeOnly]="true"></p-calendar>
               </div>
               <div class="date">
-              <p-calendar class="date" [minDate]="minDate" placeholder="What date?" [(ngModel)]="startDate" (click)="calculateFee()" [disabledDates]="reservedDates" [readonlyInput]="true"></p-calendar>
+                <p>Date</p>
+              <p-calendar class="date" [minDate]="minDate" [inline]="true" placeholder="What date?" [(ngModel)]="startDate" (click)="calculateFee()" [disabledDates]="reservedDates" [readonlyInput]="true"></p-calendar>
       </div>
             </div>
       <div class="ui-g-12">
-        <label>Drop-off</label>
-        <div>
-        <p-calendar class="time" placeholder="What time?" [(ngModel)]="endTime"  (click)="calculateFee()" [timeOnly]="true"></p-calendar>
+        <b>Drop-off</b>
+        <div class="time">
+          <p>Time</p>
+        <p-calendar placeholder="What time?" [(ngModel)]="endTime"  (click)="calculateFee()" [timeOnly]="true"></p-calendar>
         </div>
         <div class="date">
-        <p-calendar class="date" placeholder="What date?" [minDate]="minDate" [(ngModel)]="endDate" (click)="calculateFee()" [disabledDates]="reservedDates"  [readonlyInput]="true"></p-calendar>
+          <p>Date</p>
+        <p-calendar class="date" [inline]="true" placeholder="What date?" [minDate]="minDate" [(ngModel)]="endDate" (click)="calculateFee()" [disabledDates]="reservedDates"  [readonlyInput]="true"></p-calendar>
 </div>
       </div>
 <div class="ui-g-12">
