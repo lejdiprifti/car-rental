@@ -6,11 +6,10 @@
 [sortField]="sortField" [sortOrder]="sortOrder">
 <p-header>
     <div class="ui-helper-clearfix">
+        <div class="ui-g-12 ui-md-4">
+            <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By" (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown>
+        </div>
         <div class="ui-g">
-            <div class="ui-g-12 ui-md-4">
-                <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By" (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown>
-            </div>
-           
             <div class="ui-g-6 ui-md-4">
                 Later than
                 <p-calendar placeholder = "Pick a date" [minDate]="today" [maxDate]="endDate" [style]="{'width':'300px','margin-top':'8px'}" [(ngModel)]="startDate" (click)="filterBookings($event)" showButtonBar="true"></p-calendar>
