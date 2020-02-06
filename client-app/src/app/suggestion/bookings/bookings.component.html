@@ -15,12 +15,12 @@
       </tr>
   </ng-template>
   <ng-template pTemplate="body" let-rowData let-columns="columns">
-      <tr [pSelectableRow]="rowData" [ngClass]="rowData.active === true ? 'active' : 'canceled'">
+      <tr [pSelectableRow]="rowData">
           <td *ngFor="let col of columns">
             <img id="categoryPhoto" *ngIf="col.field === 'photo'" src="data:image/jpeg;base64,{{rowData['car'].photo}}" />
             <p *ngIf="col.field === 'name'"> {{rowData['car'].name}}</p>
             <p *ngIf="col.field === 'type'"> {{rowData['car'].type}}</p>
-            <p *ngIf="col.field !== 'fee'">{{rowData[col.field] | date: 'medium'}}</p>
+            <p *ngIf="col.field === 'startDate' || col.field === 'endDate'">{{rowData[col.field] | date: 'medium'}}</p>
             <p *ngIf="col.field === 'fee'">{{rowData[col.field]}}</p>
           </td>
       </tr>

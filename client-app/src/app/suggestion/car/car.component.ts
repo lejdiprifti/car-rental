@@ -23,6 +23,7 @@ export class CarComponent implements OnInit {
   diesels: Array<string>;
   editable: boolean;
   available: boolean;
+  brand: string;
   blockSpecial: RegExp = /^[^:>#*]+|([^:>#*][^>#*]+[^:>#*])$/
   constructor(private fb: FormBuilder, private router: Router, private confirmationService: ConfirmationService,
     private carService: CarService, private categoryService: CategoryService,
@@ -63,8 +64,8 @@ export class CarComponent implements OnInit {
     this.carForm = this.fb.group({
       name: new FormControl({value:'', disabled:this.editable}, Validators.required),
       photo: [{value:'', disabled:this.editable}],
-      description: [{value:'', disabled:this.editable}, [Validators.required, Validators.minLength(50), Validators.maxLength(255)]],
-      year: [{value:'', disabled:this.editable}, [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
+      description: [{value:'', disabled:this.editable}, [Validators.required, Validators.minLength(50), Validators.maxLength(10000)]],
+      year: [{value:'', disabled:this.editable}, [Validators.required, Validators.minLength(4)]],
       type: [{value:'', disabled:this.editable}, Validators.required],
       diesel: [{value:'', disabled:this.editable}, Validators.required],
       availability: [{value:'', disabled:this.editable}],
@@ -102,7 +103,7 @@ export class CarComponent implements OnInit {
           formData.append('model', new Blob([JSON.stringify({
             "name": this.carForm.get('name').value,
             "description": this.carForm.get('description').value,
-            "type": this.carForm.get('type').value,
+            "type": this.brand,
             "diesel": this.carForm.get('diesel').value,
             "categoryId": this.carForm.get('category').value,
             "availability": this.available,
@@ -129,10 +130,10 @@ export class CarComponent implements OnInit {
         accept: () => {
           let formData = new FormData();
           formData.append("file", (this.carForm.get('photo').value || this.car.photo));
-          formData.append('model', new Blob([JSON.stringify({
+          formData.append("properties", new Blob([JSON.stringify({
             "name": this.carForm.get('name').value,
             "description": this.carForm.get('description').value,
-            "type": this.carForm.get('type').value,
+            "type": this.brand,
             "diesel": this.carForm.get('diesel').value,
             "categoryId": this.carForm.get('category').value,
             "availability": this.available,

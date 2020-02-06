@@ -3,6 +3,7 @@ package com.ikubinfo.rental.model;
 
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +21,7 @@ public class CarModel {
 	private CategoryModel category;
 	private Long categoryId;
 	private byte[] photo;
+	private List<ReservedDates> reservedDates;
 	private boolean availability;
 	private boolean active;
 	
@@ -140,14 +142,24 @@ public class CarModel {
 		this.description = description;
 	}
 
-	@Override
-	public String toString() {
-		return "CarModel [id=" + id + ", name=" + name + ", type=" + type + ", file=" + file + ", plate=" + plate
-				+ ", price=" + price + ", diesel=" + diesel + ", description=" + description + ", category=" + category
-				+ ", categoryId=" + categoryId + ", photo=" + Arrays.toString(photo) + ", availability=" + availability
-				+ ", active=" + active + "]";
-	}
 
 	
 
+	public List<ReservedDates> getReservedDates() {
+		return reservedDates;
+	}
+
+	public void setReservedDates(List<ReservedDates> reservedDates) {
+		this.reservedDates = reservedDates;
+	}
+
+	@Override
+	public String toString() {
+		return "CarModel [id=" + id + ", name=" + name + ", type=" + type + ", file=" + file + ", plate=" + plate
+				+ ", price=" + price + ", diesel=" + diesel + ", description=" + description + ", year=" + year
+				+ ", category=" + category + ", categoryId=" + categoryId + ", photo=" + Arrays.toString(photo)
+				+ ", reservedDates=" + reservedDates + ", availability=" + availability + ", active=" + active + "]";
+	}
+
+	
 }

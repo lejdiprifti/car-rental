@@ -15,9 +15,10 @@ import org.springframework.web.server.ResponseStatusException;
 import com.ikubinfo.rental.converter.CarConverter;
 import com.ikubinfo.rental.entity.CarEntity;
 import com.ikubinfo.rental.model.CarModel;
+import com.ikubinfo.rental.model.ReservedDates;
 import com.ikubinfo.rental.repository.CarRepository;
 import com.ikubinfo.rental.repository.CategoryRepository;
-import com.ikubinfo.rental.security.JwtTokenUtil;
+import com.ikubinfo.rental.repository.ReservationRepository;
 
 @Service
 public class CarService {
@@ -32,7 +33,10 @@ public class CarService {
 	private CategoryRepository categoryRepository;
 	
 	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
+	private AuthorizationService authorizationService;
+	
+	@Autowired
+	private ReservationRepository reservationRepository;
 	
 	private static Logger logger = LogManager.getLogger(CarService.class);
 	
@@ -41,7 +45,15 @@ public class CarService {
 	}
 	
 	public List<CarModel> getAll() {
-		return carConverter.toModel(carRepository.getAll());
+		List<CarModel> modelList = carConverter.toModel(carRepository.getAll());
+		for (CarModel car : modelList) {
+			car.setReservedDates(getReservedDatesByCar(car.getId()));
+		}
+		return modelList;
+	}
+	
+	public List<ReservedDates> getReservedDatesByCar(Long carId){
+		return reservationRepository.getReservedDatesByCar(carId);
 	}
 	
 	public CarModel getById(Long id) {
@@ -61,7 +73,7 @@ public class CarService {
 	}
 	
 	public void save(CarModel model, MultipartFile file) {
-		if ((int) jwtTokenUtil.getRole().get("id") == 1) {
+		authorizationService.isUserAuthorized();
 		try {
 			checkIfExists(model.getPlate(), null);
 			CarEntity entity = new CarEntity();
@@ -71,6 +83,7 @@ public class CarService {
 			entity.setPhoto(file.getBytes());
 			entity.setDescription(model.getDescription());
 			entity.setDiesel(model.getDiesel());
+			entity.setPlate(model.getPlate());
 			entity.setCategory(categoryRepository.getById(model.getCategoryId()));
 			if (model.getPrice() > 0) {
 			entity.setPrice(model.getPrice());
@@ -89,13 +102,10 @@ public class CarService {
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car already exists.");
 		}
-		} else {
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to perform this action.");
 		}
-	}
 	
 	public void edit(CarModel model,MultipartFile file, Long id) {
-		if ((int) jwtTokenUtil.getRole().get("id") == 1) {
+		authorizationService.isUserAuthorized();
 		try {
 			CarEntity entity = carRepository.getById(id);
 			if (model.getPlate() != null) {
@@ -133,13 +143,10 @@ public class CarService {
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car already  exists.");
 		}
-		} else {
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to perform this action.");
 		}
-	}
 	
 	public void delete(Long id) {
-		if ((int) jwtTokenUtil.getRole().get("id") == 1) {
+		authorizationService.isUserAuthorized();
 		try {
 			CarEntity entity = carRepository.getById(id);
 			entity.setActive(false);
@@ -147,10 +154,7 @@ public class CarService {
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Car not found.");
 		}
-		} else {
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to perform this action.");
 		}
-	}
 	public void checkIfExists(String plate, Long id) throws Exception {
 		try {
 			if (id == null) {

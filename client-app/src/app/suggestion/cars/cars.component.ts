@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/primeng';
 import { User } from '@ikubinfo/core/models/user';
 import { AuthService } from '@ikubinfo/core/services/auth.service';
+import { Reservation } from '@ikubinfo/core/models/reservation';
 @Component({
   selector: 'ikubinfo-cars',
   templateUrl: './cars.component.html',
@@ -34,7 +35,13 @@ export class CarsComponent implements OnInit {
   user: User;
 
   date: Date;
+  originalCars: Array<Car>;
+  filteredCars: Array<Car>;
   endDate: Date;
+  startDate: Date;
+  available: boolean = true;
+  today: Date;
+  reservedDates: Array<Date>;
 
   constructor(private carService: CarService, private logger: LoggerService, private router: Router,
     private confirmationService: ConfirmationService, private authService: AuthService) { }
@@ -43,7 +50,8 @@ export class CarsComponent implements OnInit {
     this.user= this.authService.user;
     this.loadItems();
     this.loadCars();
-
+    this.today = new Date();
+    this.reservedDates = [];
     this.sortOptions = [
       { label: 'Newest First', value: '!year' },
       { label: 'Oldest First', value: 'year' },
@@ -55,6 +63,7 @@ export class CarsComponent implements OnInit {
   selectCar(event: Event, car: Car) {
         this.selectedCar = car;
         this.displayDialog = true;
+        this.defineReservedDates();
         event.preventDefault();
     }
 
@@ -78,6 +87,7 @@ export class CarsComponent implements OnInit {
   loadCars(): void {
     this.carService.getAll().subscribe(res => {
       this.cars = res;
+      this.originalCars = this.cars;
     }, err => {
       this.logger.error('Error', 'Cars could not be found.');
     })
@@ -150,5 +160,82 @@ export class CarsComponent implements OnInit {
     this.router.navigate(['/rental/reservation/'+this.selectedCar.id]);
   }
 
-  //filters to be done
+  filterBookings(event): void {
+    if (this.startDate && !this.endDate){
+      this.cars = this.originalCars;
+      this.filteredCars = this.originalCars;
+      this.filteredCars.forEach(el => {
+        this.cars = [];
+        let available: boolean = true;
+        el.reservedDates.forEach(set => {
+          if (this.startDate.getTime() >= new Date(set[0]).getTime() && this.startDate.getTime() <= new Date(set[1]).getTime()){
+            available = false;
+            return;
+          }
+          return;
+        })
+        if (available === true){
+          this.cars.push(el);
+        }
+      })
+    } else if (this.endDate && !this.startDate){
+      this.cars = this.originalCars;
+      this.filteredCars = this.originalCars;
+      this.filteredCars.forEach(el => {
+        this.cars = [];
+        let available: boolean = true;
+        el.reservedDates.forEach(set => {
+          if (this.endDate.getTime() >= new Date(set[0]).getTime() && this.endDate.getTime() <= new Date(set[1]).getTime()){
+            available = false;
+            return;
+          }
+          return;
+        })
+        if (available === true){
+          this.cars.push(el);
+        }
+      })
+    } else if (this.endDate && this.startDate) {
+      this.cars = this.originalCars;
+      this.filteredCars = this.originalCars;
+      this.filteredCars.forEach(el => {
+        this.available = true;
+        this.cars = [];
+        el.reservedDates.forEach(set => {
+          if ((this.startDate.getTime() <= new Date(set[0]).getTime() && this.endDate.getTime() <= new Date(set[0]).getTime()) ||
+          (this.startDate.getTime() >= new Date(set[1]).getTime() && this.endDate.getTime() >= new Date(set[1]).getTime())){
+            this.available = true;
+          } else {
+           this.available = false;
+          }
+        })
+        if (this.available === true){
+          this.cars.push(el);
+        }
+      })
+    } else {
+      this.cars = this.originalCars;
+    }
+  } 
+
+  styleUnavailableDates(date: any): object {
+    console.log(new Date(date.year, date.month, date.day));
+    if (this.reservedDates.some(el => new Date(el).getTime() === new Date(date.year, date.month, date.day).getTime())) {
+      return {'backgroundColor': 'red'};
+    } else {
+      return {'backgroundColor': 'inherit'};
+    }
+  }
+
+  defineReservedDates(): void {
+    this.reservedDates = [];
+    this.selectedCar.reservedDates.forEach(el => {
+      let startDate = new Date(el[0]);
+      let endDate = new Date(el[1]);
+      for (let i=startDate.getDate(); i<=endDate.getDate(); i=i+1){
+        console.log('ne array ',new Date(endDate.getFullYear(), endDate.getMonth(), i))
+        this.reservedDates.push(new Date(endDate.getFullYear(), endDate.getMonth(), i));
+      }
+    })
+  }
 }

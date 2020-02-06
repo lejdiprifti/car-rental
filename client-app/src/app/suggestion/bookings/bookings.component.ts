@@ -49,8 +49,6 @@ export class BookingsComponent implements OnInit {
   getMyReservations(): void {
     this.reservationService.getAll().subscribe(res => {
       this.reservations = res;
-      this.reservations.sort((a,b) => {return Number(a.active) - Number(b.active)})
-      this.reservations.reverse();
       this.reservations.forEach(el => {
         this.startDate = new Date(el.startDate);
         this.startTime = new Date(el.startDate);
@@ -73,11 +71,13 @@ export class BookingsComponent implements OnInit {
   }
 
   cloneCategory(r: Reservation): Reservation {
-    let reservation = {};
+    let reservation: Reservation = {};
     this.startDate = new Date(r.startDate);
     this.endDate = new Date(r.endDate);
     this.startTime = this.startDate;
     this.endTime = this.endDate;
+    this.reservation.car = r.car;
+    this.calculateFee();
     return reservation;
   }
 
@@ -91,9 +91,9 @@ export class BookingsComponent implements OnInit {
         icon: 'pi pi-info-circle',
         accept: () => {
           let reservation: Reservation = {};
-          reservation.startDate = addedReservation.startDate;
-          reservation.endDate = addedReservation.endDate;
-          this.reservationService.edit(reservation,reservations[this.reservations.indexOf(this.selectedReservation)].id ).subscribe(res => {
+          reservation.startDate = new Date(Date.UTC(this.startDate.getFullYear(), this.startDate.getMonth(), this.startDate.getDate(), this.startTime.getHours(), this.startTime.getMinutes()));
+          reservation.endDate = new Date(Date.UTC(this.endDate.getFullYear(), this.endDate.getMonth(), this.endDate.getDate(), this.endTime.getHours(), this.endTime.getMinutes()));
+          this.reservationService.edit(reservation,this.selectedReservation.id ).subscribe(res => {
             this.logger.success('Success', 'Reservation was saved successfully.');
             this.getMyReservations();
           }, err=>{
@@ -132,7 +132,7 @@ export class BookingsComponent implements OnInit {
       } else {
         endTiming = ((Number(endArray[0]) * 3600) + (Number(endArray[1])*60)) * 1000;
         }
-      this.fee = ((this.endDate.getTime() + endTiming) - (this.startDate.getTime() + startTiming)) * (this.reservation.car.price / 86400000);
+      this.fee = Number((((this.endDate.getTime() + endTiming) - (this.startDate.getTime() + startTiming)) * (this.reservation.car.price / 86400000)).toFixed(2));
     }
   }
 

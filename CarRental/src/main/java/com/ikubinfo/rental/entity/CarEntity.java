@@ -33,7 +33,7 @@ public class CarEntity {
 	@Column(name="type")
 	private String type;
 	
-	@Column(name="description")
+	@Column(name="description", length=10000)
 	private String description;
 	
 	@Lob

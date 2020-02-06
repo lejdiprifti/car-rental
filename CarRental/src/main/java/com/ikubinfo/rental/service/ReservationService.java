@@ -32,10 +32,13 @@ public class ReservationService {
 	private ReservationConverter reservationConverter;
 	
 	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
+	private AuthorizationService authorizationService;
 	
 	@Autowired
 	private CarRepository carRepository;
+	
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -48,11 +51,12 @@ public class ReservationService {
 	}
 	
 	public List<ReservationModel> getAll(){
-		if ((int) jwtTokenUtil.getRole().get("id") == 1) {
+			authorizationService.isUserAuthorized();
 			return reservationConverter.toModel(reservationRepository.getAll());
-		} else {
-			return reservationConverter.toModel(reservationRepository.getByUser(jwtTokenUtil.getUsername()));
-		}
+	}
+	
+	public List<ReservationModel> getByUsername(){
+		return reservationConverter.toModel(reservationRepository.getByUser(jwtTokenUtil.getUsername()));
 	}
 	
 	public ReservationModel getById(Long id) {

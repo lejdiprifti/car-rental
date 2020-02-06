@@ -1,4 +1,6 @@
 import {Category} from './category';
+import { Reservation } from './reservation';
+import { ReservedDates } from './reservedDates';
 
 export interface Car {
     id?: number;
@@ -13,5 +15,6 @@ export interface Car {
     category?: Category;
     description?: string;
     photo?: File;
+    reservedDates?: Array<ReservedDates>;
 
 }

@@ -62,5 +62,9 @@
 }
 
 .dialog {
-    height: 600px;
+    height: 600px !important;
+}
+
+.calendar {
+    width: 400px;
 }

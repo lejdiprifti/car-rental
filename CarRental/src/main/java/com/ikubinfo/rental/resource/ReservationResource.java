@@ -46,6 +46,10 @@ public class ReservationResource {
 		return new ResponseEntity<ReservationModel>(reservationService.getById(id), HttpStatus.OK);
 	}
 	
+	@GetMapping("/user")
+	public ResponseEntity<List<ReservationModel>> getByUsername(){
+		return new ResponseEntity<List<ReservationModel>>(reservationService.getByUsername(), HttpStatus.OK);
+	}
 	@PostMapping(consumes="application/json")
 	@ResponseStatus(HttpStatus.CREATED)
 	public void save(@RequestBody ReservationModel model) throws MessagingException, IOException, TemplateException {

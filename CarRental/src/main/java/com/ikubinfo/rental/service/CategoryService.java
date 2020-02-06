@@ -18,7 +18,6 @@ import com.ikubinfo.rental.entity.CategoryEntity;
 import com.ikubinfo.rental.model.CategoryModel;
 import com.ikubinfo.rental.repository.CarRepository;
 import com.ikubinfo.rental.repository.CategoryRepository;
-import com.ikubinfo.rental.security.JwtTokenUtil;
 
 @Service
 public class CategoryService {
@@ -30,7 +29,7 @@ public class CategoryService {
 	private CategoryConverter catConverter;
 
 	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
+	private AuthorizationService authorizationService;
 
 	@Autowired
 	private CarRepository carRepository;
@@ -71,7 +70,7 @@ public class CategoryService {
 	}
 
 	public void edit(CategoryModel model, MultipartFile file, Long id) throws IOException {
-		if ((int) jwtTokenUtil.getRole().get("id") == 1) {
+		authorizationService.isUserAuthorized();
 			try {
 				CategoryEntity entity = catRepository.getById(id);
 				if (model.getName() != null) {
@@ -92,13 +91,10 @@ public class CategoryService {
 			} catch (NoResultException e) {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
 			}
-		} else {
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to perform this action.");
-		}
-	}
+		} 
 
 	public void delete(Long id) {
-		if ((int) jwtTokenUtil.getRole().get("id") == 1) {
+		authorizationService.isUserAuthorized();
 			if (carRepository.getByCategory(id).size() == 0) {
 				try {
 					CategoryEntity entity = catRepository.getById(id);
@@ -111,10 +107,7 @@ public class CategoryService {
 				throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED,
 						"You are not allowed to perform this action.");
 			}
-		} else {
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to perform this action.");
 		}
-	}
 
 	public void checkIfExists(String name, Long id) throws Exception {
 		try {

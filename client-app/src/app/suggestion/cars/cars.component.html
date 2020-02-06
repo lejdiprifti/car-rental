@@ -7,17 +7,17 @@
 <p-header>
     <div class="ui-helper-clearfix">
         <div class="ui-g">
-            <div class="ui-g-12 ui-md-4" *ngIf="!checkIfUser()">
+            <div class="ui-g-12 ui-md-4">
                 <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By" (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown>
             </div>
            
             <div class="ui-g-6 ui-md-4">
                 Later than
-                <p-calendar placeholder = "Pick a date" [style]="{'width':'300px','margin-top':'8px'}" [(ngModel)]="date" (click)="filterBookings($event)" showButtonBar="true"></p-calendar>
+                <p-calendar placeholder = "Pick a date" [minDate]="today" [maxDate]="endDate" [style]="{'width':'300px','margin-top':'8px'}" [(ngModel)]="startDate" (click)="filterBookings($event)" showButtonBar="true"></p-calendar>
             </div>
             <div class="ui-g-6 ui-md-4">
                 Earlier than
-                <p-calendar placeholder = "Pick a date" [style]="{'width':'300px','margin-top':'8px'}" [(ngModel)]="endDate" (click)="filterBookings($event)" showButtonBar="true"></p-calendar>
+                <p-calendar placeholder = "Pick a date"   [minDate]="startDate" [style]="{'width':'300px','margin-top':'8px'}" [(ngModel)]="endDate" (click)="filterBookings($event)" showButtonBar="true"></p-calendar>
             </div>
            
             <div class="ui-g-6 ui-md-4 text" style="text-align:right;">
@@ -86,6 +86,16 @@
 
     <div class="ui-g-4"><b>Price: </b></div>
     <div class="ui-g-8">{{selectedCar.price}} lek/day</div>
+    <div class="ui-g-4">
+        <b>Reserved dates:</b>
+    </div>
+    <div class="ui-g-8 calendar">
+        <p-calendar [inline]="true">
+            <ng-template pTemplate="date" let-date>
+                <span [ngStyle]="styleUnavailableDates(date)" style="border-radius:50%;padding: .25em;width: 1.75em; height:1.75em; display:block;">{{date.day}}</span>
+            </ng-template>
+        </p-calendar>
+    </div>
 
     <div class="ui-g-4" *ngIf="checkIfUser()">
     <button  pButton type="button" label="Book now" (click)="book()" class="ui-button-raised ui-button-success"></button>
