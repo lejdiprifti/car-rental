@@ -5,6 +5,7 @@ import { Reservation } from '@ikubinfo/core/models/reservation';
 import { ConfirmationService } from 'primeng/primeng';
 import { Router } from '@angular/router';
 import { formatDate } from '@angular/common';
+import { AuthService } from '@ikubinfo/core/services/auth.service';
 
 @Component({
   selector: 'ikubinfo-bookings',
@@ -28,7 +29,7 @@ export class BookingsComponent implements OnInit {
   
   constructor(private confirmationService: ConfirmationService,
     private reservationService: ReservationService,
-    private router: Router, private logger: LoggerService) { }
+    private authService: AuthService, private logger: LoggerService) { }
 
   ngOnInit() {
     this.reservations = [];
@@ -47,7 +48,7 @@ export class BookingsComponent implements OnInit {
 
 
   getMyReservations(): void {
-    this.reservationService.getAll().subscribe(res => {
+    this.reservationService.getReservationsByUsername().subscribe(res => {
       this.reservations = res;
       this.reservations.forEach(el => {
         this.startDate = new Date(el.startDate);

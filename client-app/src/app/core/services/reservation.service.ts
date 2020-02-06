@@ -25,4 +25,8 @@ edit(model: Reservation, id: number): Observable<void>{
 cancel(id: number): Observable<void>{
   return this.apiService.delete(this.url+'/'+id);
 }
+
+getReservationsByUsername(): Observable<Array<Reservation>>{
+  return this.apiService.get(this.url+'/user');
+}
 }
