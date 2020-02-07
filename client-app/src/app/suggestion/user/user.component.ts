@@ -162,7 +162,9 @@ export class UserComponent implements OnInit {
          this.router.navigate(["/login"]);
        },
        err => {
-         this.logger.error('Error', 'An error accured');
+         if (err.message == 'User has active reservations.'){
+           this.logger.error('Error', 'User cannot be deleted as it has active reservations.');
+         }
        });
      }
    });

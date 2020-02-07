@@ -14,7 +14,7 @@ export const menuItems: Array<MenuItem> = [{
     url: '/rental/reservations',
     icon: 'fa fa-list',
     label: 'Reservations',
-    allowedRoles: [Role.USER, Role.ADMIN]
+    allowedRoles: [Role.USER]
 },
 {
     url: '/rental/user',

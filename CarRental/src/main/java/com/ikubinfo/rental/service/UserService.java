@@ -34,6 +34,9 @@ public class UserService {
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 	
+	@Autowired
+	private ReservationService reservationService;
+	
 	private static Logger logger = LogManager.getLogger(UserService.class);
 	
 	public UserService() {
@@ -118,10 +121,14 @@ public class UserService {
 	
 	public void delete() {
 		try {
+		if (reservationService.getByUsername().size() == 0) {
 		logger.info("Deleting user.");
 		UserEntity entity = userRepository.getByUsername(jwtTokenUtil.getUsername());
 		entity.setActive(false);
 		userRepository.edit(entity);
+		} else {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User has active reservations.");
+		}
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
 		}

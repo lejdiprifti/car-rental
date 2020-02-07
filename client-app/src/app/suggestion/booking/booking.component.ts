@@ -91,7 +91,13 @@ export class BookingComponent implements OnInit {
       this.logger.success('Success', 'You reserved the car from ' + formatDate(this.reservation.startDate, 'dd-mm-yyyy hh:mm', 'en-US', 'UTC') +' until '+formatDate(this.reservation.endDate, 'dd-mm-yyyy hh-mm', 'en-US', 'UTC'));
       this.router.navigate(['/rental/cars']);
     }, err=> {
-      this.logger.error('Error', 'Chosen car is not available at that time.');
+      if (err.message === 'Bad dates are provided.') {
+      this.logger.error('Error', 'Bad dates are provided.');
+      } else {
+        if (err.message === 'Chosen car is not available.'){
+          this.logger.error('Error', 'Chosen car is not available in the specified dates.');
+        }
+      }
     })
   }
 })
