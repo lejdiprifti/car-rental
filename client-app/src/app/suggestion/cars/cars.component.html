@@ -2,6 +2,9 @@
 <p-progressSpinner></p-progressSpinner>
 </div>
 <div *ngIf = 'cars !== undefined'>
+<div *ngIf="!checkIfUser()">
+    <button id="add" pButton type="button" icon="fa fa-plus" [routerLink]="['/rental/car']" iconPos="left" label="Add"></button>
+</div>
 <p-dataView #dv [value]="cars" [paginator]="true" [rows]="20" paginatorPosition="bottom" filterBy="type"
 [sortField]="sortField" [sortOrder]="sortOrder">
 <p-header>
