@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ikubinfo.rental.entity.CarEntity;
+import com.ikubinfo.rental.entity.StatusEnum;
 
 @Repository
 public class CarRepository {
@@ -38,18 +39,19 @@ public class CarRepository {
 	}
 	
 	@Transactional
+	public List<CarEntity> getAllAvailable(){
+		TypedQuery<CarEntity> query = em.createQuery("Select c from CarEntity c where c.availability<>?1 and c.active = ?2", CarEntity.class);
+		query.setParameter(1, StatusEnum.SERVIS);
+		query.setParameter(2, true);
+		return query.getResultList();
+	}
+	
+	@Transactional
 	public CarEntity getByPlate(String plate) throws NoResultException {
 		TypedQuery<CarEntity> query = em.createQuery("Select c from CarEntity c where c.plate=?1 and c.active =?2", CarEntity.class);
 		query.setParameter(1, plate);
 		query.setParameter(2, true);
 		return query.getSingleResult();
-	}
-	
-	@Transactional
-	public List<CarEntity> getAllAvailable(){
-		TypedQuery<CarEntity> query = em.createQuery("Select c from CarEntity c where c.availability = ?1 and c.active =?1",CarEntity.class);
-		query.setParameter(1, true);
-		return query.getResultList();
 	}
 	
 	@Transactional

@@ -58,6 +58,7 @@ export class CarsComponent implements OnInit {
       { label: 'Brand', value: 'type' },
       { label: 'Availability', value: 'availability'}
     ];
+
   }
 
   selectCar(event: Event, car: Car) {

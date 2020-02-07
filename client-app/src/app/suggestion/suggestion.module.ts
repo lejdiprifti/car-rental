@@ -1,9 +1,6 @@
 import { CommonsModule } from '@ikubinfo/commons/commons.module';
 
 import { NgModule } from '@angular/core';
-
-import { PostComponent } from '@ikubinfo/suggestion/post/post.component';
-import { PostsComponent } from '@ikubinfo/suggestion/posts/posts.component';
 import { DashboardComponent } from '@ikubinfo/suggestion/dashboard/dashboard.component';
 import { SuggestionRoutingModule } from '@ikubinfo/suggestion/suggestion-routing.module';
 import { LayoutModule } from '@ikubinfo/layout/layout.module';
@@ -24,7 +21,7 @@ import { BookingsComponent } from './bookings/bookings.component';
 @NgModule({
     imports: [CommonsModule,DialogModule, SplitButtonModule,  FullCalendarModule, ProgressSpinnerModule,DropdownModule,ToggleButtonModule,KeyFilterModule,InplaceModule,PanelModule, ToggleButtonModule, SuggestionRoutingModule,DataViewModule, LayoutModule,CardModule, FormsModule, PasswordModule, FileUploadModule],
     exports: [],
-    declarations: [DashboardComponent,BookingsComponent, BookingComponent,CarComponent, PostComponent, PostsComponent, CarsComponent, UserComponent, CategoryComponent, CategoriesComponent],
+    declarations: [DashboardComponent,BookingsComponent, BookingComponent,CarComponent, CarsComponent, UserComponent, CategoryComponent, CategoriesComponent],
     providers: []
 })
 export class SuggestionModule { }

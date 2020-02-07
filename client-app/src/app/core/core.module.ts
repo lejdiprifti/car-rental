@@ -5,7 +5,6 @@ import { ConfirmationService, MessageService } from 'primeng/primeng';
 
 
 import { AuthService } from '@ikubinfo/core/services/auth.service';
-import { PostService } from '@ikubinfo/core/services/post.service';
 import { LoggerService } from '@ikubinfo/core/utilities/logger.service';
 import { ApiService } from '@ikubinfo/core/utilities/api.service';
 import { AuthGuard } from '@ikubinfo/core/guards/auth-guard';
@@ -20,7 +19,7 @@ import { CarService } from './services/car.service';
     HttpClientModule
   ],
   declarations: [],
-  providers: [AuthService, PostService, LoggerService, ApiService, AuthGuard,UserService,CategoryService,CarService,
+  providers: [AuthService, LoggerService, ApiService, AuthGuard,UserService,CategoryService,CarService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

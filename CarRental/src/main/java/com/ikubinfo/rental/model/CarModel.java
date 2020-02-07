@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ikubinfo.rental.entity.StatusEnum;
+
 public class CarModel {
 	
 	private Long id;
@@ -22,7 +24,7 @@ public class CarModel {
 	private Long categoryId;
 	private byte[] photo;
 	private List<ReservedDates> reservedDates;
-	private boolean availability;
+	private StatusEnum availability;
 	private boolean active;
 	
 	public CarModel() {
@@ -118,11 +120,11 @@ public class CarModel {
 		this.category = category;
 	}
 
-	public boolean isAvailability() {
+	public StatusEnum getAvailability() {
 		return availability;
 	}
 
-	public void setAvailability(boolean availability) {
+	public void setAvailability(StatusEnum availability) {
 		this.availability = availability;
 	}
 

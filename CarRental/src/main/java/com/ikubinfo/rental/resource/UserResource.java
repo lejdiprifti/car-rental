@@ -39,6 +39,7 @@ public class UserResource {
 	public ResponseEntity<UserModel> getById(@PathVariable("id") Long id){
 		return new ResponseEntity<UserModel>(userService.getById(id), HttpStatus.OK);
 	}
+
 	
 	@PutMapping(consumes="application/json")
 	@ResponseStatus(HttpStatus.NO_CONTENT)

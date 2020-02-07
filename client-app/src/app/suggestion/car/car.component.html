@@ -70,11 +70,11 @@
   </ikubinfo-input>
   <ikubinfo-input label="Availability">
     <div class="form-group">
-  <p-toggleButton [(ngModel)]="available" formControlName="availability" onLabel="Available" offLabel="Rented" onIcon="pi pi-check" offIcon="pi pi-times" [style]="{'width':'150px'}"></p-toggleButton>
+      <p-selectButton fromControlName="availability" [options]="types" [(ngModel)]="selectedType"></p-selectButton>
     </div>
 </ikubinfo-input>
 </div>
-  <button pButton type="submit" (click)="submit()" [disabled]="carForm.invalid" class="ui-button-success" label="Submit" icon="pi pi-file"></button>
+  <button pButton type="submit" (click)="submit()" class="ui-button-success" label="Submit" icon="pi pi-file"></button>
     <button pButton type="button" id="reset" (click)="reset()" class="ui-button-secondary reset" label="Reset" icon="pi pi-times"></button>
 </form>
 </div>

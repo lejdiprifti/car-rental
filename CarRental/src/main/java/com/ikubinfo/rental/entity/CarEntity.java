@@ -49,7 +49,7 @@ public class CarEntity {
 	@ManyToOne
 	@JoinColumn(name="category")
 	private CategoryEntity category;
-	private boolean availability;
+	private StatusEnum availability;
 	private boolean active;
 	
 	public CarEntity() {
@@ -128,11 +128,13 @@ public class CarEntity {
 		this.year = year;
 	}
 
-	public boolean isAvailability() {
+
+
+	public StatusEnum getAvailability() {
 		return availability;
 	}
 
-	public void setAvailability(boolean availability) {
+	public void setAvailability(StatusEnum availability) {
 		this.availability = availability;
 	}
 

@@ -7,6 +7,7 @@ import { ConfirmationService, SelectItem } from 'primeng/primeng';
 import { Car } from '@ikubinfo/core/models/car';
 import { CategoryService } from '@ikubinfo/core/services/category.service';
 import { Category } from '@ikubinfo/core/models/category';
+import { Status } from '@ikubinfo/core/models/status.enum';
 
 @Component({
   selector: 'ikubinfo-car',
@@ -22,9 +23,10 @@ export class CarComponent implements OnInit {
   categories: Array<Category>;
   diesels: Array<string>;
   editable: boolean;
-  available: boolean;
+  selectedType: string;
   brand: string;
-  blockSpecial: RegExp = /^[^:>#*]+|([^:>#*][^>#*]+[^:>#*])$/
+  blockSpecial: RegExp = /^[^:>#*]+|([^:>#*][^>#*]+[^:>#*])$/ ;
+  types: SelectItem[];
   constructor(private fb: FormBuilder, private router: Router, private confirmationService: ConfirmationService,
     private carService: CarService, private categoryService: CategoryService,
      private active: ActivatedRoute, private logger: LoggerService) { }
@@ -53,6 +55,10 @@ export class CarComponent implements OnInit {
       {label: 'VW', value: 'VW'},
       {label: 'Volvo', value: 'Volvo'}
   ];
+  this.types = [
+    {label: 'Available', value: 'Available', icon: 'fa fa-check-circle'},
+    {label: 'Service', value: 'Service', icon: 'fa fa-wrench'}
+];
   this.loadData();
   }
 
@@ -68,7 +74,7 @@ export class CarComponent implements OnInit {
       year: [{value:'', disabled:this.editable}, [Validators.required, Validators.minLength(4)]],
       type: [{value:'', disabled:this.editable}, Validators.required],
       diesel: [{value:'', disabled:this.editable}, Validators.required],
-      availability: [{value:'', disabled:this.editable}],
+      availability: [{value:'', disabled:this.editable}, Validators.required],
       category: [{value:'', disabled:this.editable}, Validators.required],
       plate: [{value:'', disabled:this.editable}, [ Validators.required, Validators.minLength(5)]],
       price: [{value:'', disabled:this.editable}, Validators.required]
@@ -81,13 +87,12 @@ export class CarComponent implements OnInit {
     this.carForm.get('type').setValue(data.type);
     this.carForm.get('year').setValue(data.year);
     this.carForm.get('diesel').setValue(data.diesel);
-    this.carForm.get('availability').setValue(this.available);
+    this.carForm.get('availability').setValue(this.selectedType);
     this.carForm.get('category').setValue(data.category.id);
     this.carForm.get('plate').setValue(data.plate);
   }
   
   edit(): void {
-    this.editable = false;
     this.reset();
   }
 
@@ -106,7 +111,7 @@ export class CarComponent implements OnInit {
             "type": this.brand,
             "diesel": this.carForm.get('diesel').value,
             "categoryId": this.carForm.get('category').value,
-            "availability": this.available,
+            "availability": this.selectedType,
             "year": this.carForm.get('year').value,
             "plate": this.carForm.get('plate').value,
             "price": this.carForm.get('price').value
@@ -136,7 +141,7 @@ export class CarComponent implements OnInit {
             "type": this.brand,
             "diesel": this.carForm.get('diesel').value,
             "categoryId": this.carForm.get('category').value,
-            "availability": this.available,
+            "availability": this.selectedType,
             "year": this.carForm.get('year').value,
             "plate": this.carForm.get('plate').value,
             "price": this.carForm.get('price').value
@@ -167,7 +172,7 @@ export class CarComponent implements OnInit {
         this.carForm.get('type').setValue(this.car.type);
         this.carForm.get('plate').setValue(this.car.plate);
         this.carForm.get('price').setValue(this.car.price);
-        this.available = this.car.availability;
+        this.selectedType = this.car.availability.toString();
       },
         err => {
           this.logger.error("Error", "Something bad happened.");

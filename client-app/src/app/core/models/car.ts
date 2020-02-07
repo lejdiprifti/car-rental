@@ -1,6 +1,7 @@
 import {Category} from './category';
 import { Reservation } from './reservation';
 import { ReservedDates } from './reservedDates';
+import { Status } from './status.enum';
 
 export interface Car {
     id?: number;
@@ -10,7 +11,7 @@ export interface Car {
     plate?: string;
     price?: number;
     diesel?: string;
-    availability?: boolean;
+    availability?: Status;
     categoryId?: number;
     category?: Category;
     description?: string;

@@ -45,11 +45,20 @@ public class CarService {
 	}
 	
 	public List<CarModel> getAll() {
+		try {
+			authorizationService.isUserAuthorized();
 		List<CarModel> modelList = carConverter.toModel(carRepository.getAll());
 		for (CarModel car : modelList) {
 			car.setReservedDates(getReservedDatesByCar(car.getId()));
 		}
 		return modelList;
+		} catch (ResponseStatusException e) {
+			List<CarModel> modelList = carConverter.toModel(carRepository.getAllAvailable());
+			for (CarModel car : modelList) {
+				car.setReservedDates(getReservedDatesByCar(car.getId()));
+			}
+			return modelList;
+		}
 	}
 	
 	public List<ReservedDates> getReservedDatesByCar(Long carId){
@@ -77,7 +86,7 @@ public class CarService {
 		try {
 			checkIfExists(model.getPlate(), null);
 			CarEntity entity = new CarEntity();
-			entity.setAvailability(true);
+			entity.setAvailability(model.getAvailability());
 			entity.setActive(true);
 			entity.setName(model.getName());
 			entity.setPhoto(file.getBytes());
@@ -127,7 +136,9 @@ public class CarService {
 			if (model.getDescription() != null) {
 			entity.setDescription(model.getDescription());
 			}
-			entity.setAvailability(model.isAvailability());
+			if (model.getAvailability() != null) {
+ 			entity.setAvailability(model.getAvailability());
+			}
 			if (model.getDiesel() != null) {
 			entity.setDiesel(model.getDiesel());
 			}
