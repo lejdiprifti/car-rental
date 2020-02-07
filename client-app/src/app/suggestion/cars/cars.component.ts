@@ -219,7 +219,6 @@ export class CarsComponent implements OnInit {
   } 
 
   styleUnavailableDates(date: any): object {
-    console.log(new Date(date.year, date.month, date.day));
     if (this.reservedDates.some(el => new Date(el).getTime() === new Date(date.year, date.month, date.day).getTime())) {
       return {'backgroundColor': 'red'};
     } else {
@@ -233,7 +232,6 @@ export class CarsComponent implements OnInit {
       let startDate = new Date(el[0]);
       let endDate = new Date(el[1]);
       for (let i=startDate.getDate(); i<=endDate.getDate(); i=i+1){
-        console.log('ne array ',new Date(endDate.getFullYear(), endDate.getMonth(), i))
         this.reservedDates.push(new Date(endDate.getFullYear(), endDate.getMonth(), i));
       }
     })
