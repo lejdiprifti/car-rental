@@ -18,7 +18,7 @@ public class AuthorizationService {
 	}
 	
 	public boolean isUserAuthorized(){
-		if ((int) jwtTokenUtil.getRole().get("id") == 1){
+		if (((Integer) jwtTokenUtil.getRole().get("id")).intValue() == 1){
 			return true;
 		} else {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authorized.");
