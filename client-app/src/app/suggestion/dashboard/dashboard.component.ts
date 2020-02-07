@@ -11,6 +11,8 @@ import { ReservationService } from '@ikubinfo/core/services/reservation.service'
 import { Reservation } from '@ikubinfo/core/models/reservation';
 import { LoggerService } from '@ikubinfo/core/utilities/logger.service';
 import {formatDate } from '@angular/common';
+import { StatisticsService } from '@ikubinfo/core/services/statistics.service';
+import { Statistics } from '@ikubinfo/core/models/statistics';
 @Component({
   selector: 'ikubinfo-dashboard',
   templateUrl: './dashboard.component.html',
@@ -36,7 +38,9 @@ export class DashboardComponent implements OnInit {
     date: Date = null;
     endDate: Date = null;
     yearTimeout: any;
-  constructor(private carService: CarService, private authService: AuthService, 
+
+    stats: Statistics;
+  constructor(private statisticsService: StatisticsService, private authService: AuthService, 
     private reservationService: ReservationService, private logger: LoggerService) { }
 
   ngOnInit() {
@@ -55,7 +59,8 @@ this.user = this.authService.user;
       },
       editable: false
   };
-
+  this.stats = {};
+  this.getStatistics();
     this.brands = [
             { label: 'All Brands', value: null },
             { label: 'Audi', value: 'Audi' },
@@ -136,6 +141,14 @@ this.user = this.authService.user;
     filterBookingsByPrice(event) {
         this.bookings = this.filteredBookings;
         this.bookings = this.bookings.filter(el => el.price > event.target.value);
+    }
+
+    getStatistics(): void {
+      this.statisticsService.getStatistics().subscribe(res => {
+        this.stats = res;
+      }, err => {
+        this.logger.error("Error", "Could not retrieve statistics.");
+      })
     }
 }
 

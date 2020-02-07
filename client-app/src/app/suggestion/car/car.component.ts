@@ -97,6 +97,7 @@ export class CarComponent implements OnInit {
   }
 
   submit(): void {
+    console.log(this.selectedType);
     if (this.car.id !== undefined) {
       this.confirmationService.confirm({
         message: 'Are you sure you want to save the changes?',
@@ -193,5 +194,9 @@ export class CarComponent implements OnInit {
     }, err=> {
       this.logger.error('Error','Categories were not found.');
     })
+  }
+
+  checkSelected(): void {
+    console.log(this.selectedType);
   }
 }

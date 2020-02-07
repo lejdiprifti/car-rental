@@ -1,6 +1,7 @@
 package com.ikubinfo.rental.repository;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -74,6 +75,13 @@ public class ReservationRepository {
 		} else {
 			return true;
 		}
+	}
+	
+	public Long countNewBookings(Date date) {
+		TypedQuery<Long> query = em.createQuery("Select COUNT(r.id) from ReservationEntity r where r.created_at > ?1 and r.active = ?2", Long.class);
+		query.setParameter(1, date);
+		query.setParameter(2, true);
+		return query.getSingleResult();
 	}
 	
 	@Transactional

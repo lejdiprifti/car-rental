@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ikubinfo.rental.converter.ReservationConverter;
+import com.ikubinfo.rental.entity.CarEntity;
 import com.ikubinfo.rental.entity.ReservationEntity;
+import com.ikubinfo.rental.entity.StatusEnum;
 import com.ikubinfo.rental.model.ReservationModel;
 import com.ikubinfo.rental.repository.CarRepository;
 import com.ikubinfo.rental.repository.ReservationRepository;
@@ -80,10 +82,13 @@ public class ReservationService {
 			entity.setEndDate(model.getEndDate());
 			entity.setCreated_at(new GregorianCalendar().getTime());
 			entity.setActive(true);
-			entity.setCar(carRepository.getById(model.getCarId()));
+			CarEntity car = carRepository.getById(model.getCarId());
+			entity.setCar(car);
 			entity.setUser(userRepository.getByUsername(jwtTokenUtil.getUsername()));
 			reservationRepository.save(entity);
 			emailService.sendEmailTo(entity, model.getFee());
+			car.setAvailability(StatusEnum.RENTED);
+			carRepository.edit(car);
 		} else {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Chosen car is not available.");
 		}

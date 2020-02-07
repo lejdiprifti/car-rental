@@ -49,6 +49,12 @@ public class UserRepository {
 		return query.getSingleResult();
 	}
 	
+	public Long countActiveUsers() {
+		TypedQuery<Long> query = em.createQuery("Select Count(u.id) from UserEntity u where u.role.id = ?1 and u.active = ?2", Long.class);
+		query.setParameter(1, 2);
+		query.setParameter(2, true);
+		return query.getSingleResult();
+	}
 	
 	@Transactional
 	public void save(UserEntity user) {

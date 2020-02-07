@@ -70,7 +70,7 @@
   </ikubinfo-input>
   <ikubinfo-input label="Availability">
     <div class="form-group">
-      <p-selectButton fromControlName="availability" [options]="types" [(ngModel)]="selectedType"></p-selectButton>
+      <p-selectButton fromControlName="availability" (click)="checkSelected()" [options]="types" [(ngModel)]="selectedType"></p-selectButton>
     </div>
 </ikubinfo-input>
 </div>
