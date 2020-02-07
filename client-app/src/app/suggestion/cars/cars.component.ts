@@ -9,6 +9,8 @@ import { ConfirmationService } from 'primeng/primeng';
 import { User } from '@ikubinfo/core/models/user';
 import { AuthService } from '@ikubinfo/core/services/auth.service';
 import { Reservation } from '@ikubinfo/core/models/reservation';
+import { CategoryService } from '@ikubinfo/core/services/category.service';
+import { Category } from '@ikubinfo/core/models/category';
 @Component({
   selector: 'ikubinfo-cars',
   templateUrl: './cars.component.html',
@@ -42,14 +44,18 @@ export class CarsComponent implements OnInit {
   available: boolean = true;
   today: Date;
   reservedDates: Array<Date>;
+  itemsCategories: SelectItem[];
+  categories: Array<Category>;
 
-  constructor(private carService: CarService, private logger: LoggerService, private router: Router,
+  constructor(private carService: CarService,private categoryService: CategoryService,
+     private logger: LoggerService, private router: Router,
     private confirmationService: ConfirmationService, private authService: AuthService) { }
 
   ngOnInit() {
     this.user= this.authService.user;
     this.loadItems();
     this.loadCars();
+    this.loadCategories();
     this.today = new Date();
     this.reservedDates = [];
     this.sortOptions = [
@@ -58,7 +64,7 @@ export class CarsComponent implements OnInit {
       { label: 'Brand', value: 'type' },
       { label: 'Availability', value: 'availability'}
     ];
-
+    this.itemsCategories = [];
   }
 
   selectCar(event: Event, car: Car) {
@@ -84,6 +90,23 @@ export class CarsComponent implements OnInit {
     onDialogHide() {
         this.selectedCar = null;
     }
+
+  loadCategories(): void {
+    this.categoryService.getAll().subscribe(res => {
+      this.categories = res;
+      this.categories.forEach(el => {
+        this.addCategoryItems(el);
+      })
+    }, err=> {
+      this.logger.error('Error', 'Categories could not be found.');
+    })
+  }
+
+  addCategoryItems(category: Category): void {
+    this.itemsCategories.push({
+      value: category.photo, label: category.name,
+    })
+  }
 
   loadCars(): void {
     this.carService.getAll().subscribe(res => {

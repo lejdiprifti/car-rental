@@ -10,7 +10,22 @@
 <p-header>
     <div class="ui-helper-clearfix">
         <div class="ui-g-12 ui-md-4">
-            <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By" (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown>
+            <div class="ui-g-6">
+                <p-multiSelect [options]="itemsCategories" [(ngModel)]="selectedCategory" [panelStyle]="{minWidth:'12em'}">
+                    <ng-template let-value let-label pTemplate="selectedItems">
+                        <div *ngFor="let val of value" class="ui-multiselected-item-token ui-corner-all">
+                            <img src="data:image/jpeg;base64,{{val}}" style="width:20px;vertical-align:middle;margin-right:.5em" />
+                            <span>{{category}}</span>
+                        </div>
+                        <span *ngIf="!value || value.length === 0" class="ui-multiselected-empty-token ui-corner-all">Choose</span>
+                    </ng-template>
+                    <ng-template let-category pTemplate="item">
+                        <img src="data:image/jpeg;base64,{{category.value}}" style="width:15px;display:inline-block;vertical-align:middle"/>
+                        <div style="font-size:14px;float:right">{{category.label}}</div>
+                    </ng-template>
+                </p-multiSelect>
+            </div>
+            <div class="ui-g-6"><p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By" (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown></div>
         </div>
         <div class="ui-g">
             <div class="ui-g-6 ui-md-4">
@@ -38,9 +53,9 @@
                 <img id="availableImage" src="../../../assets/images/general/{{car.availability}}.png" alt="Availability">
                 </div>
                 <div  class="ui-g" style="margin-left: 350px; margin-right: 150px; text-align: justify;">
-                    <div class="ui-g-12">Name: <b>{{car.name}}</b></div>
-                    <div class="ui-g-12">Year: <b>{{car.year}}</b></div>
-                    <div class="ui-g-12">Brand:<b>{{car.type}}</b></div>
+                    <div class="ui-g-12" style="text-align: justify;">Name: <b>{{car.name}}</b></div>
+                    <div class="ui-g-12" style="text-align: justify;">Year: <b>{{car.year}}</b></div>
+                    <div class="ui-g-12" style="text-align: justify;">Brand: <b>{{car.type}}</b></div>
                 </div>
                 <hr>
             </div>
