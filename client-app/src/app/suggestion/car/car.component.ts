@@ -23,7 +23,7 @@ export class CarComponent implements OnInit {
   categories: Array<Category>;
   diesels: Array<string>;
   editable: boolean;
-  selectedType: string;
+  selectedType: string = 'AVAILABLE';
   brand: string;
   blockSpecial: RegExp = /^[^:>#*]+|([^:>#*][^>#*]+[^:>#*])$/ ;
   types: SelectItem[];
@@ -56,8 +56,8 @@ export class CarComponent implements OnInit {
       {label: 'Volvo', value: 'Volvo'}
   ];
   this.types = [
-    {label: 'Available', value: 'Available', icon: 'fa fa-check-circle'},
-    {label: 'Service', value: 'Service', icon: 'fa fa-wrench'}
+    {label: 'Available', value: 'AVAILABLE', icon: 'fa fa-check-circle'},
+    {label: 'Service', value: 'SERVIS', icon: 'fa fa-wrench'}
 ];
   this.loadData();
   }
@@ -74,7 +74,6 @@ export class CarComponent implements OnInit {
       year: [{value:'', disabled:this.editable}, [Validators.required, Validators.minLength(4)]],
       type: [{value:'', disabled:this.editable}, Validators.required],
       diesel: [{value:'', disabled:this.editable}, Validators.required],
-      availability: [{value:'', disabled:this.editable}, Validators.required],
       category: [{value:'', disabled:this.editable}, Validators.required],
       plate: [{value:'', disabled:this.editable}, [ Validators.required, Validators.minLength(5)]],
       price: [{value:'', disabled:this.editable}, Validators.required]
