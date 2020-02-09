@@ -24,7 +24,7 @@ export class CarComponent implements OnInit {
   diesels: Array<string>;
   editable: boolean;
   selectedType: string = 'AVAILABLE';
-  brand: string;
+  brand: string = "Audi";
   blockSpecial: RegExp = /^[^:>#*]+|([^:>#*][^>#*]+[^:>#*])$/ ;
   types: SelectItem[];
   constructor(private fb: FormBuilder, private router: Router, private confirmationService: ConfirmationService,
@@ -72,7 +72,6 @@ export class CarComponent implements OnInit {
       photo: [{value:'', disabled:this.editable}],
       description: [{value:'', disabled:this.editable}, [Validators.required, Validators.minLength(50), Validators.maxLength(10000)]],
       year: [{value:'', disabled:this.editable}, [Validators.required, Validators.minLength(4)]],
-      type: [{value:'', disabled:this.editable}, Validators.required],
       diesel: [{value:'', disabled:this.editable}, Validators.required],
       category: [{value:'', disabled:this.editable}, Validators.required],
       plate: [{value:'', disabled:this.editable}, [ Validators.required, Validators.minLength(5)]],

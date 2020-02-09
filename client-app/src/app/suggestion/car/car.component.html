@@ -17,7 +17,7 @@
       </ikubinfo-input>
     <ikubinfo-input label="Brand">
       <div class="form-group">
-      <p-dropdown [options]="brands"  formControlName="type" [(ngModel)]="brand" filter="true">
+      <p-dropdown [options]="brands" [ngModelOptions]="{standalone: true}" [(ngModel)]="brand" filter="true">
         <ng-template let-item pTemplate="selectedItem">
             <img src="assets/images/car logos/{{item.label}}.png" style="width:16px;vertical-align:middle" />
             <span style="vertical-align:middle; margin-left: .5em">{{item.label}}</span>
@@ -45,12 +45,13 @@
     <ikubinfo-input label="Plate">
     <div class="form-group">
       <input type="text" pInputText [pKeyFilter]="blockSpecial" formControlName="plate" class="form-control input-underline input-lg" placeholder="Plate" />
+      <p class="error" *ngIf="carForm.get('plate').dirty && carForm.get('plate').hasError('minlength')">*Please, fill in the plate correctly.</p>
     </div>
     </ikubinfo-input>
     <ikubinfo-input label="Description">
     <div class="form-group">
       <textarea pInputTextArea formControlName="description" spellcheck="true" class="form-control input-underline input-lg" placeholder="Description" autoResize="autoResize"></textarea>
-      <p class="error" *ngIf="carForm.invalid">*Please, write only 50 to 255 characters.</p>
+      <p class="error" *ngIf="carForm.get('description').dirty && carForm.get('description').hasError('minlength')">*Please, write only 50 to 10000 characters.</p>
     </div>
     </ikubinfo-input>
     <ikubinfo-input label="Category">
@@ -74,7 +75,7 @@
     </div>
 </ikubinfo-input>
 </div>
-  <button pButton type="submit" (click)="submit()" class="ui-button-success" label="Submit" icon="pi pi-file"></button>
+  <button pButton type="submit" [disabled] = "carForm.invalid" (click)="submit()" class="ui-button-success" label="Submit" icon="pi pi-file"></button>
     <button pButton type="button" id="reset" (click)="reset()" class="ui-button-secondary reset" label="Reset" icon="pi pi-times"></button>
 </form>
 </div>
