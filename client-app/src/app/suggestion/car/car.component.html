@@ -44,14 +44,13 @@
     </ikubinfo-input>
     <ikubinfo-input label="Plate">
     <div class="form-group">
-      <input type="text" pInputText [pKeyFilter]="blockSpecial" formControlName="plate" class="form-control input-underline input-lg" placeholder="Plate" />
-      <p class="error" *ngIf="carForm.get('plate').dirty && carForm.get('plate').hasError('minlength')">*Please, fill in the plate correctly.</p>
+      <p-inputMask mask="aa-999-aa" [ngModelOptions]="{standalone: true}" [(ngModel)]="plate" placeholder="AA-BBB-CC"></p-inputMask>
     </div>
     </ikubinfo-input>
     <ikubinfo-input label="Description">
     <div class="form-group">
       <textarea pInputTextArea formControlName="description" spellcheck="true" class="form-control input-underline input-lg" placeholder="Description" autoResize="autoResize"></textarea>
-      <p class="error" *ngIf="carForm.get('description').dirty && carForm.get('description').hasError('minlength')">*Please, write only 50 to 10000 characters.</p>
+      <p class="error" *ngIf="carForm.get('description').dirty && carForm.get('description').hasError('minlength') || carForm.get('description').hasError('maxlength')">*Please, write only 50 to 10000 characters.</p>
     </div>
     </ikubinfo-input>
     <ikubinfo-input label="Category">

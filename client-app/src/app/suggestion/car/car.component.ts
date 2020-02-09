@@ -27,6 +27,7 @@ export class CarComponent implements OnInit {
   brand: string = "Audi";
   blockSpecial: RegExp = /^[^:>#*]+|([^:>#*][^>#*]+[^:>#*])$/ ;
   types: SelectItem[];
+  plate: string;
   constructor(private fb: FormBuilder, private router: Router, private confirmationService: ConfirmationService,
     private carService: CarService, private categoryService: CategoryService,
      private active: ActivatedRoute, private logger: LoggerService) { }
@@ -74,7 +75,6 @@ export class CarComponent implements OnInit {
       year: [{value:'', disabled:this.editable}, [Validators.required, Validators.minLength(4)]],
       diesel: [{value:'', disabled:this.editable}, Validators.required],
       category: [{value:'', disabled:this.editable}, Validators.required],
-      plate: [{value:'', disabled:this.editable}, [ Validators.required, Validators.minLength(5)]],
       price: [{value:'', disabled:this.editable}, Validators.required]
     })
   }
@@ -87,7 +87,7 @@ export class CarComponent implements OnInit {
     this.carForm.get('diesel').setValue(data.diesel);
     this.carForm.get('availability').setValue(this.selectedType);
     this.carForm.get('category').setValue(data.category.id);
-    this.carForm.get('plate').setValue(data.plate);
+    this.carForm.get('plate').setValue(this.plate);
   }
   
   edit(): void {
@@ -112,7 +112,7 @@ export class CarComponent implements OnInit {
             "categoryId": this.carForm.get('category').value,
             "availability": this.selectedType,
             "year": this.carForm.get('year').value,
-            "plate": this.carForm.get('plate').value,
+            "plate": this.plate,
             "price": this.carForm.get('price').value
           })], {
             type: "application/json"
@@ -142,7 +142,7 @@ export class CarComponent implements OnInit {
             "categoryId": this.carForm.get('category').value,
             "availability": this.selectedType,
             "year": this.carForm.get('year').value,
-            "plate": this.carForm.get('plate').value,
+            "plate":this.plate,
             "price": this.carForm.get('price').value
           })], {
             type: "application/json"
@@ -169,7 +169,7 @@ export class CarComponent implements OnInit {
         this.carForm.get('diesel').setValue(this.car.diesel);
         this.carForm.get('category').setValue(this.car.categoryId);
         this.carForm.get('type').setValue(this.car.type);
-        this.carForm.get('plate').setValue(this.car.plate);
+        this.plate = this.car.plate;
         this.carForm.get('price').setValue(this.car.price);
         this.selectedType = this.car.availability.toString();
       },
