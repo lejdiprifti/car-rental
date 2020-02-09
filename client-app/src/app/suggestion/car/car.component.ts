@@ -70,7 +70,7 @@ export class CarComponent implements OnInit {
   loadForm(): void {
     this.carForm = this.fb.group({
       name: new FormControl({value:'', disabled:this.editable}, Validators.required),
-      photo: [{value:'', disabled:this.editable}, Validators.required],
+      photo: [{value:'', disabled:this.editable}],
       description: [{value:'', disabled:this.editable}, [Validators.required, Validators.minLength(50), Validators.maxLength(10000)]],
       year: [{value:'', disabled:this.editable}, [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
       diesel: [{value:'', disabled:this.editable}, Validators.required],
@@ -82,12 +82,12 @@ export class CarComponent implements OnInit {
   fillForm(data: Car = {}): void {
     this.carForm.get('name').setValue(data.name);
     this.carForm.get('description').setValue(data.description);
-    this.carForm.get('type').setValue(data.type);
     this.carForm.get('year').setValue(data.year);
     this.carForm.get('diesel').setValue(data.diesel);
-    this.carForm.get('availability').setValue(this.selectedType);
     this.carForm.get('category').setValue(data.category.id);
-    this.carForm.get('plate').setValue(this.plate);
+    this.plate = data.plate;
+    this.selectedType = data.availability.toString();
+    this.brand = data.type;
   }
   
   edit(): void {
@@ -168,7 +168,7 @@ export class CarComponent implements OnInit {
         this.carForm.get('year').setValue(this.car.year);
         this.carForm.get('diesel').setValue(this.car.diesel);
         this.carForm.get('category').setValue(this.car.categoryId);
-        this.carForm.get('type').setValue(this.car.type);
+        this.brand = this.car.type;
         this.plate = this.car.plate;
         this.carForm.get('price').setValue(this.car.price);
         this.selectedType = this.car.availability.toString();
