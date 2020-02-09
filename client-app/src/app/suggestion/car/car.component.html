@@ -8,11 +8,13 @@
     <ikubinfo-input label="Photo">
     <div class="form-group">
      <input type="file" formControlName="photo" class="form-control input-underline input-lg" (change)="uploadFile($event)" />
+     <p class="error" *ngIf="carForm.get('photo').dirty && carForm.get('photo').hasError('required')">*Please, select a photo.</p>
     </div>
     </ikubinfo-input>
     <ikubinfo-input label="Name">
       <div class="form-group">
         <input pInputText formControlName="name" class="form-control input-underline input-lg" placeholder="Name" />
+        <p class="error" *ngIf="carForm.get('name').dirty && carForm.get('name').hasError('required')">*Please, fill in the name.</p>
       </div>
       </ikubinfo-input>
     <ikubinfo-input label="Brand">
@@ -34,6 +36,8 @@
     <ikubinfo-input label="Year">
     <div class="form-group">
       <input pInputText pKeyFilter="int" formControlName="year" class="form-control input-underline input-lg" placeholder="Production year" />
+      <p class="error" *ngIf="carForm.get('year').dirty && carForm.get('year').hasError('required')">*Please, fill in the production year.</p>
+      <p class="error" *ngIf="carForm.get('year').dirty && carForm.get('year').hasError('minlength') || carForm.get('year').hasError('maxlength')">*Please, fill in a valid production year.</p>
     </div>
     </ikubinfo-input>
     <ikubinfo-input label="Type of fuel">
@@ -41,6 +45,7 @@
         <option value="" disabled>Choose the type of fuel</option>
         <option *ngFor="let diesel of diesels" [ngValue]="diesel">{{diesel}}</option>
       </select>
+      <p class="error" *ngIf="carForm.get('diesel').dirty && carForm.get('diesel').hasError('required')">*Please, select a type of fuel.</p>
     </ikubinfo-input>
     <ikubinfo-input label="Plate">
     <div class="form-group">
@@ -67,6 +72,7 @@
         <span class="ui-inputgroup-addon">.00</span>      
       </div>
     </div>
+    <p class="error" *ngIf="carForm.get('price').dirty && carForm.get('price').hasError('required')">*Please, fill in the price per day.</p>
   </ikubinfo-input>
   <ikubinfo-input label="Availability">
     <div class="form-group">

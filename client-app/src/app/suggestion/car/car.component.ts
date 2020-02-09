@@ -70,9 +70,9 @@ export class CarComponent implements OnInit {
   loadForm(): void {
     this.carForm = this.fb.group({
       name: new FormControl({value:'', disabled:this.editable}, Validators.required),
-      photo: [{value:'', disabled:this.editable}],
+      photo: [{value:'', disabled:this.editable}, Validators.required],
       description: [{value:'', disabled:this.editable}, [Validators.required, Validators.minLength(50), Validators.maxLength(10000)]],
-      year: [{value:'', disabled:this.editable}, [Validators.required, Validators.minLength(4)]],
+      year: [{value:'', disabled:this.editable}, [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
       diesel: [{value:'', disabled:this.editable}, Validators.required],
       category: [{value:'', disabled:this.editable}, Validators.required],
       price: [{value:'', disabled:this.editable}, Validators.required]
