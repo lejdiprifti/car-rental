@@ -1,16 +1,21 @@
 <form role="form" [formGroup]="settingsForm">
   <div [formGroup]="settingsForm" class="form-content">
      <!--First Name -->
+     <ikubinfo-input label="First Name">
      <div class="form-group">
       <input type="text" formControlName="firstName" class="form-control input-underline input-lg"
         placeholder="First Name" />
     </div>
+  </ikubinfo-input>
  <!--Last Name -->
+ <ikubinfo-input label="Last Name">
  <div class="form-group">
   <input type="text" formControlName="lastName" class="form-control input-underline input-lg"
     placeholder="Last Name" />
 </div>
+</ikubinfo-input>
     <!--Birthdate -->
+    <ikubinfo-input label="Birthdate">
     <div class="form-group">
       <input type="date" formControlName="birthdate" class="form-control input-underline input-lg "
        placeholder="Birthdate" format="yyyy-MM-dd" />
@@ -18,12 +23,16 @@
         *You must be over 18 years old.
       </div>
     </div>
+  </ikubinfo-input>
     <!--Address -->
+    <ikubinfo-input label="Address">
     <div class="form-group">
       <input type="text" formControlName="address" class="form-control input-underline input-lg"
         placeholder="Address" />
     </div>
+  </ikubinfo-input>
     <!--Email -->
+    <ikubinfo-input label="Email">
     <div class="form-group">
       <input type="text" formControlName="email" class="form-control input-underline input-lg" placeholder="Email" />
 
@@ -33,18 +42,23 @@
         ">
         *Invalid email
       </div>
+    </div>
+    </ikubinfo-input>
        <!--Phone -->
+      <ikubinfo-input label="Phone no.">
     <div class="form-group">
       <input type="text" formControlName="phone" class="form-control input-underline input-lg"
         placeholder="Phone" />
     </div>
+    </ikubinfo-input>
     </div>
     <button [disabled]="settingsForm.invalid" (click)="updateData()" class="btn btn-success">
       Update Profile
     </button>
     <!--Password -->
-    <h5 class="header">Change password</h5>
-    <div [formGroup]="passwordForm"><div class="form-group">
+   <h5>Change password</h5>
+    <div [formGroup]="passwordForm">
+      <div class="form-group">
         <input type="password" formControlName="password" class="form-control input-underline input-lg"
           placeholder=" New password" />
         <div class="required" *ngIf="
@@ -63,8 +77,6 @@
             *Passwords do not match.
           </div>
     </div>
-    
-  </div>
   <button [disabled]="passwordForm.invalid" (click)="updatePassword()" class="btn btn-success">
     Update Password
   </button>
