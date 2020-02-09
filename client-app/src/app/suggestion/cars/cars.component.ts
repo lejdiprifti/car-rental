@@ -46,6 +46,7 @@ export class CarsComponent implements OnInit {
   reservedDates: Array<Date>;
   itemsCategories: SelectItem[];
   categories: Array<Category>;
+  selectedCategories: any[];
 
   constructor(private carService: CarService,private categoryService: CategoryService,
      private logger: LoggerService, private router: Router,
@@ -58,6 +59,7 @@ export class CarsComponent implements OnInit {
     this.loadCategories();
     this.today = new Date();
     this.reservedDates = [];
+    this.selectedCategories = [];
     this.sortOptions = [
       { label: 'Newest First', value: '!year' },
       { label: 'Oldest First', value: 'year' },
@@ -104,7 +106,11 @@ export class CarsComponent implements OnInit {
 
   addCategoryItems(category: Category): void {
     this.itemsCategories.push({
-      value: category.photo, label: category.name,
+      value: {
+        photo: category.photo,
+        name: category.name,
+        id: category.id
+      }, label: category.name,
     })
   }
 
@@ -259,5 +265,20 @@ export class CarsComponent implements OnInit {
         this.reservedDates.push(new Date(endDate.getFullYear(), endDate.getMonth(), i));
       }
     })
+  }
+
+  sortByCategory(): void {
+    if (this.selectedCategories.length > 0){
+      this.cars = [];
+      this.originalCars.filter(el => {
+        this.selectedCategories.forEach(cat => {
+          if (el.category.id === cat.id) {
+            this.cars.push(el);
+          }
+        })
+      })
+    } else {
+      this.cars = this.originalCars;
+    }
   }
 }

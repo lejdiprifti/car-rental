@@ -11,16 +11,16 @@
     <div class="ui-helper-clearfix">
         <div class="ui-g-12 ui-md-4">
             <div class="ui-g-6">
-                <p-multiSelect [options]="itemsCategories" [(ngModel)]="selectedCategory" [panelStyle]="{minWidth:'12em'}">
-                    <ng-template let-value let-label pTemplate="selectedItems">
+                <p-multiSelect [options]="itemsCategories" (click)="sortByCategory()" [(ngModel)]="selectedCategories" [panelStyle]="{minWidth:'14em'}">
+                    <ng-template let-value pTemplate="selectedItems">
                         <div *ngFor="let val of value" class="ui-multiselected-item-token ui-corner-all">
-                            <img src="data:image/jpeg;base64,{{val}}" style="width:20px;vertical-align:middle;margin-right:.5em" />
-                            <span>{{category}}</span>
+                            <img src="data:image/jpeg;base64,{{val.photo}}" style="width:20px;vertical-align:middle;margin-right:.5em" />
+                            <span>{{val.name}}</span>
                         </div>
                         <span *ngIf="!value || value.length === 0" class="ui-multiselected-empty-token ui-corner-all">Choose</span>
                     </ng-template>
                     <ng-template let-category pTemplate="item">
-                        <img src="data:image/jpeg;base64,{{category.value}}" style="width:15px;display:inline-block;vertical-align:middle"/>
+                        <img src="data:image/jpeg;base64,{{category.value.photo}}" style="width:15px;display:inline-block;vertical-align:middle"/>
                         <div style="font-size:14px;float:right">{{category.label}}</div>
                     </ng-template>
                 </p-multiSelect>
@@ -93,7 +93,7 @@
     <div class="ui-g-8">{{selectedCar.plate}}</div>
 
     <div class="ui-g-4"><b>Description: </b></div>
-    <div class="ui-g-8">{{selectedCar.description}}</div>
+    <div class="ui-g-8" style="text-align: justify;">{{selectedCar.description}}</div>
 
     <div class="ui-g-4"><b>Availability: </b></div>
     <div class="ui-g-8"><img id="availability" src="../../../assets/images/general/{{selectedCar.availability}}.png" alt="Availability"></div>
