@@ -21,7 +21,7 @@ export class CategoryComponent implements OnInit {
     this.category = {};
     this.categoryForm = this.fb.group({
       name: ['', Validators.required],
-      photo: [''],
+      photo: ['', Validators.required],
       description: ['', [Validators.required,Validators.minLength(50), Validators.maxLength(255)]],
     });
     this.loadData();

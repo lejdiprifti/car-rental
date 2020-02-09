@@ -193,8 +193,4 @@ export class CarComponent implements OnInit {
       this.logger.error('Error','Categories were not found.');
     })
   }
-
-  checkSelected(): void {
-    console.log(this.selectedType);
-  }
 }
