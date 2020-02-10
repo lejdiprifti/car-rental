@@ -3,6 +3,11 @@
 </div>
 <div *ngIf = 'cars !== undefined'>
     <div class="filters">
+    <div class="ui-g">
+        <div class="ui-g-2">
+            <p>Filter results by:</p>
+                </div>
+        <div class="ui-g-2">
                 <p-multiSelect [options]="itemsCategories" (click)="sortByCategory()" [(ngModel)]="selectedCategories" [panelStyle]="{minWidth:'14em'}">
                     <ng-template let-value pTemplate="selectedItems">
                         <div *ngFor="let val of value" class="ui-multiselected-item-token ui-corner-all">
@@ -16,7 +21,19 @@
                         <div style="font-size:14px;float:right">{{category.label}}</div>
                     </ng-template>
                 </p-multiSelect>
-            <div class="sort"><p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By" (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown></div>
+        </div>
+            <div class="ui-g-3">
+               From
+                <p-calendar placeholder = "Pick a date" [minDate]="today" [maxDate]="endDate" [style]="{'width':'300px','margin-top':'8px'}" [(ngModel)]="startDate" (click)="filterBookings($event)" showButtonBar="true"></p-calendar>
+            </div>
+            <div class="ui-g-3">
+                Until
+                <p-calendar placeholder = "Pick a date"   [minDate]="startDate" [style]="{'width':'300px','margin-top':'8px'}" [(ngModel)]="endDate" (click)="filterBookings($event)" showButtonBar="true"></p-calendar>
+            </div>
+            <div id="results" class="ui-g-2">
+                <p>Showing {{cars.length}} results</p>
+            </div>
+        </div>
     </div>
 <div *ngIf="!checkIfUser()">
     <button id="add" pButton type="button" icon="fa fa-plus" [routerLink]="['/rental/car']" iconPos="left" label="Add"></button>
@@ -25,16 +42,15 @@
 [sortField]="sortField" [sortOrder]="sortOrder">
 <p-header>
     <div class="ui-helper-clearfix">
-        <div class="ui-g">
-            <div class="ui-g-6 ui-md-4">
-                Later than
-                <p-calendar placeholder = "Pick a date" [minDate]="today" [maxDate]="endDate" [style]="{'width':'300px','margin-top':'8px'}" [(ngModel)]="startDate" (click)="filterBookings($event)" showButtonBar="true"></p-calendar>
-            </div>
-            <div class="ui-g-6 ui-md-4">
-                Earlier than
-                <p-calendar placeholder = "Pick a date"   [minDate]="startDate" [style]="{'width':'300px','margin-top':'8px'}" [(ngModel)]="endDate" (click)="filterBookings($event)" showButtonBar="true"></p-calendar>
-            </div>
-           
+        <div class="ui-g"> 
+            <div class="ui-g-12 ui-md-4">
+                <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By" (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown>
+            </div>   
+            <div class="ui-g-6 ui-md-4 filter-container">
+                <div style="position:relative">
+                    <input type="search" pInputText placeholder="Search by brand" (input)="dv.filter($event.target.value)">
+                </div>
+            </div>       
             <div class="ui-g-6 ui-md-4 text" style="text-align:right;">
                 <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
             </div>

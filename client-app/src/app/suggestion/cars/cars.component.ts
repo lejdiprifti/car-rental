@@ -39,13 +39,12 @@ export class CarsComponent implements OnInit {
   originalCars: Array<Car>;
   endDate: Date;
   startDate: Date;
-  available: boolean = true;
+  available: boolean;
   today: Date;
   reservedDates: Array<Date>;
   itemsCategories: SelectItem[];
   categories: Array<Category>;
   selectedCategories: any[];
-
   constructor(private carService: CarService,private categoryService: CategoryService,
      private logger: LoggerService, private router: Router,
     private confirmationService: ConfirmationService, private authService: AuthService) { }
@@ -59,8 +58,7 @@ export class CarsComponent implements OnInit {
     this.reservedDates = [];
     this.selectedCategories = [];
     this.sortOptions = [
-      { label: 'Newest First', value: '!year' },
-      { label: 'Oldest First', value: 'year' },
+      { label: 'Production year', value: '!year' },
       { label: 'Brand', value: 'type' },
       { label: 'Availability', value: 'availability'}
     ];
@@ -217,7 +215,11 @@ export class CarsComponent implements OnInit {
           break;
         default:
           el.reservedDates.forEach(set => {
-            if (this.startDate.getTime() >= new Date(set[0]).getTime() && this.startDate.getTime() <= new Date(set[1]).getTime()){
+            let start = new Date(set[0]);
+            let end = new Date(set[1]);
+            let startDate = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+            let endDate = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+            if (this.startDate.getTime() >= startDate.getTime() && this.startDate.getTime() <= endDate.getTime()){
               available = false;
               return;
             }
@@ -235,7 +237,12 @@ export class CarsComponent implements OnInit {
     this.originalCars.forEach(el => {
       let available: boolean = true;
       el.reservedDates.forEach(set => {
-        if (this.endDate.getTime() >= new Date(set[0]).getTime() && this.endDate.getTime() <= new Date(set[1]).getTime()){
+        let start = new Date(set[0]);
+        let end = new Date(set[1]);
+        let startDate = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+        let endDate = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+        if (this.endDate.getTime() >= startDate.getTime() 
+        && this.endDate.getTime() <= endDate.getTime()){
           available = false;
           return;
         }
@@ -251,9 +258,13 @@ export class CarsComponent implements OnInit {
     this.originalCars.forEach(el => {
       this.available = true;
       el.reservedDates.forEach(set => {
-        if ((this.startDate.getTime() <= new Date(set[0]).getTime() && this.endDate.getTime() <= new Date(set[0]).getTime()) ||
-        (this.startDate.getTime() >= new Date(set[1]).getTime() && this.endDate.getTime() >= new Date(set[1]).getTime())){
-          this.available = true;
+        let start = new Date(set[0]);
+        let end = new Date(set[1]);
+        let startDate = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+        let endDate = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+        if ((this.startDate.getTime() < startDate.getTime() && this.endDate.getTime() < startDate.getTime()) ||
+        (this.startDate.getTime() > endDate.getTime() && this.endDate.getTime() > endDate.getTime())){
+          console.log('eshte true');
         } else {
          this.available = false;
         }
