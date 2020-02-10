@@ -99,7 +99,6 @@ export class BookingComponent implements OnInit {
 
   calculateFee(): void {
     if (this.startDate && this.endDate && this.startTime && this.endTime) {
-      console.log(this.startDate, this.startTime);
       let start = formatDate(this.startTime, 'hh:mm:a', 'en-US');
       let end = formatDate(this.endTime, 'hh:mm:a', 'en-US');
       let startArray = start.split(':');

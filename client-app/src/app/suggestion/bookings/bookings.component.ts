@@ -67,9 +67,18 @@ export class BookingsComponent implements OnInit {
     })
   }
   onRowSelect(event) {
+    let startDate = new Date(event.data.startDate);
+    let endDate = new Date(event.data.endDate);
+    let today = new Date();
+    if (startDate.getTime() <= today.getTime() && endDate.getTime() >= today.getTime()) {
+      this.logger.warning('Warning!', 'You cannot edit active reservations.');
+    } else if (endDate.getTime() < today.getTime()){
+      this.logger.warning('Warning!', 'You cannot edit previous reservations.');
+    } else {
     this.newReservation = false;
     this.reservation = this.cloneCategory(event.data);
     this.displayDialog = true;
+    }
   }
 
   cloneCategory(r: Reservation): Reservation {
