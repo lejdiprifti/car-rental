@@ -50,8 +50,9 @@
                 <p-splitButton [ngStyle]='myStyle()' label="Details" icon="pi pi-file" (onDropdownClick)="selectCarToEdit($event, car)" (onClick)="selectCar($event,car)" [model]="items" icon="pi pi-search" styleClass="ui-button-secondary"></p-splitButton>
               <img id="carPhoto" src="data:image/jpeg;base64,{{car.photo}}" width="100px">
               <div id="availableDiv">
-                <img id="availableImage" src="../../../assets/images/general/{{car.availability}}.png" alt="Availability">
-                </div>
+                <img id="availableImage" *ngIf="checkTodayStatus(car)" src="../../../assets/images/general/AVAILABLE.png" alt="Availability">
+                <img id="availableImage" *ngIf="!checkTodayStatus(car)" src="../../../assets/images/general/RENTED.png" alt="Availability">
+            </div>
                 <div  class="ui-g" style="margin-left: 350px; margin-right: 150px; text-align: justify;">
                     <div class="ui-g-12" style="text-align: justify;">Name: <b>{{car.name}}</b></div>
                     <div class="ui-g-12" style="text-align: justify;">Year: <b>{{car.year}}</b></div>

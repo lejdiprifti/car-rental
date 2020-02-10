@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/primeng';
 import { User } from '@ikubinfo/core/models/user';
 import { AuthService } from '@ikubinfo/core/services/auth.service';
-import { Reservation } from '@ikubinfo/core/models/reservation';
 import { CategoryService } from '@ikubinfo/core/services/category.service';
 import { Category } from '@ikubinfo/core/models/category';
 @Component({
@@ -289,5 +288,18 @@ export class CarsComponent implements OnInit {
     } else {
       this.cars = this.originalCars;
     }
+  }
+
+  checkTodayStatus(car: Car): boolean {
+    let now = new Date().getTime();
+    let status = true;
+    car.reservedDates.forEach(el => {
+      if (new Date(el[0]).getTime() <= now && new Date(el[1]).getTime() >= now){
+        status = false;
+      } else {
+        status = true;
+      }
+    })
+    return status;
   }
 }
