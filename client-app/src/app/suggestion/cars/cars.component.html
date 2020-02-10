@@ -5,7 +5,7 @@
 <div *ngIf="!checkIfUser()">
     <button id="add" pButton type="button" icon="fa fa-plus" [routerLink]="['/rental/car']" iconPos="left" label="Add"></button>
 </div>
-<p-dataView #dv [value]="cars" [paginator]="true" [rows]="3" paginatorPosition="top" filterBy="type"
+<p-dataView #dv [value]="cars" [paginator]="true" [rows]="4" paginatorPosition="top" filterBy="type"
 [sortField]="sortField" [sortOrder]="sortOrder">
 <p-header>
     <div class="ui-helper-clearfix">
@@ -68,7 +68,8 @@
         <p-panel [header]="car.name" [style]="{'text-align':'center'}">
           <img src="data:image/jpeg;base64,{{car.photo}}" width="180px">
             <div class="car-detail">{{car.year}} - {{car.type}}</div>
-            <img id="availability" src="../../../assets/images/general/{{car.availability}}.png" alt="Availability">
+            <img id="availability" *ngIf="checkTodayStatus(car)" src="../../../assets/images/general/AVAILABLE.png" alt="Availability">
+            <img id="availability" *ngIf="!checkTodayStatus(car)" src="../../../assets/images/general/RENTED.png" alt="Availability">
             <hr class="ui-widget-content" style="border-top:0">
             <p-splitButton label="Details" icon="pi pi-file" (onDropdownClick)="selectCarToEdit($event, car)" (onClick)="selectCar($event,car)" [model]="items" icon="pi pi-search" styleClass="ui-button-primary"></p-splitButton>
         </p-panel>
@@ -97,7 +98,10 @@
     <div class="ui-g-8" style="text-align: justify;">{{selectedCar.description}}</div>
 
     <div class="ui-g-4"><b>Availability: </b></div>
-    <div class="ui-g-8"><img id="availability" src="../../../assets/images/general/{{selectedCar.availability}}.png" alt="Availability"></div>
+    <div class="ui-g-8">
+        <img id="availability" *ngIf="checkTodayStatus(selectedCar)" src="../../../assets/images/general/AVAILABLE.png" alt="Availability">
+            <img id="availability" *ngIf="!checkTodayStatus(selectedCar)" src="../../../assets/images/general/RENTED.png" alt="Availability">
+    </div>
 
     <div class="ui-g-4"><b>Fuel: </b></div>
     <div class="ui-g-8">{{selectedCar.diesel}}</div>
