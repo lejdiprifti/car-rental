@@ -168,6 +168,7 @@ export class CarsComponent implements OnInit {
   }
 
   loadItems(): void {
+    // switch case
     if (this.checkIfUser()){
       this.items = [
         {label: 'Book now', icon: 'fa fa-edit', command: () => {
@@ -191,28 +192,36 @@ export class CarsComponent implements OnInit {
   }
 
   filterBookings(event): void {
+    // optimizo
     if (this.startDate && !this.endDate){
       this.cars = this.originalCars;
       this.filteredCars = this.originalCars;
+      this.cars = [];
       this.filteredCars.forEach(el => {
-        this.cars = [];
         let available: boolean = true;
-        el.reservedDates.forEach(set => {
-          if (this.startDate.getTime() >= new Date(set[0]).getTime() && this.startDate.getTime() <= new Date(set[1]).getTime()){
-            available = false;
-            return;
+        switch (el.reservedDates.length) {
+          case 0:
+            this.cars.push(el);
+            break;
+          default:
+            el.reservedDates.forEach(set => {
+              if (this.startDate.getTime() >= new Date(set[0]).getTime() && this.startDate.getTime() <= new Date(set[1]).getTime()){
+                available = false;
+                return;
+              }
+              return;
+            })
+            if (available === true){
+              this.cars.push(el);
+            }
+            break;
           }
-          return;
         })
-        if (available === true){
-          this.cars.push(el);
-        }
-      })
     } else if (this.endDate && !this.startDate){
       this.cars = this.originalCars;
       this.filteredCars = this.originalCars;
+      this.cars=[];
       this.filteredCars.forEach(el => {
-        this.cars = [];
         let available: boolean = true;
         el.reservedDates.forEach(set => {
           if (this.endDate.getTime() >= new Date(set[0]).getTime() && this.endDate.getTime() <= new Date(set[1]).getTime()){
@@ -228,9 +237,9 @@ export class CarsComponent implements OnInit {
     } else if (this.endDate && this.startDate) {
       this.cars = this.originalCars;
       this.filteredCars = this.originalCars;
+      this.cars = [];
       this.filteredCars.forEach(el => {
         this.available = true;
-        this.cars = [];
         el.reservedDates.forEach(set => {
           if ((this.startDate.getTime() <= new Date(set[0]).getTime() && this.endDate.getTime() <= new Date(set[0]).getTime()) ||
           (this.startDate.getTime() >= new Date(set[1]).getTime() && this.endDate.getTime() >= new Date(set[1]).getTime())){
