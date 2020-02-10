@@ -37,7 +37,6 @@ export class CarsComponent implements OnInit {
 
   date: Date;
   originalCars: Array<Car>;
-  filteredCars: Array<Car>;
   endDate: Date;
   startDate: Date;
   available: boolean = true;
@@ -167,22 +166,23 @@ export class CarsComponent implements OnInit {
   }
 
   loadItems(): void {
-    // switch case
-    if (this.checkIfUser()){
-      this.items = [
-        {label: 'Book now', icon: 'fa fa-edit', command: () => {
-            this.router.navigate(['/rental/reservation/'+this.selectedCar.id])
-        }}
-    ];
-    } else {
-      this.items = [
-        {label: 'Update', icon: 'pi pi-refresh', command: () => {
-            this.edit(this.selectedCar.id);
-        }},
-        {label: 'Delete', icon: 'pi pi-times', command: () => {
-            this.delete(this.selectedCar);
-        }}
-    ];
+    switch (this.checkIfUser()) {
+      case true:
+        this.items = [
+          {label: 'Book now', icon: 'fa fa-edit', command: () => {
+              this.router.navigate(['/rental/reservation/'+this.selectedCar.id])
+          }}
+      ];
+      break;
+      case false:
+        this.items = [
+          {label: 'Update', icon: 'pi pi-refresh', command: () => {
+              this.edit(this.selectedCar.id);
+          }},
+          {label: 'Delete', icon: 'pi pi-times', command: () => {
+              this.delete(this.selectedCar);
+          }}
+      ];
     }
   }
 
@@ -191,71 +191,78 @@ export class CarsComponent implements OnInit {
   }
 
   filterBookings(event): void {
-    // optimizo
     if (this.startDate && !this.endDate){
       this.cars = this.originalCars;
-      this.filteredCars = this.originalCars;
       this.cars = [];
-      this.filteredCars.forEach(el => {
-        let available: boolean = true;
-        switch (el.reservedDates.length) {
-          case 0:
-            this.cars.push(el);
-            break;
-          default:
-            el.reservedDates.forEach(set => {
-              if (this.startDate.getTime() >= new Date(set[0]).getTime() && this.startDate.getTime() <= new Date(set[1]).getTime()){
-                available = false;
-                return;
-              }
-              return;
-            })
-            if (available === true){
-              this.cars.push(el);
-            }
-            break;
-          }
-        })
+      this.filterBookingsByStartDate();
     } else if (this.endDate && !this.startDate){
       this.cars = this.originalCars;
-      this.filteredCars = this.originalCars;
       this.cars=[];
-      this.filteredCars.forEach(el => {
-        let available: boolean = true;
-        el.reservedDates.forEach(set => {
-          if (this.endDate.getTime() >= new Date(set[0]).getTime() && this.endDate.getTime() <= new Date(set[1]).getTime()){
-            available = false;
-            return;
-          }
-          return;
-        })
-        if (available === true){
-          this.cars.push(el);
-        }
-      })
+      this.filterBookingsByEndDate();
     } else if (this.endDate && this.startDate) {
       this.cars = this.originalCars;
-      this.filteredCars = this.originalCars;
       this.cars = [];
-      this.filteredCars.forEach(el => {
-        this.available = true;
-        el.reservedDates.forEach(set => {
-          if ((this.startDate.getTime() <= new Date(set[0]).getTime() && this.endDate.getTime() <= new Date(set[0]).getTime()) ||
-          (this.startDate.getTime() >= new Date(set[1]).getTime() && this.endDate.getTime() >= new Date(set[1]).getTime())){
-            this.available = true;
-          } else {
-           this.available = false;
-          }
-        })
-        if (this.available === true){
-          this.cars.push(el);
-        }
-      })
+      this.filterBookingsByBoth();
     } else {
       this.cars = this.originalCars;
     }
   } 
 
+  filterBookingsByStartDate(): void {
+    this.originalCars.forEach(el => {
+      let available: boolean = true;
+      switch (el.reservedDates.length) {
+        case 0:
+          this.cars.push(el);
+          break;
+        default:
+          el.reservedDates.forEach(set => {
+            if (this.startDate.getTime() >= new Date(set[0]).getTime() && this.startDate.getTime() <= new Date(set[1]).getTime()){
+              available = false;
+              return;
+            }
+            return;
+          })
+          if (available === true){
+            this.cars.push(el);
+          }
+          break;
+        }
+      })
+  }
+
+  filterBookingsByEndDate(): void {
+    this.originalCars.forEach(el => {
+      let available: boolean = true;
+      el.reservedDates.forEach(set => {
+        if (this.endDate.getTime() >= new Date(set[0]).getTime() && this.endDate.getTime() <= new Date(set[1]).getTime()){
+          available = false;
+          return;
+        }
+        return;
+      })
+      if (available === true){
+        this.cars.push(el);
+      }
+    })
+  }
+
+  filterBookingsByBoth(): void {
+    this.originalCars.forEach(el => {
+      this.available = true;
+      el.reservedDates.forEach(set => {
+        if ((this.startDate.getTime() <= new Date(set[0]).getTime() && this.endDate.getTime() <= new Date(set[0]).getTime()) ||
+        (this.startDate.getTime() >= new Date(set[1]).getTime() && this.endDate.getTime() >= new Date(set[1]).getTime())){
+          this.available = true;
+        } else {
+         this.available = false;
+        }
+      })
+      if (this.available === true){
+        this.cars.push(el);
+      }
+    })
+  }
   styleUnavailableDates(date: any): object {
     if (this.reservedDates.some(el => new Date(el).getTime() === new Date(date.year, date.month, date.day).getTime())) {
       return {'backgroundColor': 'red'};
@@ -293,6 +300,7 @@ export class CarsComponent implements OnInit {
   checkTodayStatus(car: Car): boolean {
     let now = new Date().getTime();
     let status = true;
+    if (car.reservedDates) {
     car.reservedDates.forEach(el => {
       if (new Date(el[0]).getTime() <= now && new Date(el[1]).getTime() >= now){
         status = false;
@@ -300,6 +308,7 @@ export class CarsComponent implements OnInit {
         status = true;
       }
     })
+  }
     return status;
   }
 }

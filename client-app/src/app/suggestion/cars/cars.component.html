@@ -2,15 +2,7 @@
 <p-progressSpinner></p-progressSpinner>
 </div>
 <div *ngIf = 'cars !== undefined'>
-<div *ngIf="!checkIfUser()">
-    <button id="add" pButton type="button" icon="fa fa-plus" [routerLink]="['/rental/car']" iconPos="left" label="Add"></button>
-</div>
-<p-dataView #dv [value]="cars" [paginator]="true" [rows]="4" paginatorPosition="top" filterBy="type"
-[sortField]="sortField" [sortOrder]="sortOrder">
-<p-header>
-    <div class="ui-helper-clearfix">
-        <div class="ui-g-12 ui-md-4">
-            <div class="ui-g-6">
+    <div class="filters">
                 <p-multiSelect [options]="itemsCategories" (click)="sortByCategory()" [(ngModel)]="selectedCategories" [panelStyle]="{minWidth:'14em'}">
                     <ng-template let-value pTemplate="selectedItems">
                         <div *ngFor="let val of value" class="ui-multiselected-item-token ui-corner-all">
@@ -24,9 +16,15 @@
                         <div style="font-size:14px;float:right">{{category.label}}</div>
                     </ng-template>
                 </p-multiSelect>
-            </div>
-            <div class="ui-g-6"><p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By" (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown></div>
-        </div>
+            <div class="sort"><p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By" (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown></div>
+    </div>
+<div *ngIf="!checkIfUser()">
+    <button id="add" pButton type="button" icon="fa fa-plus" [routerLink]="['/rental/car']" iconPos="left" label="Add"></button>
+</div>
+<p-dataView #dv [value]="cars" [paginator]="true" [rows]="4" paginatorPosition="top" filterBy="type"
+[sortField]="sortField" [sortOrder]="sortOrder">
+<p-header>
+    <div class="ui-helper-clearfix">
         <div class="ui-g">
             <div class="ui-g-6 ui-md-4">
                 Later than
@@ -50,8 +48,9 @@
                 <p-splitButton [ngStyle]='myStyle()' label="Details" icon="pi pi-file" (onDropdownClick)="selectCarToEdit($event, car)" (onClick)="selectCar($event,car)" [model]="items" icon="pi pi-search" styleClass="ui-button-secondary"></p-splitButton>
               <img id="carPhoto" src="data:image/jpeg;base64,{{car.photo}}" width="100px">
               <div id="availableDiv">
-                <img id="availableImage" *ngIf="checkTodayStatus(car)" src="../../../assets/images/general/AVAILABLE.png" alt="Availability">
-                <img id="availableImage" *ngIf="!checkTodayStatus(car)" src="../../../assets/images/general/RENTED.png" alt="Availability">
+                <img id ="availableImage" *ngIf="!checkIfUser()" src="../../../assets/images/general/{{car.availability}}.png" alt="Availability" />
+                <img id="availableImage" *ngIf="checkIfUser() && checkTodayStatus(car)" src="../../../assets/images/general/AVAILABLE.png" alt="Availability">
+                <img id="availableImage" *ngIf="checkIfUser() && !checkTodayStatus(car)" src="../../../assets/images/general/RENTED.png" alt="Availability">
             </div>
                 <div  class="ui-g" style="margin-left: 350px; margin-right: 150px; text-align: justify;">
                     <div class="ui-g-12" style="text-align: justify;">Name: <b>{{car.name}}</b></div>
@@ -68,8 +67,9 @@
         <p-panel [header]="car.name" [style]="{'text-align':'center'}">
           <img src="data:image/jpeg;base64,{{car.photo}}" width="180px">
             <div class="car-detail">{{car.year}} - {{car.type}}</div>
-            <img id="availability" *ngIf="checkTodayStatus(car)" src="../../../assets/images/general/AVAILABLE.png" alt="Availability">
-            <img id="availability" *ngIf="!checkTodayStatus(car)" src="../../../assets/images/general/RENTED.png" alt="Availability">
+            <img id ="availability" *ngIf="!checkIfUser()" src="../../../assets/images/general/{{car.availability}}.png" alt="Availability" />
+            <img id="availability" *ngIf="checkTodayStatus(car) && checkIfUser()" src="../../../assets/images/general/AVAILABLE.png" alt="Availability">
+            <img id="availability" *ngIf="!checkTodayStatus(car) && checkIfUser()" src="../../../assets/images/general/RENTED.png" alt="Availability">
             <hr class="ui-widget-content" style="border-top:0">
             <p-splitButton label="Details" icon="pi pi-file" (onDropdownClick)="selectCarToEdit($event, car)" (onClick)="selectCar($event,car)" [model]="items" icon="pi pi-search" styleClass="ui-button-primary"></p-splitButton>
         </p-panel>
@@ -99,8 +99,9 @@
 
     <div class="ui-g-4"><b>Availability: </b></div>
     <div class="ui-g-8">
-        <img id="availability" *ngIf="checkTodayStatus(selectedCar)" src="../../../assets/images/general/AVAILABLE.png" alt="Availability">
-            <img id="availability" *ngIf="!checkTodayStatus(selectedCar)" src="../../../assets/images/general/RENTED.png" alt="Availability">
+        <img id ="availability" *ngIf="!checkIfUser()" src="../../../assets/images/general/{{selectedCar.availability}}.png" alt="Availability" />
+        <img id="availability" *ngIf="checkTodayStatus(selectedCar) && checkIfUser()" src="../../../assets/images/general/AVAILABLE.png" alt="Availability">
+            <img id="availability" *ngIf="!checkTodayStatus(selectedCar && checkIfUser())" src="../../../assets/images/general/RENTED.png" alt="Availability">
     </div>
 
     <div class="ui-g-4"><b>Fuel: </b></div>

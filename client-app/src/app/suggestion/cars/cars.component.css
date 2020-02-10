@@ -72,3 +72,9 @@
 #add {
     margin-bottom: 2%;
 }
+
+.filters {
+    width: 200px;
+    border: 10px rgba(110, 109, 109, 0.925) !important;
+    padding: 5px;
+}
