@@ -23,7 +23,7 @@ export class CategoriesComponent implements OnInit {
   ngOnInit() {
     this.categories = [];
     this.cols = [
-      {field: 'photo', header: 'Photo'},
+      { field: 'photo', header: 'Photo' },
       { field: 'name', header: 'Name' },
       { field: 'description', header: 'Description' }
     ];
@@ -45,56 +45,60 @@ export class CategoriesComponent implements OnInit {
 
   save() {
     let categories = [...this.categories];
-    if (this.newCategory) {
-    let addedCategory = this.category;
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to add this category?',
-      header: 'Accept Confirmation',
-      icon: 'pi pi-info-circle',
-      accept: () => {
-        let formData = new FormData();
-        formData.append("file", addedCategory.photo);
-        formData.append('properties', new Blob([JSON.stringify({
-          "name": addedCategory.name,
-          "description": addedCategory.description
-        })], {
-          type: "application/json"
-        }));
-        return this.categoryService.save(formData).subscribe(res => {
-          this.logger.success("Success", "Category was successfully created.");
-          this.getAll();
-        }, err => {
-          this.logger.error("Error", "Category name already exists.");
+    if (this.category.name && this.category.description && this.category.photo) {
+      if (this.newCategory) {
+        let addedCategory = this.category;
+        this.confirmationService.confirm({
+          message: 'Are you sure you want to add this category?',
+          header: 'Accept Confirmation',
+          icon: 'pi pi-info-circle',
+          accept: () => {
+            let formData = new FormData();
+            formData.append("file", addedCategory.photo);
+            formData.append('properties', new Blob([JSON.stringify({
+              "name": addedCategory.name,
+              "description": addedCategory.description
+            })], {
+              type: "application/json"
+            }));
+            return this.categoryService.save(formData).subscribe(res => {
+              this.logger.success("Success", "Category was successfully created.");
+              this.getAll();
+            }, err => {
+              this.logger.error("Error", "Category name already exists.");
+            });
+          }
         });
+      } else {
+        categories[this.categories.indexOf(this.selectedCategory)] = this.category;
+        this.confirmationService.confirm({
+          message: 'Are you sure you want to save the changes?',
+          header: 'Accept Confirmation',
+          icon: 'pi pi-info-circle',
+          accept: () => {
+            let formData = new FormData();
+            formData.append("file", (categories[this.categories.indexOf(this.selectedCategory)].photo));
+            formData.append('properties', new Blob([JSON.stringify({
+              "name": categories[this.categories.indexOf(this.selectedCategory)].name,
+              "description": categories[this.categories.indexOf(this.selectedCategory)].description
+            })], {
+              type: "application/json"
+            }));
+            this.categoryService.edit(formData, categories[this.categories.indexOf(this.selectedCategory)].id).subscribe(res => {
+              this.logger.success("Success", "Data saved successfully!");
+              this.getAll();
+            }, err => {
+              this.logger.error("Error", "Category name exists.");
+            });
+          }
+        })
       }
-    });
-    }else{
-    categories[this.categories.indexOf(this.selectedCategory)] = this.category;
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to save the changes?',
-      header: 'Accept Confirmation',
-      icon: 'pi pi-info-circle',
-      accept: () => {
-        let formData = new FormData();
-        formData.append("file", (categories[this.categories.indexOf(this.selectedCategory)].photo));
-        formData.append('properties', new Blob([JSON.stringify({
-          "name": categories[this.categories.indexOf(this.selectedCategory)].name,
-          "description":  categories[this.categories.indexOf(this.selectedCategory)].description
-        })], {
-          type: "application/json"
-        }));
-        this.categoryService.edit(formData, categories[this.categories.indexOf(this.selectedCategory)].id).subscribe(res => {
-          this.logger.success("Success", "Data saved successfully!");
-          this.getAll();
-        }, err => {
-          this.logger.error("Error", "Category name exists.");
-        });
-      }
-      })
+      this.category = null;
+      this.displayDialog = false;
+    } else {
+      this.logger.warning('Warning!', 'Please make sure all fields are filled.');
+    }
   }
-  this.category = null;
-  this.displayDialog = false;
-}
 
   onRowSelect(event) {
     this.newCategory = false;

@@ -65,6 +65,8 @@ export class CarComponent implements OnInit {
 
   reset(): void {
     this.fillForm(this.car);
+    this.brand="Audi";
+    this.plate=null;
   }
 
   loadForm(): void {
