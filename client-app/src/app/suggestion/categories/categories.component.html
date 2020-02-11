@@ -32,7 +32,7 @@
               <label for="name">Name</label>
           </div>
           <div class="ui-g-8">
-              <input pInputText id="name" [(ngModel)]="category.name" autofocus required/>
+              <input pInputText id="name" [(ngModel)]="category.name" autofocus placeholder="Name"/>
           </div>
       </div>
       <div class="ui-g-12">
@@ -40,7 +40,7 @@
               <label for="description">Description</label>
           </div>
           <div class="ui-g-8">
-            <textarea placeholder="Write a brief description here..." pInputTextarea id="description" required [(ngModel)]="category.description"></textarea>
+            <textarea placeholder="Write a brief description here..." pInputTextarea id="description" placeholder = "Fill in a short description" [(ngModel)]="category.description"></textarea>
           </div>
       </div>
       <div class="ui-g-12">
@@ -54,7 +54,7 @@
   </div>
   <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
-          <button type="button" pButton icon="fa fa-close" (click)="delete()" label="Delete"></button>
+          <button  *ngIf="!newCategory" type="button" pButton icon="fa fa-close" (click)="delete()" label="Delete"></button>
           <button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
       </div>
   </p-footer>
