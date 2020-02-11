@@ -114,7 +114,7 @@ this.user = this.authService.user;
       this.reservations.forEach(el => {
         this.bookings.push({
           'user': el.user.firstName + ' ' + el.user.lastName,
-          'name': el.car.name + ' - ' + el.car.type,
+          'name': el.car.type + ' - ' + el.car.name,
           'startDate':new Date(el.startDate).getTime(),
           'endDate': new Date(el.endDate).getTime(),
           'price': (el.car.price * Math.round((Math.abs((new Date(el.endDate).getTime() - new Date(el.startDate).getTime())/(24*60*60*1000)))))

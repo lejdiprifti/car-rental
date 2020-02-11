@@ -1,5 +1,6 @@
 package com.ikubinfo.rental.service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -40,9 +41,9 @@ public class StatisticsService {
 		stats.setAvailableCars(carRepository.countCars(StatusEnum.AVAILABLE));
 		stats.setRentedCars(carRepository.countCars(StatusEnum.RENTED));
 		
-		Date today = new GregorianCalendar().getTime();
-		today.setDate(new GregorianCalendar().getTime().getDate() - 2);
-		stats.setNewBookings(reservationRepository.countNewBookings(today));
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_YEAR, -2);
+		stats.setNewBookings(reservationRepository.countNewBookings(calendar));
 		return stats;
 	}
 }

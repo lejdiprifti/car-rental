@@ -1,7 +1,7 @@
 package com.ikubinfo.rental.repository;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -29,7 +29,8 @@ public class ReservationRepository {
 	
 	@Transactional
 	public List<ReservationEntity> getAll() {
-		TypedQuery<ReservationEntity> query = em.createQuery("Select r from ReservationEntity r order by r.startDate", ReservationEntity.class);
+		TypedQuery<ReservationEntity> query = em.createQuery("Select r from ReservationEntity r where r.active=?1 order by r.startDate", ReservationEntity.class);
+		query.setParameter(1,true);
 		return query.getResultList();
 	}
 	
@@ -77,7 +78,7 @@ public class ReservationRepository {
 		}
 	}
 	
-	public Long countNewBookings(Date date) {
+	public Long countNewBookings(Calendar date) {
 		TypedQuery<Long> query = em.createQuery("Select COUNT(r.id) from ReservationEntity r where r.created_at > ?1 and r.active = ?2", Long.class);
 		query.setParameter(1, date);
 		query.setParameter(2, true);

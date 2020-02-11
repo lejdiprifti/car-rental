@@ -95,7 +95,6 @@ export class CarComponent implements OnInit {
   }
 
   submit(): void {
-    console.log(this.selectedType);
     if (this.car.id !== undefined) {
       this.confirmationService.confirm({
         message: 'Are you sure you want to save the changes?',

@@ -3,9 +3,6 @@ import { LoggerService } from '@ikubinfo/core/utilities/logger.service';
 import { ReservationService } from '@ikubinfo/core/services/reservation.service';
 import { Reservation } from '@ikubinfo/core/models/reservation';
 import { ConfirmationService } from 'primeng/primeng';
-import { Router } from '@angular/router';
-import { formatDate } from '@angular/common';
-import { AuthService } from '@ikubinfo/core/services/auth.service';
 
 @Component({
   selector: 'ikubinfo-bookings',
@@ -28,8 +25,7 @@ export class BookingsComponent implements OnInit {
   fee: number = 0;
   
   constructor(private confirmationService: ConfirmationService,
-    private reservationService: ReservationService,
-    private authService: AuthService, private logger: LoggerService) { }
+    private reservationService: ReservationService, private logger: LoggerService) { }
 
   ngOnInit() {
     this.reservations = [];
@@ -59,7 +55,6 @@ export class BookingsComponent implements OnInit {
         this.reservation.car = el.car;
         this.calculateFee();
         el.fee = Number(this.fee.toFixed(2));
-        console.log(el.car.name, this.startDate, this.startTime);
       })
       this.defineReservedDates();
     }, err => {
@@ -95,7 +90,6 @@ export class BookingsComponent implements OnInit {
   save(): void {
     let reservations = [...this.reservations];
     reservations[this.reservations.indexOf(this.selectedReservation)] = this.reservation;
-      let addedReservation = this.reservation;
       this.confirmationService.confirm({
         message: 'Are you sure you want to save this category?',
         header: 'Accept Confirmation',

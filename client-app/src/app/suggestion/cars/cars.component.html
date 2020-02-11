@@ -1,3 +1,6 @@
+<div *ngIf="!checkIfUser()">
+    <button id="add" pButton type="button" icon="fa fa-plus" [routerLink]="['/rental/car']" iconPos="left" label="Add"></button>
+</div>
 <div id="progress" *ngIf = "cars === undefined">
 <p-progressSpinner></p-progressSpinner>
 </div>
@@ -31,13 +34,10 @@
                 <p-calendar placeholder = "Pick a date"   [minDate]="startDate" [style]="{'width':'300px','margin-top':'8px'}" [(ngModel)]="endDate" (click)="filterBookings($event)" showButtonBar="true"></p-calendar>
             </div>
             <div id="results" class="ui-g-2">
-                <p>Showing {{cars.length}} results</p>
+                <p>Showing {{cars.length}} out of {{originalCars.length}} results</p>
             </div>
         </div>
     </div>
-<div *ngIf="!checkIfUser()">
-    <button id="add" pButton type="button" icon="fa fa-plus" [routerLink]="['/rental/car']" iconPos="left" label="Add"></button>
-</div>
 <p-dataView #dv [value]="cars" [paginator]="true" [rows]="4" paginatorPosition="top" filterBy="type"
 [sortField]="sortField" [sortOrder]="sortOrder">
 <p-header>
@@ -68,10 +68,10 @@
                 <img id="availableImage" *ngIf="checkIfUser() && checkTodayStatus(car)" src="../../../assets/images/general/AVAILABLE.png" alt="Availability">
                 <img id="availableImage" *ngIf="checkIfUser() && !checkTodayStatus(car)" src="../../../assets/images/general/RENTED.png" alt="Availability">
             </div>
-                <div  class="ui-g" style="margin-left: 350px; margin-right: 150px; text-align: justify;">
-                    <div class="ui-g-12" style="text-align: justify;">Name: <b>{{car.name}}</b></div>
-                    <div class="ui-g-12" style="text-align: justify;">Year: <b>{{car.year}}</b></div>
-                    <div class="ui-g-12" style="text-align: justify;">Brand: <b>{{car.type}}</b></div>
+                <div  class="ui-g" style="margin-left: 35%; text-align: justify;">
+                    <div class="ui-g-12">Name: <b>{{car.name}}</b></div>
+                    <div class="ui-g-12">Year: <b>{{car.year}}</b></div>
+                    <div class="ui-g-12">Brand: <b>{{car.type}}</b></div>
                 </div>
                 <hr>
             </div>

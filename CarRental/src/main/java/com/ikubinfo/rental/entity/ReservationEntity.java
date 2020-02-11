@@ -1,6 +1,7 @@
 package com.ikubinfo.rental.entity;
 
 import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -14,32 +15,32 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="reservation", schema="rental")
+@Table(name = "reservation", schema = "rental")
 public class ReservationEntity {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
-	
+
 	@ManyToOne
-	@JoinColumn(name="user_id")
+	@JoinColumn(name = "user_id")
 	private UserEntity user;
-	
+
 	@ManyToOne
-	@JoinColumn(name="car_id")
+	@JoinColumn(name = "car_id")
 	private CarEntity car;
-	
+
 	private LocalDateTime startDate;
-	
+
 	private LocalDateTime endDate;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date created_at;
-	
-	private boolean active; 
-	
+	private Calendar created_at;
+
+	private boolean active;
+
 	public ReservationEntity() {
-		
+
 	}
 
 	public Long getId() {
@@ -66,7 +67,6 @@ public class ReservationEntity {
 		this.car = car;
 	}
 
-	
 	public LocalDateTime getStartDate() {
 		return startDate;
 	}
@@ -91,11 +91,11 @@ public class ReservationEntity {
 		this.active = active;
 	}
 
-	public Date getCreated_at() {
+	public Calendar getCreated_at() {
 		return created_at;
 	}
 
-	public void setCreated_at(Date created_at) {
+	public void setCreated_at(Calendar created_at) {
 		this.created_at = created_at;
 	}
 
@@ -105,7 +105,4 @@ public class ReservationEntity {
 				+ ", active=" + active + "]";
 	}
 
-	
-
-	
 }

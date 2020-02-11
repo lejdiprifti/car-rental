@@ -1,6 +1,7 @@
 package com.ikubinfo.rental.service;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -80,7 +81,7 @@ public class ReservationService {
 			ReservationEntity entity = new ReservationEntity();
 			entity.setStartDate(model.getStartDate());
 			entity.setEndDate(model.getEndDate());
-			entity.setCreated_at(new GregorianCalendar().getTime());
+			entity.setCreated_at(Calendar.getInstance());
 			entity.setActive(true);
 			CarEntity car = carRepository.getById(model.getCarId());
 			entity.setCar(car);
@@ -104,7 +105,7 @@ public class ReservationService {
 			try {
 				entity.setStartDate(model.getStartDate());
 				entity.setEndDate(model.getEndDate());
-				entity.setCreated_at(new GregorianCalendar().getTime());
+				entity.setCreated_at(Calendar.getInstance());
 				reservationRepository.edit(entity);
 			} catch (NoResultException e) {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Reservation was not found.");
