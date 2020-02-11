@@ -22,8 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ikubinfo.rental.model.ReservationModel;
 import com.ikubinfo.rental.service.ReservationService;
 
-import freemarker.template.TemplateException;
-
 @RestController
 @RequestMapping(path="/reservations", produces="application/json")
 @CrossOrigin("http://localhost:4200")
@@ -37,7 +35,7 @@ public class ReservationResource {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<ReservationModel>> getAll(){
+	public ResponseEntity<List<ReservationModel>> getAll() throws MessagingException{
 		return new ResponseEntity<List<ReservationModel>>(reservationService.getAll(),HttpStatus.OK);
 	}
 	
@@ -52,7 +50,7 @@ public class ReservationResource {
 	}
 	@PostMapping(consumes="application/json")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void save(@RequestBody ReservationModel model) throws MessagingException, IOException, TemplateException {
+	public void save(@RequestBody ReservationModel model) throws MessagingException, IOException {
 		reservationService.save(model);
 	}
 	

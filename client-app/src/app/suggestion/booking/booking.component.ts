@@ -88,7 +88,7 @@ export class BookingComponent implements OnInit {
     this.reservation.fee = this.bookingForm.get('fee').value;
     this.reservation.endDate = new Date(Date.UTC(this.endDate.getFullYear(), this.endDate.getMonth(), this.endDate.getDate(), this.endTime.getHours(), this.endTime.getMinutes()));
     this.reservationService.add(this.reservation).subscribe(res => {
-      this.logger.success('Success', 'You reserved the car from ' + formatDate(this.reservation.startDate, 'dd-mm-yyyy hh:mm', 'en-US', 'UTC') +' until '+formatDate(this.reservation.endDate, 'dd-mm-yyyy hh-mm', 'en-US', 'UTC'));
+      this.logger.success('Success', 'You reserved the car from ' + formatDate(this.reservation.startDate, 'dd-MM-yyyy hh:mm', 'en-US', 'UTC') +' until '+formatDate(this.reservation.endDate, 'dd-MM-yyyy hh:mm', 'en-US', 'UTC'));
       this.router.navigate(['/rental/cars']);
     }, err=> {
       this.logger.error('Error', err.error.message);
@@ -99,32 +99,9 @@ export class BookingComponent implements OnInit {
 
   calculateFee(): void {
     if (this.startDate && this.endDate && this.startTime && this.endTime) {
-      let start = formatDate(this.startTime, 'hh:mm:a', 'en-US');
-      let end = formatDate(this.endTime, 'hh:mm:a', 'en-US');
-      let startArray = start.split(':');
-      let endArray = end.split(':');
-      let startTiming: number;
-      if (startArray[2] === 'PM'){
-        if (startArray[0] !== '12') {
-        startTiming = ((Number(startArray[0])+12 * 3600) + (Number(startArray[1])*60)) * 1000;
-        } else {
-          startTiming = ((Number(startArray[0]) * 3600) + (Number(startArray[1])*60)) * 1000;
-        }
-      } else {
-        startTiming = ((Number(startArray[0]) * 3600) + (Number(startArray[1])*60)) * 1000;
-      }
-
-      let endTiming: number;
-      if (endArray[2] === 'PM'){
-        if (endArray[0] !== '12') {
-        endTiming = ((Number(endArray[0])+12 * 3600) + (Number(endArray[1])*60)) * 1000;
-        } else {
-          endTiming = ((Number(endArray[0]) * 3600) + (Number(endArray[1])*60)) * 1000;
-        }
-      } else {
-        endTiming = ((Number(endArray[0]) * 3600) + (Number(endArray[1])*60)) * 1000;
-        }
-      let fee = ((this.endDate.getTime() + endTiming) - (this.startDate.getTime() + startTiming)) * (this.car.price / 86400000);
+      let startDate = new Date(Date.UTC(this.startDate.getFullYear(), this.startDate.getMonth(), this.startDate.getDate(), this.startTime.getHours(), this.startTime.getMinutes()));
+      let endDate = new Date(Date.UTC(this.endDate.getFullYear(), this.endDate.getMonth(), this.endDate.getDate(), this.endTime.getHours(), this.endTime.getMinutes()));
+      let fee = ((endDate.getTime() - startDate.getTime()) * (this.car.price / 86400000));
       this.bookingForm.get('fee').setValue(fee.toFixed(2));
     }
   }

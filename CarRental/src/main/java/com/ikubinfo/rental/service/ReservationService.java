@@ -2,8 +2,10 @@ package com.ikubinfo.rental.service;
 
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.persistence.NoResultException;
@@ -17,13 +19,12 @@ import com.ikubinfo.rental.converter.ReservationConverter;
 import com.ikubinfo.rental.entity.CarEntity;
 import com.ikubinfo.rental.entity.ReservationEntity;
 import com.ikubinfo.rental.entity.StatusEnum;
+import com.ikubinfo.rental.model.Mail;
 import com.ikubinfo.rental.model.ReservationModel;
 import com.ikubinfo.rental.repository.CarRepository;
 import com.ikubinfo.rental.repository.ReservationRepository;
 import com.ikubinfo.rental.repository.UserRepository;
 import com.ikubinfo.rental.security.JwtTokenUtil;
-
-import freemarker.template.TemplateException;
 
 @Service
 public class ReservationService {
@@ -49,11 +50,13 @@ public class ReservationService {
 	@Autowired
 	private EmailService emailService;
 	
+	final Locale locale = new Locale("something");
+	
 	public ReservationService() {
 		
 	}
 	
-	public List<ReservationModel> getAll(){
+	public List<ReservationModel> getAll() throws MessagingException{
 			authorizationService.isUserAuthorized();
 			return reservationConverter.toModel(reservationRepository.getAll());
 	}
@@ -75,7 +78,7 @@ public class ReservationService {
 	}
 	
 	
-	public void save(ReservationModel model) throws MessagingException, IOException, TemplateException {
+	public void save(ReservationModel model) throws MessagingException, IOException {
 		if (model.getEndDate().isAfter(model.getStartDate())) {
 		if (reservationRepository.checkIfAvailable(model.getCarId(), model.getStartDate(), model.getEndDate()) == true) {
 			ReservationEntity entity = new ReservationEntity();
@@ -87,7 +90,8 @@ public class ReservationService {
 			entity.setCar(car);
 			entity.setUser(userRepository.getByUsername(jwtTokenUtil.getUsername()));
 			reservationRepository.save(entity);
-			emailService.sendEmailTo(entity, model.getFee());
+			Mail mail = setMailProperties(entity, model.getFee());
+			emailService.prepareAndSend(mail);
 			car.setAvailability(StatusEnum.RENTED);
 			carRepository.edit(car);
 		} else {
@@ -127,5 +131,24 @@ public class ReservationService {
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Reservation was not found.");
 		}
+	}
+	
+	
+	public Mail setMailProperties(ReservationEntity reservation, double fee) {
+		Mail mail = new Mail();
+		mail.setFrom("ikubinfo.car.rentals@gmail.com");
+		Map<String, Object> content = new HashMap<String, Object>();
+		content.put("name", reservation.getUser().getFirstName() + ' ' + reservation.getUser().getLastName());
+		content.put("carName", reservation.getCar().getName());
+		content.put("carBrand", reservation.getCar().getType());
+		content.put("carPlate", reservation.getCar().getPlate());
+		content.put("price", fee);
+		content.put("startDate", reservation.getStartDate());
+		content.put("endDate", reservation.getEndDate());
+		content.put("signature", "Car Rentals Albania");
+		content.put("location", "Papa Gjon Pali 3rd St. , Tirana, Albania");
+		mail.setContent(content);
+		mail.setSubject("Receipt Confirmation");
+		return mail;
 	}
 }

@@ -188,7 +188,7 @@ export class CarsComponent implements OnInit {
     this.router.navigate(['/rental/reservation/'+this.selectedCar.id]);
   }
 
-  filterBookings(event): void {
+  filterBookings(): void {
     if (this.startDate && !this.endDate){
       this.cars = this.originalCars;
       this.cars = [];
@@ -313,9 +313,7 @@ export class CarsComponent implements OnInit {
     car.reservedDates.forEach(el => {
       if (new Date(el[0]).getTime() <= now && new Date(el[1]).getTime() >= now){
         status = false;
-      } else {
-        status = true;
-      }
+        }
     })
   }
     return status;

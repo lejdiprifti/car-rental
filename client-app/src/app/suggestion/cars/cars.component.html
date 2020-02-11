@@ -27,11 +27,11 @@
         </div>
             <div class="ui-g-3">
                From
-                <p-calendar placeholder = "Pick a date" [minDate]="today" [maxDate]="endDate" [style]="{'width':'300px','margin-top':'8px'}" [(ngModel)]="startDate" (click)="filterBookings($event)" showButtonBar="true"></p-calendar>
+                <p-calendar placeholder = "Pick a date" [minDate]="today" [maxDate]="endDate" [style]="{'width':'300px','margin-top':'8px'}" [(ngModel)]="startDate" (click)="filterBookings()" showButtonBar="true"></p-calendar>
             </div>
             <div class="ui-g-3">
                 Until
-                <p-calendar placeholder = "Pick a date"   [minDate]="startDate" [style]="{'width':'300px','margin-top':'8px'}" [(ngModel)]="endDate" (click)="filterBookings($event)" showButtonBar="true"></p-calendar>
+                <p-calendar placeholder = "Pick a date"   [minDate]="startDate" [style]="{'width':'300px','margin-top':'8px'}" [(ngModel)]="endDate" (click)="filterBookings()" showButtonBar="true"></p-calendar>
             </div>
             <div id="results" class="ui-g-2">
                 <p>Showing {{cars.length}} out of {{originalCars.length}} results</p>
