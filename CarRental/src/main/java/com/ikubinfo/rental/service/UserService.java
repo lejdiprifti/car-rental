@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.ikubinfo.rental.converter.UserConverter;
 import com.ikubinfo.rental.entity.RoleEntity;
 import com.ikubinfo.rental.entity.UserEntity;
+import com.ikubinfo.rental.model.ReservationModel;
 import com.ikubinfo.rental.model.UserModel;
 import com.ikubinfo.rental.repository.UserRepository;
 import com.ikubinfo.rental.security.JwtTokenUtil;
@@ -125,6 +126,11 @@ public class UserService {
 		logger.info("Deleting user.");
 		UserEntity entity = userRepository.getByUsername(jwtTokenUtil.getUsername());
 		entity.setActive(false);
+		List<ReservationModel> resList = reservationService.getByUsername();
+		for (ReservationModel res : resList) {
+			res.setActive(false);
+			reservationService.cancel(res.getId());
+		}
 		userRepository.edit(entity);
 		} else {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User has active reservations.");
