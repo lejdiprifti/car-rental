@@ -262,11 +262,9 @@ export class CarsComponent implements OnInit {
         let end = new Date(set[1]);
         let startDate = new Date(start.getFullYear(), start.getMonth(), start.getDate());
         let endDate = new Date(end.getFullYear(), end.getMonth(), end.getDate());
-        if ((this.startDate.getTime() < startDate.getTime() && this.endDate.getTime() < startDate.getTime()) ||
-        (this.startDate.getTime() > endDate.getTime() && this.endDate.getTime() > endDate.getTime())){
-          console.log('eshte true');
-        } else {
-         this.available = false;
+        if (!((this.startDate.getTime() < startDate.getTime() && this.endDate.getTime() < startDate.getTime()) ||
+        (this.startDate.getTime() > endDate.getTime() && this.endDate.getTime() > endDate.getTime()))){
+          this.available = false;
         }
       })
       if (this.available === true){
