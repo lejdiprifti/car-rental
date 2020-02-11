@@ -56,8 +56,8 @@
             </tr>
             <tr>
                 <th *ngFor="let col of columns" [ngSwitch]="col.field">
-                    <input *ngSwitchCase="'user'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, 'contains')">
-                    <input *ngSwitchCase="'name'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, 'contains')">
+                    <input *ngSwitchCase="'user'" pInputText placeholder="Search by user name" type="text" (input)="dt.filter($event.target.value, col.field, 'contains')">
+                    <input *ngSwitchCase="'name'" pInputText placeholder = "Search by car name" type="text" (input)="dt.filter($event.target.value, col.field, 'contains')">
                     <div *ngSwitchCase="'startDate'">
                         Later than
                         <p-calendar placeholder = "Pick a date" [style]="{'width':'350px','margin-top':'8px'}" [(ngModel)]="date" (click)="filterBookings($event)" showButtonBar="true"></p-calendar>
