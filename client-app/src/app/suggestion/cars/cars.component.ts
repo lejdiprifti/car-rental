@@ -138,7 +138,7 @@ export class CarsComponent implements OnInit {
           this.logger.success('Success', 'Car was deleted successfully!');
           this.loadCars();
         }, err => {
-          this.logger.error('Error', 'Car could not be deleted.');
+          this.logger.error('Error', err.error.message);
         })
       }
     })

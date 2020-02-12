@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.ikubinfo.rental.config.ActiveReservationsException;
 import com.ikubinfo.rental.converter.CarConverter;
 import com.ikubinfo.rental.entity.CarEntity;
 import com.ikubinfo.rental.model.CarModel;
@@ -159,11 +160,14 @@ public class CarService {
 	public void delete(Long id) {
 		authorizationService.isUserAuthorized();
 		try {
+			hasActiveReservations(id);
 			CarEntity entity = carRepository.getById(id);
 			entity.setActive(false);
 			carRepository.edit(entity);
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Car not found.");
+		} catch (ActiveReservationsException e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot delete car because it has active reservations.");
 		}
 		}
 	public void checkIfExists(String plate, Long id) throws Exception {
@@ -180,5 +184,11 @@ public class CarService {
 		} catch (NoResultException e) {
 			logger.info("No car exists with the plate provided.");
 		}
+	}
+	
+	public void hasActiveReservations(Long carId) throws ActiveReservationsException {
+			if (reservationRepository.countActiveReservationsByCar(carId) > 0) {
+				throw new ActiveReservationsException("Car has still active reservations.");
+			}
 	}
 }
