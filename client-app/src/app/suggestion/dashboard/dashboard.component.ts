@@ -19,7 +19,10 @@ import { Statistics } from '@ikubinfo/core/models/statistics';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  events: any[];
+  events: {
+    events: any[], 
+    textColor: string
+  };
   options: any;
   reservations: Array<Reservation>;
   bookings: Array<any>;
@@ -45,7 +48,10 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
 this.user = this.authService.user;
-    this.events = [];
+this.events =  {
+  events: [],  
+  textColor: 'white'
+};
     this.bookings= [];
     this.reservations = [];
     this.loadEvents();
@@ -97,7 +103,7 @@ this.user = this.authService.user;
       this.reservationService.getAll().subscribe(res=>{
         this.reservations = res;
         this.reservations.forEach(el => {
-          this.events.push({
+          this.events.events.push({
             'title': el.user.firstName + ' '+ el.user.lastName + ' - ' + el.car.name + ' '+ el.car.type,
             'start': el.startDate,
             'end': el.endDate
