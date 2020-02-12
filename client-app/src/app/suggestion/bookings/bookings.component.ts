@@ -83,7 +83,6 @@ export class BookingsComponent implements OnInit {
     this.startTime = this.startDate;
     this.endTime = this.endDate;
     this.price = r.car.price;
-    console.log(r);
     this.calculateFee();
     return reservation;
   }
@@ -113,7 +112,7 @@ export class BookingsComponent implements OnInit {
 
   calculateFee(): void {
     if (this.startDate && this.endDate && this.startTime && this.endTime) {
-      this.fee = ((this.endDate.getTime()) - (this.startDate.getTime())) * (this.price / 86400000);
+      this.fee = Number((((this.endDate.getTime()) - (this.startDate.getTime())) * (this.price / 86400000)).toFixed(2));
     }
   }
 

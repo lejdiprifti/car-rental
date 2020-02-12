@@ -27,21 +27,25 @@
 
 <p-dialog header="Category Details" [(visible)]="displayDialog" [focusOnShow]="false" [responsive]="true" showEffect="fade" [modal]="true"  [style]="{width: '400px'}">
   <div class="ui-g ui-fluid" *ngIf="category">
+      <form role="form" [formGroup]="categoryForm">
       <div class="ui-g-12">
           <div class="ui-g-4">
               <label for="name">Name</label>
           </div>
           <div class="ui-g-8">
-              <input pInputText id="name" [(ngModel)]="category.name" autofocus placeholder="Name"/>
-          </div>
+              <input formControlName="name" pInputText id="name" [(ngModel)]="category.name" autofocus placeholder="Name"/>
+              <p class="error" *ngIf="categoryForm.get('name').dirty && categoryForm.get('name').hasError('required')">*Please, fill in the name.</p>
+            </div>
       </div>
       <div class="ui-g-12">
           <div class="ui-g-4">
               <label for="description">Description</label>
           </div>
           <div class="ui-g-8">
-            <textarea placeholder="Write a brief description here..." pInputTextarea id="description" placeholder = "Fill in a short description" [(ngModel)]="category.description"></textarea>
-          </div>
+            <textarea formControlName="description" placeholder="Write a brief description here..." pInputTextarea id="description" placeholder = "What's this about?" [(ngModel)]="category.description"></textarea>
+            <p class="error" *ngIf="categoryForm.get('description').dirty && categoryForm.get('description').hasError('required')">*Please, fill in a description.</p>
+            <p class="error" *ngIf="categoryForm.get('description').dirty && (categoryForm.get('description').hasError('minlength') || categoryForm.get('description').hasError('maxlength'))">*Please, write 50 up to 255 characters only.</p>
+        </div>
       </div>
       <div class="ui-g-12">
         <div class="ui-g-4">
@@ -51,11 +55,12 @@
             <input type="file" id="photo" [(ngModel)]="category.photo" (change)="uploadFile($event)" />
         </div>
     </div>
+</form>
   </div>
   <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
           <button  *ngIf="!newCategory" type="button" pButton icon="fa fa-close" (click)="delete()" label="Delete"></button>
-          <button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
+          <button type="button" [disabled]="categoryForm.invalid" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
       </div>
   </p-footer>
 </p-dialog>

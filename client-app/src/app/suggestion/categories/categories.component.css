@@ -7,3 +7,8 @@
     width: 219px;
     height: 180px;
 }
+
+.error {
+    font-size: 10px;
+    color:red;
+}
