@@ -1,7 +1,7 @@
-<div id="progress" *ngIf = "reservations === undefinied">
+<div id="progress" *ngIf = "!reservations">
   <p-progressSpinner></p-progressSpinner>
   </div>
-  <div *ngIf="reservations.length > 0">
+  <div *ngIf="reservations">
 <p-table [columns]="cols" [value]="reservations" selectionMode="single" [(selection)]="selectedReservation" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="5">
   <ng-template pTemplate="caption">
       List of reservations

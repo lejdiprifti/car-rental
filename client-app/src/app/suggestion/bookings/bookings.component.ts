@@ -23,12 +23,12 @@ export class BookingsComponent implements OnInit {
   reservedDates: Array<Date>;
   minDate : Date;
   fee: number = 0;
+  price : number;
   
   constructor(private confirmationService: ConfirmationService,
     private reservationService: ReservationService, private logger: LoggerService) { }
 
   ngOnInit() {
-    this.reservations = [];
     this.reservation= {};
     this.getMyReservations();
     this.cols = [
@@ -52,7 +52,7 @@ export class BookingsComponent implements OnInit {
         this.endDate = new Date(el.endDate);
         this.endTime = new Date(el.endDate);
         this.reservation = {};
-        this.reservation.car = el.car;
+        this.price = el.car.price;
         this.calculateFee();
         el.fee = Number(this.fee.toFixed(2));
       })
@@ -82,7 +82,8 @@ export class BookingsComponent implements OnInit {
     this.endDate = new Date(r.endDate);
     this.startTime = this.startDate;
     this.endTime = this.endDate;
-    this.reservation.car = r.car;
+    this.price = r.car.price;
+    console.log(r);
     this.calculateFee();
     return reservation;
   }
@@ -112,7 +113,7 @@ export class BookingsComponent implements OnInit {
 
   calculateFee(): void {
     if (this.startDate && this.endDate && this.startTime && this.endTime) {
-      this.fee = ((this.endDate.getTime()) - (this.startDate.getTime())) * (this.reservation.car.price / 86400000);
+      this.fee = ((this.endDate.getTime()) - (this.startDate.getTime())) * (this.price / 86400000);
     }
   }
 

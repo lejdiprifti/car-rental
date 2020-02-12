@@ -1,10 +1,10 @@
 <div *ngIf="!checkIfUser()">
     <button id="add" pButton type="button" icon="fa fa-plus" [routerLink]="['/rental/car']" iconPos="left" label="Add"></button>
 </div>
-<div id="progress" *ngIf = "cars === undefined">
+<div id="progress" *ngIf = "!cars">
 <p-progressSpinner></p-progressSpinner>
 </div>
-<div *ngIf = 'cars !== undefined'>
+<div *ngIf = 'cars'>
     <div class="filters">
     <div class="ui-g">
         <div class="ui-g-2">
