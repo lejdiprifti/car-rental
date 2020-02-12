@@ -128,7 +128,7 @@ this.events =  {
       })
     }
 
-    filterBookings(event): void {
+    filterBookings(): void {
       if (this.date && !this.endDate){
       this.bookings = this.filteredBookings;
       this.bookings = this.bookings.filter(el => this.date.getTime() < new Date(el.startDate).getTime())

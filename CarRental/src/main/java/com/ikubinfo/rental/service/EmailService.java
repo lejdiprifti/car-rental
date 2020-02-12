@@ -1,5 +1,8 @@
 package com.ikubinfo.rental.service;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,19 +25,16 @@ public class EmailService {
 	private JavaMailSender mailSender;
 	
 	@Autowired
-	private MailContentBuilder mailBuilder;
-	
-	@Autowired
 	private SpringTemplateEngine springTemplateEngine;
 
 	public EmailService() {
 
 	}
 
-	public void prepareAndSend(Mail mail) {
+	public void prepareAndSend(Mail mail) throws MessagingException {
 		logger.info("TRYING TO SEND MAIL");
-	    MimeMessagePreparator messagePreparator = mimeMessage -> {
-	        MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+		MimeMessage message = mailSender.createMimeMessage();
+	        MimeMessageHelper messageHelper = new MimeMessageHelper(message, true);
 	        Context context = new Context();
 	        context.setVariables(mail.getContent());
 	        messageHelper.addAttachment("logo.png", new ClassPathResource("car-rentals.png"));
@@ -43,11 +43,6 @@ public class EmailService {
 	        messageHelper.setSubject(mail.getSubject());	        
 	        String html = springTemplateEngine.process("mailTemplate", context);
 	        messageHelper.setText(html, true);
-	    };
-	    try {
-	        mailSender.send(messagePreparator);
-	    } catch (MailException e) {
-	        // runtime exception; compiler will not force you to handle it
-	    }
+	        mailSender.send(message);
 	}
 }

@@ -19,6 +19,6 @@ public class SpringMailConfig {
 	public String build(String message) {
 		Context context = new Context();
 		context.setVariable("message", message);
-		return templateEngine.process("mail/mailTemplate", context);
+		return templateEngine.process("mailTemplate", context);
 	}
 }

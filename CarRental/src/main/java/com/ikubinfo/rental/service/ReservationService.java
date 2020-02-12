@@ -50,8 +50,6 @@ public class ReservationService {
 	@Autowired
 	private EmailService emailService;
 	
-	final Locale locale = new Locale("something");
-	
 	public ReservationService() {
 		
 	}
@@ -148,6 +146,7 @@ public class ReservationService {
 		content.put("signature", "Car Rentals Albania");
 		content.put("location", "Papa Gjon Pali 3rd St. , Tirana, Albania");
 		mail.setContent(content);
+		mail.setTo(reservation.getUser().getEmail());
 		mail.setSubject("Receipt Confirmation");
 		return mail;
 	}
