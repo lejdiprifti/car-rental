@@ -59,7 +59,7 @@
     </div>
     </ikubinfo-input>
     <ikubinfo-input label="Category">
-      <select class="custom-select"  formControlName="category" placeholder="Category">
+      <select class="custom-select"  formControlName="category">
         <option value="" disabled>Choose the category</option>
         <option *ngFor="let cat of categories" [ngValue]="cat.id">{{cat.name}}</option>
       </select>
@@ -71,8 +71,8 @@
         <input type="text" pKeyFilter="money" formControlName="price" pInputText placeholder="Price">   
         <span class="ui-inputgroup-addon">.00</span>      
       </div>
+      <p class="error" *ngIf="carForm.get('price').dirty && carForm.get('price').hasError('required')">*Please, fill in the price per day.</p>
     </div>
-    <p class="error" *ngIf="carForm.get('price').dirty && carForm.get('price').hasError('required')">*Please, fill in the price per day.</p>
   </ikubinfo-input>
   <ikubinfo-input label="Availability">
     <div class="form-group">

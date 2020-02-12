@@ -84,10 +84,11 @@ export class CarComponent implements OnInit {
     this.carForm.get('description').setValue(data.description);
     this.carForm.get('year').setValue(data.year);
     this.carForm.get('diesel').setValue(data.diesel);
-    this.carForm.get('category').setValue(data.category.id);
+    this.carForm.get('category').setValue(data.categoryId);
     this.carForm.get('brand').setValue(data.type);
     this.carForm.get('plate').setValue(data.plate);
     this.carForm.get('availability').setValue(data.availability);
+    this.carForm.get('price').setValue(data.price);
   }
   
   edit(): void {
