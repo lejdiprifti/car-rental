@@ -1,10 +1,10 @@
 package com.ikubinfo.rental.service;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.mail.MessagingException;
@@ -134,6 +134,7 @@ public class ReservationService {
 	
 	public Mail setMailProperties(ReservationEntity reservation, double fee) {
 		Mail mail = new Mail();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 		mail.setFrom("ikubinfo.car.rentals@gmail.com");
 		Map<String, Object> content = new HashMap<String, Object>();
 		content.put("name", reservation.getUser().getFirstName() + ' ' + reservation.getUser().getLastName());
@@ -141,8 +142,8 @@ public class ReservationService {
 		content.put("carBrand", reservation.getCar().getType());
 		content.put("carPlate", reservation.getCar().getPlate());
 		content.put("price", fee);
-		content.put("startDate", reservation.getStartDate());
-		content.put("endDate", reservation.getEndDate());
+		content.put("startDate", reservation.getStartDate().format(formatter));
+		content.put("endDate", reservation.getEndDate().format(formatter));
 		content.put("signature", "Car Rentals Albania");
 		content.put("location", "Papa Gjon Pali 3rd St. , Tirana, Albania");
 		mail.setContent(content);
