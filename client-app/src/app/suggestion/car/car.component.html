@@ -8,7 +8,6 @@
     <ikubinfo-input label="Photo">
     <div class="form-group">
      <input type="file" formControlName="photo" class="form-control input-underline input-lg" (change)="uploadFile($event)" />
-     <p class="error" *ngIf="carForm.get('photo').dirty && carForm.get('photo').hasError('required')">*Please, select a photo.</p>
     </div>
     </ikubinfo-input>
     <ikubinfo-input label="Name">
@@ -19,7 +18,7 @@
       </ikubinfo-input>
     <ikubinfo-input label="Brand">
       <div class="form-group">
-      <p-dropdown [options]="brands" [ngModelOptions]="{standalone: true}" [(ngModel)]="brand" filter="true">
+      <p-dropdown [options]="brands" formControlName="brand" filter="true">
         <ng-template let-item pTemplate="selectedItem">
             <img src="assets/images/car logos/{{item.label}}.png" style="width:16px;vertical-align:middle" />
             <span style="vertical-align:middle; margin-left: .5em">{{item.label}}</span>
@@ -49,7 +48,8 @@
     </ikubinfo-input>
     <ikubinfo-input label="Plate">
     <div class="form-group">
-      <p-inputMask mask="aa-999-aa" [ngModelOptions]="{standalone: true}" [(ngModel)]="plate" placeholder="AA-BBB-CC"></p-inputMask>
+      <p-inputMask mask="aa-999-aa" formControlName="plate" placeholder="AA-BBB-CC"></p-inputMask>
+      <p class="error" *ngIf="carForm.get('plate').dirty && (carForm.get('plate').hasError('required') || carForm.get('plate').hasError('minlength'))">*Please, fill in a valid car plate.</p>
     </div>
     </ikubinfo-input>
     <ikubinfo-input label="Description">
@@ -76,7 +76,7 @@
   </ikubinfo-input>
   <ikubinfo-input label="Availability">
     <div class="form-group">
-      <p-selectButton [ngModelOptions]="{standalone: true}" (click)="checkSelected()" [options]="types" [(ngModel)]="selectedType"></p-selectButton>
+      <p-selectButton [options]="types" formControlName="availability"></p-selectButton>
     </div>
 </ikubinfo-input>
 </div>

@@ -23,11 +23,8 @@ export class CarComponent implements OnInit {
   categories: Array<Category>;
   diesels: Array<string>;
   editable: boolean;
-  selectedType: string = 'AVAILABLE';
-  brand: string = "Audi";
   blockSpecial: RegExp = /^[^:>#*]+|([^:>#*][^>#*]+[^:>#*])$/ ;
   types: SelectItem[];
-  plate: string;
   constructor(private fb: FormBuilder, private router: Router, private confirmationService: ConfirmationService,
     private carService: CarService, private categoryService: CategoryService,
      private active: ActivatedRoute, private logger: LoggerService) { }
@@ -65,8 +62,6 @@ export class CarComponent implements OnInit {
 
   reset(): void {
     this.fillForm(this.car);
-    this.brand="Audi";
-    this.plate=null;
   }
 
   loadForm(): void {
@@ -77,7 +72,10 @@ export class CarComponent implements OnInit {
       year: [{value:'', disabled:this.editable}, [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
       diesel: [{value:'', disabled:this.editable}, Validators.required],
       category: [{value:'', disabled:this.editable}, Validators.required],
-      price: [{value:'', disabled:this.editable}, Validators.required]
+      price: [{value:'', disabled:this.editable}, Validators.required],
+      brand: ['', Validators.required],
+      plate: ['', [Validators.required, Validators.minLength(7)]],
+      availability: ['', Validators.required]
     })
   }
 
@@ -87,9 +85,9 @@ export class CarComponent implements OnInit {
     this.carForm.get('year').setValue(data.year);
     this.carForm.get('diesel').setValue(data.diesel);
     this.carForm.get('category').setValue(data.category.id);
-    this.plate = data.plate;
-    this.selectedType = data.availability.toString();
-    this.brand = data.type;
+    this.carForm.get('brand').setValue(data.type);
+    this.carForm.get('plate').setValue(data.plate);
+    this.carForm.get('availability').setValue(data.availability);
   }
   
   edit(): void {
@@ -108,12 +106,12 @@ export class CarComponent implements OnInit {
           formData.append('model', new Blob([JSON.stringify({
             "name": this.carForm.get('name').value,
             "description": this.carForm.get('description').value,
-            "type": this.brand,
+            "type": this.carForm.get('brand').value,
             "diesel": this.carForm.get('diesel').value,
             "categoryId": this.carForm.get('category').value,
-            "availability": this.selectedType,
+            "availability": this.carForm.get('availability').value,
             "year": this.carForm.get('year').value,
-            "plate": this.plate,
+            "plate": this.carForm.get('plate').value,
             "price": this.carForm.get('price').value
           })], {
             type: "application/json"
@@ -138,18 +136,18 @@ export class CarComponent implements OnInit {
           formData.append("properties", new Blob([JSON.stringify({
             "name": this.carForm.get('name').value,
             "description": this.carForm.get('description').value,
-            "type": this.brand,
+            "type": this.carForm.get('brand').value,
             "diesel": this.carForm.get('diesel').value,
             "categoryId": this.carForm.get('category').value,
-            "availability": this.selectedType,
+            "availability": this.carForm.get('availability').value,
             "year": this.carForm.get('year').value,
-            "plate":this.plate,
+            "plate": this.carForm.get('plate').value,
             "price": this.carForm.get('price').value
           })], {
             type: "application/json"
           }));
           return this.carService.add(formData).subscribe(res => {
-            this.router.navigate(['rental/dashboard']);
+            this.router.navigate(['rental/cars']);
             this.logger.success("Success", "Car was successfully created.");
           }, err => {
             this.logger.error("Error", "Car name already exists.");
@@ -169,10 +167,10 @@ export class CarComponent implements OnInit {
         this.carForm.get('year').setValue(this.car.year);
         this.carForm.get('diesel').setValue(this.car.diesel);
         this.carForm.get('category').setValue(this.car.categoryId);
-        this.brand = this.car.type;
-        this.plate = this.car.plate;
+        this.carForm.get('brand').setValue(this.car.type);
+        this.carForm.get('availability').setValue(this.car.availability);
         this.carForm.get('price').setValue(this.car.price);
-        this.selectedType = this.car.availability.toString();
+        this.carForm.get('plate').setValue(this.car.plate);
       },
         err => {
           this.logger.error("Error", "Something bad happened.");
