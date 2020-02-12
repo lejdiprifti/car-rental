@@ -117,7 +117,7 @@
     <div class="ui-g-8">
         <img id ="availability" *ngIf="!checkIfUser()" src="../../../assets/images/general/{{selectedCar.availability}}.png" alt="Availability" />
         <img id="availability" *ngIf="checkTodayStatus(selectedCar) && checkIfUser()" src="../../../assets/images/general/AVAILABLE.png" alt="Availability">
-            <img id="availability" *ngIf="!checkTodayStatus(selectedCar && checkIfUser())" src="../../../assets/images/general/RENTED.png" alt="Availability">
+            <img id="availability" *ngIf="!checkTodayStatus(selectedCar) && checkIfUser()" src="../../../assets/images/general/RENTED.png" alt="Availability">
     </div>
 
     <div class="ui-g-4"><b>Fuel: </b></div>
