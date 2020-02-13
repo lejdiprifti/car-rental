@@ -1,5 +1,6 @@
 package com.ikubinfo.rental.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -33,14 +34,14 @@ public class CarRepository {
 	
 	@Transactional
 	public List<CarEntity> getAll() {
-		TypedQuery<CarEntity> query = em.createQuery("Select c from CarEntity c where c.active =?1", CarEntity.class);
+		TypedQuery<CarEntity> query = em.createQuery("Select c from CarEntity c where c.active =?1 ORDER BY c.id ASC", CarEntity.class);
 		query.setParameter(1,true);
 		return query.getResultList();
 	}
 	
 	@Transactional
 	public List<CarEntity> getAllAvailable(){
-		TypedQuery<CarEntity> query = em.createQuery("Select c from CarEntity c where c.availability<>?1 and c.active = ?2", CarEntity.class);
+		TypedQuery<CarEntity> query = em.createQuery("Select c from CarEntity c where c.availability<>?1 and c.active = ?2 ORDER BY c.id ASC", CarEntity.class);
 		query.setParameter(1, StatusEnum.SERVIS);
 		query.setParameter(2, true);
 		return query.getResultList();
@@ -79,6 +80,12 @@ public class CarRepository {
 		em.merge(entity);
 	}
 	
+	public Long countRentedCars() {
+		TypedQuery<Long> query = em.createQuery("Select COUNT(DISTINCT r.car.id) from ReservationEntity r where r.startDate <= ?1 and r.endDate >= ?1 and r.active = ?2", Long.class);
+		query.setParameter(1, LocalDateTime.now());
+		query.setParameter(2, true);
+		return query.getSingleResult();
+	}
 	
 	public void checkIfExistsAnother(String plate, Long id) throws NoResultException {
 		TypedQuery<String> query = em.createQuery("Select c.plate from CarEntity c where c.plate = ?1 and c.id != ?2 and c.active = ?3", String.class);

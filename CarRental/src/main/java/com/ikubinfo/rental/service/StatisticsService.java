@@ -39,10 +39,10 @@ public class StatisticsService {
 		StatisticsModel stats = new StatisticsModel();
 		stats.setActiveUsers(userRepository.countActiveUsers());
 		stats.setAvailableCars(carRepository.countCars(StatusEnum.AVAILABLE));
-		stats.setRentedCars(carRepository.countCars(StatusEnum.RENTED));
+		stats.setRentedCars(carRepository.countRentedCars());
 		
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DAY_OF_YEAR, -2);
+		calendar.add(Calendar.DAY_OF_YEAR, -1);
 		stats.setNewBookings(reservationRepository.countNewBookings(calendar));
 		return stats;
 	}

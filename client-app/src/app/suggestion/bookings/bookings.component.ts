@@ -33,7 +33,7 @@ export class BookingsComponent implements OnInit {
     this.getMyReservations();
     this.cols = [
       {field: 'photo', header: 'Photo'},
-      { field: 'name', header: 'Car' },
+      { field: 'car.type', header: 'Car' },
       { field: 'startDate', header: 'Start Date'},
       {field: 'endDate', header: 'End Date'},
       {field: 'fee', header: 'Total Fee'}

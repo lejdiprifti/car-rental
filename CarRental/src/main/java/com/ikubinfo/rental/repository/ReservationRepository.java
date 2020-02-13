@@ -32,8 +32,6 @@ public class ReservationRepository {
 		TypedQuery<ReservationEntity> query = em.createQuery(
 				"Select r from ReservationEntity r where r.active=?1 order by r.startDate", ReservationEntity.class);
 		query.setParameter(1, true);
-		query.setFirstResult(0);
-		query.setMaxResults(10);
 		return query.getResultList();
 	}
 

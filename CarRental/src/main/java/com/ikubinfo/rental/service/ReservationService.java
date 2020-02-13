@@ -91,8 +91,6 @@ public class ReservationService {
 			reservationRepository.save(entity);
 			Mail mail = setMailProperties(entity, model.getFee());
 			emailService.prepareAndSend(mail, entity.getCar().getPhoto());
-			car.setAvailability(StatusEnum.RENTED);
-			carRepository.edit(car);
 		} else {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Chosen car is not available.");
 		}

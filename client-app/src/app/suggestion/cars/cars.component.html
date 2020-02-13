@@ -8,7 +8,7 @@
     <div class="filters">
     <div class="ui-g">
         <div class="ui-g-2">
-            <p>Filter results by:</p>
+            <p><b>Filter results by:</b></p>
                 </div>
         <div class="ui-g-2">
                 <p-multiSelect [options]="itemsCategories" (click)="sortByCategory()" [(ngModel)]="selectedCategories" [panelStyle]="{minWidth:'14em'}">
@@ -64,9 +64,7 @@
                 <p-splitButton [ngStyle]='myStyle()' label="Details" icon="pi pi-file" (onDropdownClick)="selectCarToEdit($event, car)" (onClick)="selectCar($event,car)" [model]="items" icon="pi pi-search" styleClass="ui-button-secondary"></p-splitButton>
               <img id="carPhoto" src="data:image/jpeg;base64,{{car.photo}}" width="100px">
               <div id="availableDiv">
-                <img id ="availableImage" *ngIf="!checkIfUser()" src="../../../assets/images/general/{{car.availability}}.png" alt="Availability" />
-                <img id="availableImage" *ngIf="checkIfUser() && checkTodayStatus(car)" src="../../../assets/images/general/AVAILABLE.png" alt="Availability">
-                <img id="availableImage" *ngIf="checkIfUser() && !checkTodayStatus(car)" src="../../../assets/images/general/RENTED.png" alt="Availability">
+                <img id="availableImage" src="../../../assets/images/general/{{checkTodayStatus(car)}}.png" alt="Availability">
             </div>
                 <div  class="ui-g" style="margin-left: 35%; text-align: justify;">
                     <div class="ui-g-12">Name: <b>{{car.name}}</b></div>
@@ -83,9 +81,7 @@
         <p-panel [header]="car.name" [style]="{'text-align':'center'}">
           <img src="data:image/jpeg;base64,{{car.photo}}" width="180px">
             <div class="car-detail">{{car.year}} - {{car.type}}</div>
-            <img id ="availability" *ngIf="!checkIfUser()" src="../../../assets/images/general/{{car.availability}}.png" alt="Availability" />
-            <img id="availability" *ngIf="checkTodayStatus(car) && checkIfUser()" src="../../../assets/images/general/AVAILABLE.png" alt="Availability">
-            <img id="availability" *ngIf="!checkTodayStatus(car) && checkIfUser()" src="../../../assets/images/general/RENTED.png" alt="Availability">
+            <img id="availableImage" src="../../../assets/images/general/{{checkTodayStatus(car)}}.png" alt="Availability">
             <hr class="ui-widget-content" style="border-top:0">
             <p-splitButton label="Details" icon="pi pi-file" (onDropdownClick)="selectCarToEdit($event, car)" (onClick)="selectCar($event,car)" [model]="items" icon="pi pi-search" styleClass="ui-button-primary"></p-splitButton>
         </p-panel>
@@ -115,9 +111,7 @@
 
     <div class="ui-g-4"><b>Availability: </b></div>
     <div class="ui-g-8">
-        <img id ="availability" *ngIf="!checkIfUser()" src="../../../assets/images/general/{{selectedCar.availability}}.png" alt="Availability" />
-        <img id="availability" *ngIf="checkTodayStatus(selectedCar) && checkIfUser()" src="../../../assets/images/general/AVAILABLE.png" alt="Availability">
-            <img id="availability" *ngIf="!checkTodayStatus(selectedCar) && checkIfUser()" src="../../../assets/images/general/RENTED.png" alt="Availability">
+        <img id="popUpImage" src="../../../assets/images/general/{{checkTodayStatus(selectedCar)}}.png" alt="Availability">
     </div>
 
     <div class="ui-g-4"><b>Fuel: </b></div>

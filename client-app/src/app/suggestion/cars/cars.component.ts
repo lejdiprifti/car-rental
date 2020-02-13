@@ -10,6 +10,7 @@ import { User } from '@ikubinfo/core/models/user';
 import { AuthService } from '@ikubinfo/core/services/auth.service';
 import { CategoryService } from '@ikubinfo/core/services/category.service';
 import { Category } from '@ikubinfo/core/models/category';
+import { Status } from '@ikubinfo/core/models/status.enum';
 @Component({
   selector: 'ikubinfo-cars',
   templateUrl: './cars.component.html',
@@ -306,16 +307,33 @@ export class CarsComponent implements OnInit {
     }
   }
 
-  checkTodayStatus(car: Car): boolean {
-    let now = new Date().getTime();
-    let status = true;
-    if (car.reservedDates) {
-    car.reservedDates.forEach(el => {
-      if (new Date(el[0]).getTime() <= now && new Date(el[1]).getTime() >= now){
-        status = false;
-        }
-    })
-  }
-    return status;
-  }
+  checkTodayStatus(car: Car): string {
+    switch (this.user.role.id) {
+      case 1 :
+        if (car.availability.toString() == 'RENTED' || car.availability.toString() == 'AVAILABLE') {
+          let now = new Date().getTime();
+        let status = "AVAILABLE";
+        if (car.reservedDates) {
+        car.reservedDates.forEach(el => {
+          if (new Date(el[0]).getTime() <= now && new Date(el[1]).getTime() >= now){
+            status = "RENTED";
+            }
+        })
+      }
+        return status;
+    } 
+      return "SERVIS";
+      case 2 :
+        let now = new Date().getTime();
+        let status = "AVAILABLE";
+        if (car.reservedDates) {
+        car.reservedDates.forEach(el => {
+          if (new Date(el[0]).getTime() <= now && new Date(el[1]).getTime() >= now){
+            status = "RENTED";
+            }
+        })
+      }
+        return status;
+      }
+    }
 }

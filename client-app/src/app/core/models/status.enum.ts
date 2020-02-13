@@ -1,5 +1,5 @@
 export enum Status {
-    AVAILABLE = 1,
-    RENTED = 2,
-    SERVIS = 3
+    AVAILABLE = 0,
+    RENTED = 1,
+    SERVIS = 2
 }

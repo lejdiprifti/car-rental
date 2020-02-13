@@ -10,7 +10,8 @@
       <tr>
           <th *ngFor="let col of columns" [pSortableColumn]="col.field">
               {{col.header}}
-              <p-sortIcon [field]="col.field"></p-sortIcon>
+              <p-sortIcon *ngIf="col.field !== 'car.type'" [field]="col.field"></p-sortIcon>
+              <p-sortIcon *ngIf="col.field === 'car.type'" [field]="col.field"></p-sortIcon>
           </th>
       </tr>
   </ng-template>
@@ -18,8 +19,7 @@
       <tr [pSelectableRow]="rowData">
           <td *ngFor="let col of columns">
             <img id="categoryPhoto" *ngIf="col.field === 'photo'" src="data:image/jpeg;base64,{{rowData['car'].photo}}" />
-            <p *ngIf="col.field === 'name'"> {{rowData['car'].name}}</p>
-            <p *ngIf="col.field === 'type'"> {{rowData['car'].type}}</p>
+            <p *ngIf="col.field === 'car.type'"> {{rowData['car'].type}} {{rowData['car'].name}}</p>
             <p *ngIf="col.field === 'startDate' || col.field === 'endDate'">{{rowData[col.field] | date: 'medium'}}</p>
             <p *ngIf="col.field === 'fee'">{{rowData[col.field]}}</p>
           </td>
