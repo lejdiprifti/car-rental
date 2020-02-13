@@ -181,7 +181,7 @@ export class CategoriesComponent implements OnInit {
         this.getAll();
       },
       err => {
-        this.logger.error("Error", "Category could not be deleted.");
+        this.logger.error("Error", err.error.message);
       }
     );
   }

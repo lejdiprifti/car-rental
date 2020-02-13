@@ -35,7 +35,7 @@ public class ReservationResource {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<ReservationModel>> getAll() throws MessagingException{
+	public ResponseEntity<List<ReservationModel>> getAll(){
 		return new ResponseEntity<List<ReservationModel>>(reservationService.getAll(),HttpStatus.OK);
 	}
 	

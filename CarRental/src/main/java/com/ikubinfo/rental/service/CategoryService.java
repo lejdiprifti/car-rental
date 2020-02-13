@@ -105,7 +105,7 @@ public class CategoryService {
 				}
 			} else {
 				throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED,
-						"You are not allowed to perform this action.");
+						"Category cannot be deleted as it has cars registered in it.");
 			}
 		}
 
@@ -116,8 +116,6 @@ public class CategoryService {
 				logger.error("Category already exists.");
 				throw new Exception("Category already exists.");
 			} else {
-				// when you need to update the category, check if there is another category with
-				// the same name not the one being updated.
 				catRepository.checkIfExistsAnother(name, id);
 				throw new Exception("Category already exists.");
 			}

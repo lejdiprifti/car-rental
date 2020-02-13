@@ -11,6 +11,7 @@ import javax.mail.MessagingException;
 import javax.persistence.NoResultException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -54,7 +55,7 @@ public class ReservationService {
 		
 	}
 	
-	public List<ReservationModel> getAll() throws MessagingException{
+	public List<ReservationModel> getAll(){
 			authorizationService.isUserAuthorized();
 			return reservationConverter.toModel(reservationRepository.getAll());
 	}
@@ -89,7 +90,7 @@ public class ReservationService {
 			entity.setUser(userRepository.getByUsername(jwtTokenUtil.getUsername()));
 			reservationRepository.save(entity);
 			Mail mail = setMailProperties(entity, model.getFee());
-			emailService.prepareAndSend(mail);
+			emailService.prepareAndSend(mail, entity.getCar().getPhoto());
 			car.setAvailability(StatusEnum.RENTED);
 			carRepository.edit(car);
 		} else {

@@ -52,7 +52,7 @@
             <label for="photo">Photo</label>
         </div>
         <div class="ui-g-8">
-            <input type="file" id="photo" [(ngModel)]="category.photo" (change)="uploadFile($event)" />
+            <input type="file" id="photo" [(ngModel)]="category.photo" [ngModelOptions]="{standalone: true}" (change)="uploadFile($event)" />
         </div>
     </div>
 </form>

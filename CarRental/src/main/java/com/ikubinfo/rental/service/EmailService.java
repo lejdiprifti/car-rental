@@ -6,11 +6,11 @@ import javax.mail.internet.MimeMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.mail.MailException;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -31,18 +31,20 @@ public class EmailService {
 
 	}
 
-	public void prepareAndSend(Mail mail) throws MessagingException {
+	public void prepareAndSend(Mail mail, byte[] imageBytes) throws MessagingException {
 		logger.info("TRYING TO SEND MAIL");
 		MimeMessage message = mailSender.createMimeMessage();
 	        MimeMessageHelper messageHelper = new MimeMessageHelper(message, true);
 	        Context context = new Context();
 	        context.setVariables(mail.getContent());
-	        messageHelper.addAttachment("logo.png", new ClassPathResource("car-rentals.png"));
-	        messageHelper.setFrom("ikubinfo.car.rentals@gmail.com");
-	        messageHelper.setTo(mail.getTo());
-	        messageHelper.setSubject(mail.getSubject());	        
 	        String html = springTemplateEngine.process("mailTemplate", context);
 	        messageHelper.setText(html, true);
+	        messageHelper.addAttachment("logo.png", new ClassPathResource("car-rentals.png"), "image/png");
+	        messageHelper.setFrom("ikubinfo.car.rentals@gmail.com");
+	        messageHelper.setTo(mail.getTo());
+	        messageHelper.setSubject(mail.getSubject());	
+	        final InputStreamSource imageSource = new ByteArrayResource(imageBytes);
+			messageHelper.addInline("imageResourceName", imageSource, "image/jpg");
 	        mailSender.send(message);
 	}
 }

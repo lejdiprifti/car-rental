@@ -10,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,14 +32,17 @@ public class ReservationRepository {
 		TypedQuery<ReservationEntity> query = em.createQuery(
 				"Select r from ReservationEntity r where r.active=?1 order by r.startDate", ReservationEntity.class);
 		query.setParameter(1, true);
+		query.setFirstResult(0);
+		query.setMaxResults(10);
 		return query.getResultList();
 	}
 
 	@Transactional
 	public ReservationEntity getById(Long id) throws NoResultException {
-		TypedQuery<ReservationEntity> query = em.createQuery("Select r from ReservationEntity r where r.id=?1",
+		TypedQuery<ReservationEntity> query = em.createQuery("Select r from ReservationEntity r where r.id=?1 and r.active=?2",
 				ReservationEntity.class);
 		query.setParameter(1, id);
+		query.setParameter(2, true);
 		return query.getSingleResult();
 	}
 
@@ -71,14 +75,15 @@ public class ReservationRepository {
 
 	@Transactional
 	public boolean checkIfAvailable(Long carId, LocalDateTime startDate, LocalDateTime endDate) {
-		TypedQuery<ReservationEntity> query = em.createQuery(
-				"Select r from ReservationEntity r where r.car.id = ?1 and r.startDate < ?2 and ?2 < r.endDate and r.endDate < ?3 and ?3 < r.startDate and r.active= ?4",
-				ReservationEntity.class);
+		TypedQuery<Long> query = em.createQuery(
+				"Select COUNT(r.id) from ReservationEntity r where r.car.id = ?1 and ((r.startDate >= ?2 and r.endDate >= ?3) or (r.startDate >= ?2 and r.endDate <= ?3)"
+				+ "or (r.startDate <= ?2 and r.endDate >= ?3)) and r.active= ?4",
+				Long.class);
 		query.setParameter(1, carId);
 		query.setParameter(2, startDate);
 		query.setParameter(3, endDate);
 		query.setParameter(4, true);
-		if (query.getResultList().size() > 0) {
+		if (query.getSingleResult() > 0) {
 			return false;
 		} else {
 			return true;

@@ -37,7 +37,7 @@
   }" [events]="events"  [plugins]="calendarPlugins"></full-calendar>
 </div>
 <div id="dataview" class="ui-g-12">
-    <p-table #dt [columns]="cols" [value]="bookings" [paginator]="true" [rows]="10">
+    <p-table #dt [columns]="cols" [value]="reservations" [paginator]="true" [rows]="10">
         <ng-template pTemplate="caption">
             <div style="text-align: left;">
                 <i class="fa fa-car" style="margin-left: 2px;"></i>
@@ -57,7 +57,7 @@
             <tr>
                 <th *ngFor="let col of columns" [ngSwitch]="col.field">
                     <input *ngSwitchCase="'user'" pInputText placeholder="Search by user name" type="text" (input)="dt.filter($event.target.value, col.field, 'contains')">
-                    <input *ngSwitchCase="'name'" pInputText placeholder = "Search by car name" type="text" (input)="dt.filter($event.target.value, col.field, 'contains')">
+                    <input *ngSwitchCase="'car'" pInputText placeholder = "Search by car name" type="text" (input)="dt.filter($event.target.value, 'car.name', 'contains')">
                     <div *ngSwitchCase="'startDate'">
                         Later than
                         <p-calendar placeholder = "Pick a date" [style]="{'width':'350px','margin-top':'8px'}" [(ngModel)]="date" (click)="filterBookings()" showButtonBar="true"></p-calendar>
@@ -75,7 +75,9 @@
         <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr [pSelectableRow]="rowData">
                 <td *ngFor="let col of columns">
-                   <p *ngIf="col.field !== 'startDate' && col.field !== 'endDate'"> {{rowData[col.field]}}</p>
+                    <p *ngIf="col.field === 'user'">{{rowData[col.field].firstName}} {{rowData[col.field].lastName}}</p>
+                   <p *ngIf="col.field === 'car'">{{rowData[col.field].type}} {{rowData[col.field].name}}</p>
+                   <p *ngIf="col.field === 'price'">{{calculateFee(rowData.car, rowData.startDate, rowData.endDate)}}</p>
                    <p *ngIf="col.field === 'startDate' || col.field === 'endDate'">{{rowData[col.field] | date: 'medium'}}</p>
                 </td>
             </tr>

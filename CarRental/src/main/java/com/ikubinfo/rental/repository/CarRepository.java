@@ -56,7 +56,7 @@ public class CarRepository {
 	
 	@Transactional
 	public List<CarEntity> getByCategory(Long categoryId) {
-		TypedQuery<CarEntity> query = em.createQuery("Select c from CarEntity c where c.category = ?1 and c.active =?2",CarEntity.class);
+		TypedQuery<CarEntity> query = em.createQuery("Select c from CarEntity c where c.category.id = ?1 and c.active =?2",CarEntity.class);
 		query.setParameter(1, categoryId);
 		query.setParameter(2, true);
 		return query.getResultList();

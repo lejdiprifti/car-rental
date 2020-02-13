@@ -96,6 +96,7 @@ export class CarComponent implements OnInit {
   }
 
   submit(): void {
+    if (this.car.photo) {
     if (this.car.id !== undefined) {
       this.confirmationService.confirm({
         message: 'Are you sure you want to save the changes?',
@@ -156,7 +157,10 @@ export class CarComponent implements OnInit {
         }
       });
     }
+  } else {
+    this.logger.warning('Warning!', 'Please select a photo for this car!');
   }
+}
  
   loadData(): void {
     const id = this.active.snapshot.paramMap.get('id');
