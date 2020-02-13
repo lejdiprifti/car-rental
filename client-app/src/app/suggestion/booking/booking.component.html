@@ -4,10 +4,7 @@
   <img src="data:image/jpeg;base64,{{car.photo}}">
   <ikubinfo-input label="Car">
     <div class="form-group">
-      <select class="custom-select" formControlName="car" placeholder="Car">
-        <option value="" disabled>Choose the car</option>
-        <option *ngFor="let car of cars" [ngValue]="car.id">{{car.name}} - {{car.type}}</option>
-      </select>
+     <input type="text" pInputText formControlName="car" placeholder="Car name"/>
     </div>
   </ikubinfo-input>
 
