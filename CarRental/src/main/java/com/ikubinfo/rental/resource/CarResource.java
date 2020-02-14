@@ -62,7 +62,7 @@ public class CarResource {
 	
 	@PutMapping(path="/{id}", consumes = {"multipart/form-data", "application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void edit(@RequestPart CarModel model, @PathVariable("id") Long id, @PathParam("file") MultipartFile file) {
+	public void edit(@RequestPart("properties") CarModel model,@PathParam("file") MultipartFile file, @PathVariable("id") Long id) {
 		carService.edit(model,file, id);
 	}
 

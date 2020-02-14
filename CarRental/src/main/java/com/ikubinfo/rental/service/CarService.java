@@ -2,6 +2,7 @@ package com.ikubinfo.rental.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.NoResultException;
 
@@ -15,8 +16,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.ikubinfo.rental.config.ActiveReservationsException;
 import com.ikubinfo.rental.config.CarAlreadyExistsException;
+import com.ikubinfo.rental.config.NonValidDataException;
 import com.ikubinfo.rental.converter.CarConverter;
 import com.ikubinfo.rental.entity.CarEntity;
+import com.ikubinfo.rental.entity.StatusEnum;
 import com.ikubinfo.rental.model.CarModel;
 import com.ikubinfo.rental.model.ReservedDates;
 import com.ikubinfo.rental.repository.CarRepository;
@@ -86,28 +89,20 @@ public class CarService {
 	public void save(CarModel model, MultipartFile file) {
 		authorizationService.isUserAuthorized();
 		try {
+			validateCarData(model, file);
 			saveIfAvailable(model.getPlate());
 			CarEntity entity = new CarEntity();
 			entity.setAvailability(model.getAvailability());
 			entity.setActive(true);
-			entity.setName(model.getName());
+			entity.setName(model.getName().trim());
 			entity.setPhoto(file.getBytes());
-			entity.setDescription(model.getDescription());
-			entity.setDiesel(model.getDiesel());
-			entity.setPlate(model.getPlate());
+			entity.setDescription(model.getDescription().trim());
+			entity.setDiesel(model.getDiesel().trim());
+			entity.setPlate(model.getPlate().trim());
 			entity.setCategory(categoryRepository.getById(model.getCategoryId()));
-			if (model.getPrice() > 0) {
-				entity.setPrice(model.getPrice());
-			} else {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Price cannot be negative.");
-
-			}
-			if (model.getYear() > 0) {
-				entity.setYear(model.getYear());
-			} else {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Year cannot be null/negative.");
-			}
-			entity.setType(model.getType());
+			entity.setPrice(model.getPrice());
+			entity.setYear(model.getYear());
+			entity.setType(model.getType().trim());
 			carRepository.save(entity);
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
@@ -116,44 +111,29 @@ public class CarService {
 		} catch (IOException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
 					"Something bad happened. Please, try again later.");
+		} catch (NonValidDataException e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 	}
 
 	public void edit(CarModel model, MultipartFile file, Long id) {
 		authorizationService.isUserAuthorized();
 		try {
+			validateCarData(model, file);
+			updateIfAvailable(model.getPlate(), id);
 			CarEntity entity = carRepository.getById(id);
-			if (model.getPlate() != null) {
-				updateIfAvailable(model.getPlate(), id);
-				entity.setPlate(model.getPlate());
-			}
-			if (model.getName() != null) {
-				entity.setName(model.getName());
-			}
+			entity.setPlate(model.getPlate().trim());
+			entity.setName(model.getName().trim());
 			if (file != null) {
 				entity.setPhoto(file.getBytes());
 			}
-			if (model.getPrice() > 0) {
-				entity.setPrice(model.getPrice());
-			}
-			if (model.getType() != null) {
-				entity.setType(model.getType());
-			}
-			if (model.getDescription() != null) {
-				entity.setDescription(model.getDescription());
-			}
-			if (model.getAvailability() != null) {
-				entity.setAvailability(model.getAvailability());
-			}
-			if (model.getDiesel() != null) {
-				entity.setDiesel(model.getDiesel());
-			}
-			if (model.getCategoryId() != null) {
-				entity.setCategory(categoryRepository.getById(model.getCategoryId()));
-			}
-			if (model.getYear() > 0) {
-				entity.setYear(model.getYear());
-			}
+			entity.setPrice(model.getPrice());
+			entity.setType(model.getType().trim());
+			entity.setDescription(model.getDescription().trim());
+			entity.setAvailability(model.getAvailability());
+			entity.setDiesel(model.getDiesel().trim());
+			entity.setCategory(categoryRepository.getById(model.getCategoryId()));
+			entity.setYear(model.getYear());
 			carRepository.edit(entity);
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Car/Category not found.");
@@ -162,6 +142,8 @@ public class CarService {
 		} catch (IOException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
 					"Something bad happened. Please, try again later.");
+		} catch (NonValidDataException e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 	}
 
@@ -201,6 +183,43 @@ public class CarService {
 	public void hasActiveReservations(Long carId) throws ActiveReservationsException {
 		if (reservationRepository.countActiveReservationsByCar(carId) > 0) {
 			throw new ActiveReservationsException("Car has still active reservations.");
+		}
+	}
+
+	public void validateCarData(CarModel model, MultipartFile file) throws NonValidDataException {
+		if (model.getName().trim() == "") {
+			throw new NonValidDataException("Name is required.");
+		}
+		if (model.getDescription().trim() == "" || model.getDescription().length() > 10000) {
+			throw new NonValidDataException("Description is required.");
+		}
+		if (model.getAvailability() == null) {
+			throw new NonValidDataException("Availability is required.");
+		}
+		if (model.getDiesel().trim() == "") {
+			throw new NonValidDataException("Diesel is required.");
+		}
+		if (model.getPlate().trim() == "") {
+			throw new NonValidDataException("Plate is required.");
+		}
+		if (model.getPrice() < 0) {
+			throw new NonValidDataException("Price must be positive.");
+		}
+		if (model.getYear() < 1769) {
+			throw new NonValidDataException("Year must contain a valid value.");
+		}
+		if (file == null) {
+			if (model.getId() == null) {
+				throw new NonValidDataException("Photo is required.");
+			}
+		} else if (file.getSize() > 100000) {
+			throw new NonValidDataException("Photo needs to be less than 100Kb.");
+		}
+		if (model.getType() == "") {
+			throw new NonValidDataException("Brand is required.");
+		}
+		if (!model.getAvailability().equals(StatusEnum.AVAILABLE) && !model.getAvailability().equals(StatusEnum.SERVIS) ) {
+			throw new NonValidDataException("Availability is required.");
 		}
 	}
 }

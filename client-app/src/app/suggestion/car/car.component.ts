@@ -8,7 +8,6 @@ import { Car } from '@ikubinfo/core/models/car';
 import { CategoryService } from '@ikubinfo/core/services/category.service';
 import { Category } from '@ikubinfo/core/models/category';
 import { Status } from '@ikubinfo/core/models/status.enum';
-
 @Component({
   selector: 'ikubinfo-car',
   templateUrl: './car.component.html',
@@ -96,7 +95,7 @@ export class CarComponent implements OnInit {
   }
 
   submit(): void {
-    if (this.car.photo) {
+    if (this.file) {
     if (this.car.id !== undefined) {
       this.confirmationService.confirm({
         message: 'Are you sure you want to save the changes?',
@@ -104,14 +103,15 @@ export class CarComponent implements OnInit {
         icon: 'pi pi-info-circle',
         accept: () => {
           let formData = new FormData();
-          formData.append("file", (this.carForm.get('photo').value || this.car.photo));
-          formData.append('model', new Blob([JSON.stringify({
+          formData.append("file", (this.file));
+          formData.append("properties", new Blob([JSON.stringify({
+            "id": this.car.id,
             "name": this.carForm.get('name').value,
             "description": this.carForm.get('description').value,
-            "type": this.carForm.get('brand').value,
+            "type": this.carForm.get('brand').value || "Audi",
             "diesel": this.carForm.get('diesel').value,
             "categoryId": this.carForm.get('category').value,
-            "availability": this.carForm.get('availability').value,
+            "availability": this.carForm.get('availability').value || Status.AVAILABLE,
             "year": this.carForm.get('year').value,
             "plate": this.carForm.get('plate').value,
             "price": this.carForm.get('price').value
@@ -129,19 +129,19 @@ export class CarComponent implements OnInit {
     }
     else {
       this.confirmationService.confirm({
-        message: 'Are you sure you want to add this category?',
+        message: 'Are you sure you want to add this car?',
         header: 'Accept Confirmation',
         icon: 'pi pi-info-circle',
         accept: () => {
           let formData = new FormData();
-          formData.append("file", (this.carForm.get('photo').value || this.car.photo));
+          formData.append("file", (this.file));
           formData.append("properties", new Blob([JSON.stringify({
             "name": this.carForm.get('name').value,
             "description": this.carForm.get('description').value,
-            "type": this.carForm.get('brand').value,
+            "type": this.carForm.get('brand').value || "Audi",
             "diesel": this.carForm.get('diesel').value,
             "categoryId": this.carForm.get('category').value,
-            "availability": this.carForm.get('availability').value,
+            "availability": this.carForm.get('availability').value || Status.AVAILABLE,
             "year": this.carForm.get('year').value,
             "plate": this.carForm.get('plate').value,
             "price": this.carForm.get('price').value
@@ -167,6 +167,7 @@ export class CarComponent implements OnInit {
     if (id) {
       this.carService.getById(Number(id)).subscribe(res => {
         this.car = res;
+        this.file = this.car.photo;
         this.carForm.get('name').setValue(this.car.name);
         this.carForm.get('description').setValue(this.car.description);
         this.carForm.get('year').setValue(this.car.year);
@@ -185,11 +186,8 @@ export class CarComponent implements OnInit {
 
   uploadFile(event) {
     if (event.target.files.length > 0 && event.target.files[0].size < 100000) {
-      const file = event.target.files[0];
-      this.car.photo = file;
-      this.carForm.get('photo').setValue(file);
+      this.file = event.target.files[0];
     } else {
-      event.target.files[0] = null;
       this.logger.warning('Warning!', 'Please, insert a photo under 100 KB.')
     }
   }
