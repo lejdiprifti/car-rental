@@ -28,9 +28,12 @@ public class ReservationRepository {
 	}
 
 	@Transactional
-	public List<ReservationEntity> getAll() {
-		TypedQuery<ReservationEntity> query = em.createQuery(
-				"Select r from ReservationEntity r where r.active=?1 order by r.startDate", ReservationEntity.class);
+	public List<Object[]> getAll() {
+		Query query = em.createQuery(
+				"Select r.id, r.startDate, r.endDate, c.id, c.name, c.type, c.price, u.id, u.firstName, u.lastName from ReservationEntity r "
+				+ "Join CarEntity c ON c.id = r.car "
+				+ "Join UserEntity u ON u.id = r.user "
+				+ "where r.active=?1 order by r.startDate");
 		query.setParameter(1, true);
 		return query.getResultList();
 	}
@@ -45,10 +48,12 @@ public class ReservationRepository {
 	}
 
 	@Transactional
-	public List<ReservationEntity> getByUser(String username) throws NoResultException {
-		TypedQuery<ReservationEntity> query = em.createQuery(
-				"Select r from ReservationEntity r where r.user.username = ?1 and r.active = ?2 Order by r.created_at DESC",
-				ReservationEntity.class);
+	public List<Object[]> getByUser(String username) throws NoResultException {
+		Query query = em.createQuery(
+				"Select r.id, r.startDate, r.endDate, c.id, c.name, c.type, c.price, u.id, u.firstName, u.lastName, c.photo from ReservationEntity r "
+				+ "Join CarEntity c ON c.id = r.car "
+				+ "Join UserEntity u ON u.id = r.user "
+				+ "where u.username = ?1 and r.active = ?2 Order by r.created_at DESC");
 		query.setParameter(1, username);
 		query.setParameter(2, true);
 		return query.getResultList();

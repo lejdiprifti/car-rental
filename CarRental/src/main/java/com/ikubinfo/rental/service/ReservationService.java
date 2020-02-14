@@ -57,11 +57,11 @@ public class ReservationService {
 	
 	public List<ReservationModel> getAll(){
 			authorizationService.isUserAuthorized();
-			return reservationConverter.toModel(reservationRepository.getAll());
+			return reservationConverter.toModelObject(reservationRepository.getAll());
 	}
 	
 	public List<ReservationModel> getByUsername(){
-		return reservationConverter.toModel(reservationRepository.getByUser(jwtTokenUtil.getUsername()));
+		return reservationConverter.toModelObject(reservationRepository.getByUser(jwtTokenUtil.getUsername()));
 	}
 	
 	public ReservationModel getById(Long id) {

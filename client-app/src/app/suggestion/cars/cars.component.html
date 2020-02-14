@@ -81,7 +81,7 @@
         <p-panel [header]="car.name" [style]="{'text-align':'center'}">
           <img src="data:image/jpeg;base64,{{car.photo}}" width="180px">
             <div class="car-detail">{{car.year}} - {{car.type}}</div>
-            <img id="availableImage" src="../../../assets/images/general/{{checkTodayStatus(car)}}.png" alt="Availability">
+            <img id="availability" src="../../../assets/images/general/{{checkTodayStatus(car)}}.png" alt="Availability">
             <hr class="ui-widget-content" style="border-top:0">
             <p-splitButton label="Details" icon="pi pi-file" (onDropdownClick)="selectCarToEdit($event, car)" (onClick)="selectCar($event,car)" [model]="items" icon="pi pi-search" styleClass="ui-button-primary"></p-splitButton>
         </p-panel>
@@ -111,7 +111,7 @@
 
     <div class="ui-g-4"><b>Availability: </b></div>
     <div class="ui-g-8">
-        <img id="popUpImage" src="../../../assets/images/general/{{checkTodayStatus(selectedCar)}}.png" alt="Availability">
+        <img id="availability" src="../../../assets/images/general/{{checkTodayStatus(selectedCar)}}.png" alt="Availability">
     </div>
 
     <div class="ui-g-4"><b>Fuel: </b></div>

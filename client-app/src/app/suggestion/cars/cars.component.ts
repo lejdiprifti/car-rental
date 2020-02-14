@@ -119,7 +119,6 @@ export class CarsComponent implements OnInit {
       this.logger.error('Error', 'Cars could not be found.');
     })
   }
-
   selectCarToEdit(event: Event, car: Car){
     this.selectedCar = car;
     event.preventDefault();
@@ -165,15 +164,15 @@ export class CarsComponent implements OnInit {
   }
 
   loadItems(): void {
-    switch (this.checkIfUser()) {
-      case true:
+    switch (this.user.role.id) {
+      case 2:
         this.items = [
           {label: 'Book now', icon: 'fa fa-edit', command: () => {
               this.router.navigate(['/rental/reservation/'+this.selectedCar.id])
           }}
       ];
       break;
-      case false:
+      case 1:
         this.items = [
           {label: 'Update', icon: 'pi pi-refresh', command: () => {
               this.edit(this.selectedCar.id);

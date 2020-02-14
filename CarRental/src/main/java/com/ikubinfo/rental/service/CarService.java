@@ -1,5 +1,6 @@
 package com.ikubinfo.rental.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -23,36 +24,35 @@ import com.ikubinfo.rental.repository.ReservationRepository;
 
 @Service
 public class CarService {
-	
+
 	@Autowired
 	private CarRepository carRepository;
-	
+
 	@Autowired
 	private CarConverter carConverter;
-	
+
 	@Autowired
 	private CategoryRepository categoryRepository;
-	
+
 	@Autowired
 	private AuthorizationService authorizationService;
-	
+
 	@Autowired
 	private ReservationRepository reservationRepository;
-	
 	private static Logger logger = LogManager.getLogger(CarService.class);
-	
+
 	public CarService() {
-		
+
 	}
-	
+
 	public List<CarModel> getAll() {
 		try {
 			authorizationService.isUserAuthorized();
-		List<CarModel> modelList = carConverter.toModel(carRepository.getAll());
-		for (CarModel car : modelList) {
-			car.setReservedDates(getReservedDatesByCar(car.getId()));
-		}
-		return modelList;
+			List<CarModel> modelList = carConverter.toModel(carRepository.getAll());
+			for (CarModel car : modelList) {
+				car.setReservedDates(getReservedDatesByCar(car.getId()));
+			}
+			return modelList;
 		} catch (ResponseStatusException e) {
 			List<CarModel> modelList = carConverter.toModel(carRepository.getAllAvailable());
 			for (CarModel car : modelList) {
@@ -61,19 +61,19 @@ public class CarService {
 			return modelList;
 		}
 	}
-	
-	public List<ReservedDates> getReservedDatesByCar(Long carId){
+
+	public List<ReservedDates> getReservedDatesByCar(Long carId) {
 		return reservationRepository.getReservedDatesByCar(carId);
 	}
-	
+
 	public CarModel getById(Long id) {
 		try {
 			return carConverter.toModel(carRepository.getById(id));
 		} catch (NoResultException e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Car not found.");	
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Car not found.");
 		}
 	}
-	
+
 	public List<CarModel> getByCategory(Long categoryId) {
 		try {
 			return carConverter.toModel(carRepository.getByCategory(categoryId));
@@ -81,7 +81,7 @@ public class CarService {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
 		}
 	}
-	
+
 	public void save(CarModel model, MultipartFile file) {
 		authorizationService.isUserAuthorized();
 		try {
@@ -96,7 +96,7 @@ public class CarService {
 			entity.setPlate(model.getPlate());
 			entity.setCategory(categoryRepository.getById(model.getCategoryId()));
 			if (model.getPrice() > 0) {
-			entity.setPrice(model.getPrice());
+				entity.setPrice(model.getPrice());
 			} else {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Price cannot be negative.");
 			}
@@ -112,9 +112,9 @@ public class CarService {
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car already exists.");
 		}
-		}
-	
-	public void edit(CarModel model,MultipartFile file, Long id) {
+	}
+
+	public void edit(CarModel model, MultipartFile file, Long id) {
 		authorizationService.isUserAuthorized();
 		try {
 			CarEntity entity = carRepository.getById(id);
@@ -129,19 +129,19 @@ public class CarService {
 				entity.setPhoto(file.getBytes());
 			}
 			if (model.getPrice() > 0) {
-			entity.setPrice(model.getPrice());
+				entity.setPrice(model.getPrice());
 			}
 			if (model.getType() != null) {
-			entity.setType(model.getType());
+				entity.setType(model.getType());
 			}
 			if (model.getDescription() != null) {
-			entity.setDescription(model.getDescription());
+				entity.setDescription(model.getDescription());
 			}
 			if (model.getAvailability() != null) {
- 			entity.setAvailability(model.getAvailability());
+				entity.setAvailability(model.getAvailability());
 			}
 			if (model.getDiesel() != null) {
-			entity.setDiesel(model.getDiesel());
+				entity.setDiesel(model.getDiesel());
 			}
 			if (model.getCategoryId() != null) {
 				entity.setCategory(categoryRepository.getById(model.getCategoryId()));
@@ -155,8 +155,8 @@ public class CarService {
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car already  exists.");
 		}
-		}
-	
+	}
+
 	public void delete(Long id) {
 		authorizationService.isUserAuthorized();
 		try {
@@ -167,15 +167,17 @@ public class CarService {
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Car not found.");
 		} catch (ActiveReservationsException e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot delete car because it has active reservations.");
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+					"Cannot delete car because it has active reservations.");
 		}
-		}
+	}
+
 	public void checkIfExists(String plate, Long id) throws Exception {
 		try {
 			if (id == null) {
-			carRepository.getByPlate(plate);
-			logger.error("Car already exists.");
-			throw new Exception("Car already exists.");
+				carRepository.getByPlate(plate);
+				logger.error("Car already exists.");
+				throw new Exception("Car already exists.");
 			} else {
 				carRepository.checkIfExistsAnother(plate, id);
 				logger.error("Car already exists.");
@@ -185,10 +187,10 @@ public class CarService {
 			logger.info("No car exists with the plate provided.");
 		}
 	}
-	
+
 	public void hasActiveReservations(Long carId) throws ActiveReservationsException {
-			if (reservationRepository.countActiveReservationsByCar(carId) > 0) {
-				throw new ActiveReservationsException("Car has still active reservations.");
-			}
+		if (reservationRepository.countActiveReservationsByCar(carId) > 0) {
+			throw new ActiveReservationsException("Car has still active reservations.");
+		}
 	}
 }
