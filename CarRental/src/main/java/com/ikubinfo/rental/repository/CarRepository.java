@@ -34,7 +34,7 @@ public class CarRepository {
 	
 	@Transactional
 	public List<CarEntity> getAll() {
-		TypedQuery<CarEntity> query = em.createQuery("Select c, r.startDate, r.endDate from CarEntity c where c.active =?1 ORDER BY c.id ASC", CarEntity.class);
+		TypedQuery<CarEntity> query = em.createQuery("Select c from CarEntity c where c.active =?1 ORDER BY c.id ASC", CarEntity.class);
 		query.setParameter(1,true);
 		return query.getResultList();
 	}

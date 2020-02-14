@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="car", schema="rental")
@@ -21,35 +23,47 @@ public class CarEntity {
 	@Column(name="car_id")
 	private Long id;
 	
+	@NotNull(message="Name is mandatory.")
 	@Column(name="name")
 	private String name;
 	
+	@NotNull(message="Plate is mandatory.")
 	@Column(name="plate")
 	private String plate;
 	
+	@NotNull(message="Year is mandatory.")
 	@Column(name="year")
 	private int year;
 	
+	@NotNull(message="Brand is mandatory.")
 	@Column(name="type")
 	private String type;
 	
-	@Column(name="description", length=10000)
+	@NotNull(message="Description is mandatory.")
+	@Column(name="description")
+	@Size(max=10000)
 	private String description;
 	
 	@Lob
-	@Column(name="photo")
+	@Column(name="photo", length = 100000)
 	private byte[] photo;
 	
+	@NotNull(message="Price is mandatory.")
 	@Column(name="price")
 	private double price;
 	
+	@NotNull(message="Diesel is mandatory.")
 	@Column(name="diesel")
 	private String diesel;
 	
 	@ManyToOne
 	@JoinColumn(name="category")
 	private CategoryEntity category;
+	
+	@NotNull(message="Availability is mandatory.")
 	private StatusEnum availability;
+	
+	@NotNull(message="Actice is mandatory.")
 	private boolean active;
 	
 	public CarEntity() {

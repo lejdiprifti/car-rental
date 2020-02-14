@@ -122,7 +122,7 @@ export class CarComponent implements OnInit {
             this.router.navigate(['rental/cars']);
             this.logger.success("Success", "Data saved successfully!");
           }, err => {
-            this.logger.error("Error", "Car plate already exists.");
+            this.logger.error("Error", err.error.message);
           });
         }
         })
@@ -152,7 +152,7 @@ export class CarComponent implements OnInit {
             this.router.navigate(['rental/cars']);
             this.logger.success("Success", "Car was successfully created.");
           }, err => {
-            this.logger.error("Error", "Car name already exists.");
+            this.logger.error("Error", err.error.message);
           });
         }
       });
@@ -184,10 +184,13 @@ export class CarComponent implements OnInit {
   }
 
   uploadFile(event) {
-    if (event.target.files.length > 0) {
+    if (event.target.files.length > 0 && event.target.files[0].size < 100000) {
       const file = event.target.files[0];
       this.car.photo = file;
       this.carForm.get('photo').setValue(file);
+    } else {
+      event.target.files[0] = null;
+      this.logger.warning('Warning!', 'Please, insert a photo under 100 KB.')
     }
   }
 

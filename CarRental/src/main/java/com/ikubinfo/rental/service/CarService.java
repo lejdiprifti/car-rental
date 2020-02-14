@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ikubinfo.rental.config.ActiveReservationsException;
+import com.ikubinfo.rental.config.CarAlreadyExistsException;
 import com.ikubinfo.rental.converter.CarConverter;
 import com.ikubinfo.rental.entity.CarEntity;
 import com.ikubinfo.rental.model.CarModel;
@@ -85,7 +86,7 @@ public class CarService {
 	public void save(CarModel model, MultipartFile file) {
 		authorizationService.isUserAuthorized();
 		try {
-			checkIfExists(model.getPlate(), null);
+			saveIfAvailable(model.getPlate());
 			CarEntity entity = new CarEntity();
 			entity.setAvailability(model.getAvailability());
 			entity.setActive(true);
@@ -99,6 +100,7 @@ public class CarService {
 				entity.setPrice(model.getPrice());
 			} else {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Price cannot be negative.");
+
 			}
 			if (model.getYear() > 0) {
 				entity.setYear(model.getYear());
@@ -109,8 +111,11 @@ public class CarService {
 			carRepository.save(entity);
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
-		} catch (Exception e) {
+		} catch (CarAlreadyExistsException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car already exists.");
+		} catch (IOException e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+					"Something bad happened. Please, try again later.");
 		}
 	}
 
@@ -119,7 +124,7 @@ public class CarService {
 		try {
 			CarEntity entity = carRepository.getById(id);
 			if (model.getPlate() != null) {
-				checkIfExists(model.getPlate(), id);
+				updateIfAvailable(model.getPlate(), id);
 				entity.setPlate(model.getPlate());
 			}
 			if (model.getName() != null) {
@@ -152,8 +157,11 @@ public class CarService {
 			carRepository.edit(entity);
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Car/Category not found.");
-		} catch (Exception e) {
+		} catch (CarAlreadyExistsException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car already  exists.");
+		} catch (IOException e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+					"Something bad happened. Please, try again later.");
 		}
 	}
 
@@ -172,17 +180,19 @@ public class CarService {
 		}
 	}
 
-	public void checkIfExists(String plate, Long id) throws Exception {
+	public void saveIfAvailable(String plate) throws CarAlreadyExistsException {
 		try {
-			if (id == null) {
-				carRepository.getByPlate(plate);
-				logger.error("Car already exists.");
-				throw new Exception("Car already exists.");
-			} else {
-				carRepository.checkIfExistsAnother(plate, id);
-				logger.error("Car already exists.");
-				throw new Exception("Car already exists.");
-			}
+			carRepository.getByPlate(plate);
+			throw new CarAlreadyExistsException("Car already exists.");
+		} catch (NoResultException e) {
+			logger.info("No car exists with the plate provided.");
+		}
+	}
+
+	public void updateIfAvailable(String plate, Long id) throws CarAlreadyExistsException {
+		try {
+			carRepository.checkIfExistsAnother(plate, id);
+			throw new CarAlreadyExistsException("Car already exists.");
 		} catch (NoResultException e) {
 			logger.info("No car exists with the plate provided.");
 		}

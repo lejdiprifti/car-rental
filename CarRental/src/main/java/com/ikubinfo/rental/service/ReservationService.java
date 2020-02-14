@@ -11,7 +11,6 @@ import javax.mail.MessagingException;
 import javax.persistence.NoResultException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -102,7 +101,7 @@ public class ReservationService {
 	public void edit(ReservationModel model, Long id) {
 		if (model.getEndDate().isAfter(model.getStartDate())) {
 			ReservationEntity entity = reservationRepository.getById(id);
-		if (reservationRepository.checkIfAvailable(entity.getCar().getId(), model.getStartDate(), model.getEndDate()) == true) {
+		if (reservationRepository.updateIfAvailable(entity.getCar().getId(), model.getStartDate(), model.getEndDate(), entity.getId()) == true) {
 			try {
 				entity.setStartDate(model.getStartDate());
 				entity.setEndDate(model.getEndDate());
