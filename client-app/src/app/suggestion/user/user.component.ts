@@ -60,20 +60,7 @@ export class UserComponent implements OnInit {
       ]
     ]
     });
-     this.userService.getUserById(this.authService.user.id).subscribe(
-       result => {
-         this.user = result;
-         const dateString = this.user.birthdate;
-         const newDate= new Date(dateString);
-         const convertedDate = this.datePipe.transform(newDate, "yyyy-MM-dd");
-         this.settingsForm.get('birthdate').setValue(convertedDate);
-         this.settingsForm.get('address').setValue(this.user.address);
-         this.settingsForm.get('email').setValue(this.user.email);
-         this.settingsForm.get('firstName').setValue(this.user.firstName);
-         this.settingsForm.get('lastName').setValue(this.user.lastName);
-         this.settingsForm.get('phone').setValue(this.user.phone);
-       }
-     );
+    this.loadData();
      this.passwordForm=this.fb.group({
        password: [
          "",
@@ -93,6 +80,22 @@ export class UserComponent implements OnInit {
     
    }
  
+   loadData(): void {
+    this.userService.getUserById(this.authService.user.id).subscribe(
+      result => {
+        this.user = result;
+        const dateString = this.user.birthdate;
+        const newDate= new Date(dateString);
+        const convertedDate = this.datePipe.transform(newDate, "yyyy-MM-dd");
+        this.settingsForm.get('birthdate').setValue(convertedDate);
+        this.settingsForm.get('address').setValue(this.user.address);
+        this.settingsForm.get('email').setValue(this.user.email);
+        this.settingsForm.get('firstName').setValue(this.user.firstName);
+        this.settingsForm.get('lastName').setValue(this.user.lastName);
+        this.settingsForm.get('phone').setValue(this.user.phone);
+      }
+    );
+   }
  
  updatePassword(): void {
      if (this.passwordForm.value.password !== ""){
@@ -107,8 +110,8 @@ export class UserComponent implements OnInit {
            this.logger.success("Success", "User was updated successfully!");
        },
        err=>{
-         this.logger.error("Error","Something bad happened.");
-         this.router.navigate(["/rental/user"]);
+         this.logger.error("Error",err.error.message);
+         this.loadData();
        });
        }
      });
@@ -116,24 +119,12 @@ export class UserComponent implements OnInit {
      
  }
  updateData(): void {
-   if (this.settingsForm.value.birthdate !== null){
-     this.updateUser.birthdate=this.settingsForm.value.birthdate;
-   }
-   if (this.settingsForm.value.email !== ""){
+     this.updateUser.birthdate=new Date(this.settingsForm.value.birthdate);
      this.updateUser.email=this.settingsForm.value.email;
-   }
-   if (this.settingsForm.value.address !== ""){
      this.updateUser.address=this.settingsForm.value.address;
-   }
-   if (this.settingsForm.value.firstName !== ""){
     this.updateUser.firstName = this.settingsForm.value.firstName;
-   }
-   if (this.settingsForm.value.lastName !== ""){
      this.updateUser.lastName = this.settingsForm.value.lastName;
-   }
-   if (this.settingsForm.value.phone !== ""){
      this.updateUser.phone = this.settingsForm.value.phone;
-   }
    this.confirmationService.confirm({
      message: 'Do you want to save your data?',
      header: 'Save Confirmation',
@@ -144,8 +135,8 @@ export class UserComponent implements OnInit {
          this.logger.success("Success", "Data saved successfully!");
      },
      err=>{
-       this.logger.error("Error","Something bad happened.");
-       this.router.navigate(["/rental/user"]);
+       this.logger.error("Error", err.error.message);
+       this.loadData();
      });
      }
    });

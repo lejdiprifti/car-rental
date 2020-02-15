@@ -1,5 +1,6 @@
 package com.ikubinfo.rental.entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -35,8 +36,8 @@ public class UserEntity {
 	@Column(name="last_name")
 	private String lastName;
 	
-	@Temporal(TemporalType.DATE)
-	private Date birthdate;
+
+	private LocalDateTime birthdate;
 	
 	@Column(name="address")
 	private String address;
@@ -98,11 +99,12 @@ public class UserEntity {
 		this.lastName = lastName;
 	}
 
-	public Date getBirthdate() {
+
+	public LocalDateTime getBirthdate() {
 		return birthdate;
 	}
 
-	public void setBirthdate(Date birthdate) {
+	public void setBirthdate(LocalDateTime birthdate) {
 		this.birthdate = birthdate;
 	}
 

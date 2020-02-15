@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.ikubinfo.rental.config.CategoryAlreadyExistsException;
+import com.ikubinfo.rental.config.NonValidDataException;
 import com.ikubinfo.rental.converter.CategoryConverter;
 import com.ikubinfo.rental.entity.CategoryEntity;
 import com.ikubinfo.rental.model.CategoryModel;
@@ -55,7 +57,8 @@ public class CategoryService {
 
 	public void save(CategoryModel model, MultipartFile file) throws IOException {
 		try {
-			checkIfExists(model.getName(), null);
+			validateCategoryData(model, file);
+			saveIfAvailable(model.getName());
 			CategoryEntity entity = new CategoryEntity();
 			entity.setName(model.getName());
 			if (file != null) {
@@ -64,64 +67,80 @@ public class CategoryService {
 			entity.setActive(true);
 			entity.setDescription(model.getDescription());
 			catRepository.save(entity);
-		} catch (Exception e) {
+		} catch (NonValidDataException e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+		} catch (CategoryAlreadyExistsException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category already exists.");
 		}
 	}
 
 	public void edit(CategoryModel model, MultipartFile file, Long id) throws IOException {
 		authorizationService.isUserAuthorized();
+		try {
+			validateCategoryData(model,file);
+			CategoryEntity entity = catRepository.getById(id);
+			updateIfAvailable(model.getName(), id);
+			entity.setName(model.getName());
+			entity.setDescription(model.getDescription());
+			entity.setPhoto(file.getBytes());
+			catRepository.edit(entity);
+		} catch (NoResultException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
+		} catch (CategoryAlreadyExistsException e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category already exists.");
+		} catch (NonValidDataException e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+		}
+	}
+
+	public void delete(Long id) {
+		authorizationService.isUserAuthorized();
+		if (carRepository.getByCategory(id).size() == 0) {
 			try {
 				CategoryEntity entity = catRepository.getById(id);
-				if (model.getName() != null) {
-					try {
-						checkIfExists(model.getName(), id);
-						entity.setName(model.getName());
-					} catch (Exception e) {
-						throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category already exists.");
-					}
-				}
-				if (model.getDescription() != null) {
-					entity.setDescription(model.getDescription());
-				}
-				if (file != null) {
-					entity.setPhoto(file.getBytes());
-				}
+				entity.setActive(false);
 				catRepository.edit(entity);
 			} catch (NoResultException e) {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
 			}
-		} 
-
-	public void delete(Long id) {
-		authorizationService.isUserAuthorized();
-			if (carRepository.getByCategory(id).size() == 0) {
-				try {
-					CategoryEntity entity = catRepository.getById(id);
-					entity.setActive(false);
-					catRepository.edit(entity);
-				} catch (NoResultException e) {
-					throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
-				}
-			} else {
-				throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED,
-						"Category cannot be deleted as it has cars registered in it.");
-			}
-		}
-
-	public void checkIfExists(String name, Long id) throws Exception {
-		try {
-			if (id == null) {
-				catRepository.getByName(name);
-				logger.error("Category already exists.");
-				throw new Exception("Category already exists.");
-			} else {
-				catRepository.checkIfExistsAnother(name, id);
-				throw new Exception("Category already exists.");
-			}
-		} catch (NoResultException e) {
-
+		} else {
+			throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED,
+					"Category cannot be deleted as it has cars registered in it.");
 		}
 	}
 
+	public void saveIfAvailable(String name) throws CategoryAlreadyExistsException {
+		try {
+			catRepository.getByName(name);
+			throw new CategoryAlreadyExistsException("Category already exists.");
+		} catch (NoResultException e) {
+			logger.info("Category is available to be added.");
+		}
+	}
+
+	public void updateIfAvailable(String name, Long id) throws CategoryAlreadyExistsException {
+		try {
+			catRepository.checkIfExistsAnother(name, id);
+			throw new CategoryAlreadyExistsException("Category already exists.");
+		} catch (NoResultException e) {
+			logger.info("Category is available to be updated.");
+		}
+	}
+
+	
+	public void validateCategoryData(CategoryModel model, MultipartFile file) throws NonValidDataException {
+		if (model.getName().trim() == "") {
+			throw new NonValidDataException("Name is required.");
+		}
+		if (model.getDescription().trim() == "") {
+			throw new NonValidDataException("Description is required.");
+		}
+		if (file == null) {
+			if (model.getId() == null) {
+				throw new NonValidDataException("Photo is required.");
+			}
+		} else if (file.getSize() > 100000) {
+			throw new NonValidDataException("Photo needs to be less than 100Kb.");
+		}
+	}
 }

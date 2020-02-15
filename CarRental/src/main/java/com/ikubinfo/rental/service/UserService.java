@@ -1,5 +1,7 @@
 package com.ikubinfo.rental.service;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -12,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.ikubinfo.rental.config.NonValidDataException;
+import com.ikubinfo.rental.config.UserAlreadyExistsException;
 import com.ikubinfo.rental.converter.UserConverter;
 import com.ikubinfo.rental.entity.RoleEntity;
 import com.ikubinfo.rental.entity.UserEntity;
@@ -31,19 +35,19 @@ public class UserService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
-	
+
 	@Autowired
 	private ReservationService reservationService;
-	
+
 	private static Logger logger = LogManager.getLogger(UserService.class);
-	
+
 	public UserService() {
 
 	}
-	
+
 	public UserModel getById(Long id) {
 		try {
 			logger.info("Getting user by id.");
@@ -52,10 +56,12 @@ public class UserService {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
 		}
 	}
+
 	public List<UserModel> getAll() {
-			logger.info("Getting all users.");
-			return userConverter.toModel(userRepository.getAll());
+		logger.info("Getting all users.");
+		return userConverter.toModel(userRepository.getAll());
 	}
+
 	public UserModel getByUsername(String username) {
 		try {
 			logger.info("Getting user by username.");
@@ -64,15 +70,20 @@ public class UserService {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
 		}
 	}
-	
+
 	public void register(UserModel user) {
 		try {
+			validateUserData(user);
 			checkIfExists(user.getUsername());
 			logger.info("Registering new user.");
 			UserEntity entity = new UserEntity();
 			entity.setFirstName(user.getFirstName());
 			entity.setLastName(user.getLastName());
+			if (user.getUsername() != "") {
 			entity.setUsername(user.getUsername());
+			} else {
+				throw new NonValidDataException("Username is required.");
+			}
 			entity.setPassword(passwordEncoder.encode(user.getPassword()));
 			entity.setEmail(user.getEmail());
 			entity.setPhone(user.getPhone());
@@ -83,66 +94,88 @@ public class UserService {
 			role.setId(2);
 			entity.setRole(role);
 			userRepository.save(entity);
-		} catch (Exception e) {
-			logger.error("User already exists.");
+		} catch (UserAlreadyExistsException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exists.");
+		} catch (NonValidDataException e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 	}
-	
+
 	public void edit(UserModel user) {
 		try {
-		UserEntity entity = userRepository.getByUsername(jwtTokenUtil.getUsername());
-		if (user.getFirstName()!= null) {
+			validateUserData(user);
+			UserEntity entity = userRepository.getByUsername(jwtTokenUtil.getUsername());
 			entity.setFirstName(user.getFirstName());
-		}
-		if (user.getLastName() != null) {
 			entity.setLastName(user.getLastName());
-		}
-		if (user.getPassword() != null) {
+			if (user.getPassword() != null) {
 			entity.setPassword(passwordEncoder.encode(user.getPassword()));
-		}
-		if (user.getAddress() != null) {
+			}
 			entity.setAddress(user.getAddress());
-		}
-		if (user.getEmail() != null) {
 			entity.setEmail(user.getEmail());
-		}
-		if (user.getPhone() != null) {
 			entity.setPhone(user.getPhone());
-		}
-		if (user.getBirthdate() != null) {
 			entity.setBirthdate(user.getBirthdate());
-		}
-		logger.info("Editing user.");
-		userRepository.edit(entity);
+			userRepository.edit(entity);
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
+		} catch (NonValidDataException e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 	}
-	
+
 	public void delete() {
 		try {
-		logger.info("Deleting user.");
-		UserEntity entity = userRepository.getByUsername(jwtTokenUtil.getUsername());
-		entity.setActive(false);
-		List<ReservationModel> resList = reservationService.getByUsername();
-		for (ReservationModel res : resList) {
-			res.setActive(false);
-			reservationService.cancel(res.getId());
-		}
-		userRepository.edit(entity);
+			logger.info("Deleting user.");
+			UserEntity entity = userRepository.getByUsername(jwtTokenUtil.getUsername());
+			entity.setActive(false);
+			List<ReservationModel> resList = reservationService.getByUsername();
+			for (ReservationModel res : resList) {
+				res.setActive(false);
+				reservationService.cancel(res.getId());
+			}
+			userRepository.edit(entity);
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
 		}
 	}
-	
-	public void checkIfExists(String username) throws Exception {
+
+	public void checkIfExists(String username) throws UserAlreadyExistsException {
 		try {
 			logger.info("Checking if user already exists.");
 			userRepository.getByUsername(username);
-			throw new Exception("User already exists.");
-		}catch (NoResultException e) {
-			
+			throw new UserAlreadyExistsException("User already exists.");
+		} catch (NoResultException e) {
+			logger.info("User is able to register.");
+		}
+	}
+
+	public void validateUserData(UserModel model) throws NonValidDataException {
+		if (model.getFirstName().trim().length() == 0) {
+			throw new NonValidDataException("First name is required.");
+		}
+		if (model.getLastName().trim().length() == 0) {
+			throw new NonValidDataException("Last name is required.");
+		}
+		if (model.getBirthdate() == null) {
+			throw new NonValidDataException("Birthdate is required.");
+		} else if (!isOver18(model.getBirthdate())) {
+			throw new NonValidDataException("You must be over 18 years old.");
+		}
+		if (model.getAddress().trim().length() == 0) {
+			throw new NonValidDataException("Address is required.");
+		}
+		if (model.getPhone().trim().length() == 0) {
+			throw new NonValidDataException("Phone is required.");
+		}
+		if (model.getEmail().trim().length() == 0) {
+			throw new NonValidDataException("Email is required.");
+		}
+	}
+	
+	public boolean isOver18(LocalDateTime birthdate) {
+		if (LocalDateTime.now().getYear() - birthdate.getYear() >= 18) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 }

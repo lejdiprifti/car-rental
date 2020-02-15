@@ -1,23 +1,23 @@
 package com.ikubinfo.rental.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class UserModel {
-	
+
 	private Long id;
 	private String username;
 	private String password;
 	private String firstName;
 	private String lastName;
-	private Date birthdate;
+	private LocalDateTime birthdate;
 	private String email;
 	private String address;
 	private String phone;
 	private RoleModel role;
 	private boolean active;
-	
+
 	public UserModel() {
-		
+
 	}
 
 	public Long getId() {
@@ -60,11 +60,11 @@ public class UserModel {
 		this.lastName = lastName;
 	}
 
-	public Date getBirthdate() {
+	public LocalDateTime getBirthdate() {
 		return birthdate;
 	}
 
-	public void setBirthdate(Date birthdate) {
+	public void setBirthdate(LocalDateTime birthdate) {
 		this.birthdate = birthdate;
 	}
 
@@ -113,5 +113,5 @@ public class UserModel {
 		return "UserModel [id=" + id + ", username=" + username + ", password=" + password + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", email=" + email + ", address=" + address + ", phone=" + phone
 				+ ", role=" + role + ", active=" + active + "]";
-	}	
+	}
 }

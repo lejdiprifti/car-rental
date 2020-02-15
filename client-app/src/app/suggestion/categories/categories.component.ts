@@ -195,9 +195,11 @@ export class CategoriesComponent implements OnInit {
   }
 
   uploadFile(event) {
-    if (event.target.files.length > 0) {
+    if (event.target.files.length > 0 && event.target.files[0] < 50000) {
       const file = event.target.files[0];
       this.category.photo = file;
+    } else {
+      this.logger.warning('Warning!', 'Photo must be less than 50 Kb.');
     }
   }
 }
