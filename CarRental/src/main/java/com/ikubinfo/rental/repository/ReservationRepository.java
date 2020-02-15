@@ -60,8 +60,8 @@ public class ReservationRepository {
 	}
 
 	public List<ReservedDates> getReservedDatesByCar(Long carId) {
-		Query query = em.createNativeQuery(
-				"Select r.start_date, r.end_date from rental.reservation r where r.car_id = ?1 and r.active =?2");
+		Query query = em.createQuery(
+				"Select r.startDate, r.endDate from ReservationEntity r where r.car.id = ?1 and r.active =?2");
 		query.setParameter(1, carId);
 		query.setParameter(2, true);
 		return query.getResultList();

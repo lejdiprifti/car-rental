@@ -77,7 +77,7 @@ public class CategoryService {
 	public void edit(CategoryModel model, MultipartFile file, Long id) throws IOException {
 		authorizationService.isUserAuthorized();
 		try {
-			validateCategoryData(model,file);
+			validateCategoryData(model, file);
 			CategoryEntity entity = catRepository.getById(id);
 			updateIfAvailable(model.getName(), id);
 			entity.setName(model.getName());
@@ -127,20 +127,23 @@ public class CategoryService {
 		}
 	}
 
-	
 	public void validateCategoryData(CategoryModel model, MultipartFile file) throws NonValidDataException {
-		if (model.getName().trim() == "") {
-			throw new NonValidDataException("Name is required.");
-		}
-		if (model.getDescription().trim() == "") {
-			throw new NonValidDataException("Description is required.");
-		}
-		if (file == null) {
-			if (model.getId() == null) {
-				throw new NonValidDataException("Photo is required.");
+		try {
+			if (model.getName().trim() == "") {
+				throw new NonValidDataException("Name is required.");
 			}
-		} else if (file.getSize() > 100000) {
-			throw new NonValidDataException("Photo needs to be less than 100Kb.");
+			if (model.getDescription().trim() == "") {
+				throw new NonValidDataException("Description is required.");
+			}
+			if (file == null) {
+				if (model.getId() == null) {
+					throw new NonValidDataException("Photo is required.");
+				}
+			} else if (file.getSize() > 100000) {
+				throw new NonValidDataException("Photo needs to be less than 100Kb.");
+			}
+		} catch (NullPointerException e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User data are missing.");
 		}
 	}
 }

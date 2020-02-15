@@ -187,39 +187,44 @@ public class CarService {
 	}
 
 	public void validateCarData(CarModel model, MultipartFile file) throws NonValidDataException {
-		if (model.getName().trim() == "") {
-			throw new NonValidDataException("Name is required.");
-		}
-		if (model.getDescription().trim() == "" || model.getDescription().length() > 10000) {
-			throw new NonValidDataException("Description is required.");
-		}
-		if (model.getAvailability() == null) {
-			throw new NonValidDataException("Availability is required.");
-		}
-		if (model.getDiesel().trim() == "") {
-			throw new NonValidDataException("Diesel is required.");
-		}
-		if (model.getPlate().trim() == "") {
-			throw new NonValidDataException("Plate is required.");
-		}
-		if (model.getPrice() < 0) {
-			throw new NonValidDataException("Price must be positive.");
-		}
-		if (model.getYear() < 1769) {
-			throw new NonValidDataException("Year must contain a valid value.");
-		}
-		if (file == null) {
-			if (model.getId() == null) {
-				throw new NonValidDataException("Photo is required.");
+		try {
+			if (model.getName().trim() == "") {
+				throw new NonValidDataException("Name is required.");
 			}
-		} else if (file.getSize() > 100000) {
-			throw new NonValidDataException("Photo needs to be less than 100Kb.");
-		}
-		if (model.getType() == "") {
-			throw new NonValidDataException("Brand is required.");
-		}
-		if (!model.getAvailability().equals(StatusEnum.AVAILABLE) && !model.getAvailability().equals(StatusEnum.SERVIS) ) {
-			throw new NonValidDataException("Availability is required.");
+			if (model.getDescription().trim() == "" || model.getDescription().length() > 10000) {
+				throw new NonValidDataException("Description is required.");
+			}
+			if (model.getAvailability() == null) {
+				throw new NonValidDataException("Availability is required.");
+			}
+			if (model.getDiesel().trim() == "") {
+				throw new NonValidDataException("Diesel is required.");
+			}
+			if (model.getPlate().trim() == "") {
+				throw new NonValidDataException("Plate is required.");
+			}
+			if (model.getPrice() < 0) {
+				throw new NonValidDataException("Price must be positive.");
+			}
+			if (model.getYear() < 1769) {
+				throw new NonValidDataException("Year must contain a valid value.");
+			}
+			if (file == null) {
+				if (model.getId() == null) {
+					throw new NonValidDataException("Photo is required.");
+				}
+			} else if (file.getSize() > 100000) {
+				throw new NonValidDataException("Photo needs to be less than 100Kb.");
+			}
+			if (model.getType() == "") {
+				throw new NonValidDataException("Brand is required.");
+			}
+			if (!model.getAvailability().equals(StatusEnum.AVAILABLE)
+					&& !model.getAvailability().equals(StatusEnum.SERVIS)) {
+				throw new NonValidDataException("Availability is required.");
+			}
+		} catch (NullPointerException e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User data are missing.");
 		}
 	}
 }

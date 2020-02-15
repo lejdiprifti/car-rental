@@ -77,17 +77,17 @@ public class UserService {
 			checkIfExists(user.getUsername());
 			logger.info("Registering new user.");
 			UserEntity entity = new UserEntity();
-			entity.setFirstName(user.getFirstName());
-			entity.setLastName(user.getLastName());
-			if (user.getUsername() != "") {
-			entity.setUsername(user.getUsername());
+			entity.setFirstName(user.getFirstName().trim());
+			entity.setLastName(user.getLastName().trim());
+			if (user.getUsername().trim().length() > 0) {
+			entity.setUsername(user.getUsername().trim());
 			} else {
 				throw new NonValidDataException("Username is required.");
 			}
-			entity.setPassword(passwordEncoder.encode(user.getPassword()));
-			entity.setEmail(user.getEmail());
-			entity.setPhone(user.getPhone());
-			entity.setAddress(user.getAddress());
+			entity.setPassword(passwordEncoder.encode(user.getPassword().trim()));
+			entity.setEmail(user.getEmail().trim());
+			entity.setPhone(user.getPhone().trim());
+			entity.setAddress(user.getAddress().trim());
 			entity.setBirthdate(user.getBirthdate());
 			entity.setActive(true);
 			RoleEntity role = new RoleEntity();
@@ -105,14 +105,14 @@ public class UserService {
 		try {
 			validateUserData(user);
 			UserEntity entity = userRepository.getByUsername(jwtTokenUtil.getUsername());
-			entity.setFirstName(user.getFirstName());
-			entity.setLastName(user.getLastName());
+			entity.setFirstName(user.getFirstName().trim());
+			entity.setLastName(user.getLastName().trim());
 			if (user.getPassword() != null) {
-			entity.setPassword(passwordEncoder.encode(user.getPassword()));
+			entity.setPassword(passwordEncoder.encode(user.getPassword().trim()));
 			}
-			entity.setAddress(user.getAddress());
-			entity.setEmail(user.getEmail());
-			entity.setPhone(user.getPhone());
+			entity.setAddress(user.getAddress().trim());
+			entity.setEmail(user.getEmail().trim());
+			entity.setPhone(user.getPhone().trim());
 			entity.setBirthdate(user.getBirthdate());
 			userRepository.edit(entity);
 		} catch (NoResultException e) {
@@ -149,6 +149,7 @@ public class UserService {
 	}
 
 	public void validateUserData(UserModel model) throws NonValidDataException {
+		try {
 		if (model.getFirstName().trim().length() == 0) {
 			throw new NonValidDataException("First name is required.");
 		}
@@ -168,6 +169,9 @@ public class UserService {
 		}
 		if (model.getEmail().trim().length() == 0) {
 			throw new NonValidDataException("Email is required.");
+		}
+		} catch (NullPointerException e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User data are missing.");
 		}
 	}
 	
