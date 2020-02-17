@@ -34,14 +34,14 @@ public class CarRepository {
 	
 	@Transactional
 	public List<CarEntity> getAll() {
-		TypedQuery<CarEntity> query = em.createQuery("Select c from CarEntity c where c.active =?1 ORDER BY c.id ASC", CarEntity.class);
+		TypedQuery<CarEntity> query = em.createQuery("Select c from CarEntity c where c.active =?1 ORDER BY c.id DESC", CarEntity.class);
 		query.setParameter(1,true);
 		return query.getResultList();
 	}
 	
 	@Transactional
 	public List<CarEntity> getAllAvailable(){
-		TypedQuery<CarEntity> query = em.createQuery("Select c from CarEntity c where c.availability<>?1 and c.active = ?2 ORDER BY c.id ASC", CarEntity.class);
+		TypedQuery<CarEntity> query = em.createQuery("Select c from CarEntity c where c.availability<>?1 and c.active = ?2 ORDER BY c.id DESC", CarEntity.class);
 		query.setParameter(1, StatusEnum.SERVIS);
 		query.setParameter(2, true);
 		return query.getResultList();

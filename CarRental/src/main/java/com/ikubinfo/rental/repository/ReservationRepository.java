@@ -27,13 +27,13 @@ public class ReservationRepository {
 
 	}
 
-	@Transactional
+
 	public List<Object[]> getAll() {
 		Query query = em.createQuery(
 				"Select r.id, r.startDate, r.endDate, c.id, c.name, c.type, c.price, u.id, u.firstName, u.lastName from ReservationEntity r "
 				+ "Join CarEntity c ON c.id = r.car "
 				+ "Join UserEntity u ON u.id = r.user "
-				+ "where r.active=?1 order by r.startDate");
+				+ "where r.active=?1 order by r.created_at DESC");
 		query.setParameter(1, true);
 		return query.getResultList();
 	}

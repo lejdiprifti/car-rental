@@ -5,6 +5,9 @@
      <div class="form-group">
       <input type="text" formControlName="firstName" class="form-control input-underline input-lg"
         placeholder="First Name" />
+        <div class="required" *ngIf="settingsForm.get('firstName').dirty && settingsForm.get('firstName').hasError('required')">
+          *Please, fill in your first name.
+        </div>
     </div>
   </ikubinfo-input>
  <!--Last Name -->
@@ -12,6 +15,9 @@
  <div class="form-group">
   <input type="text" formControlName="lastName" class="form-control input-underline input-lg"
     placeholder="Last Name" />
+    <div class="required" *ngIf="settingsForm.get('lastName').dirty && settingsForm.get('lastName').hasError('required')">
+      *Please, fill in your last name.
+    </div>
 </div>
 </ikubinfo-input>
     <!--Birthdate -->
@@ -30,9 +36,12 @@
       <input type="text" formControlName="address" class="form-control input-underline input-lg"
         placeholder="Address" />
     </div>
+    <div class="required" *ngIf="settingsForm.get('address').dirty && settingsForm.get('address').hasError('required')">
+      *Please, fill in an address.
+    </div>
   </ikubinfo-input>
     <!--Email -->
-    <ikubinfo-input label="Email">
+    <ikubinfo-input label="E-mail">
     <div class="form-group">
       <input type="text" formControlName="email" class="form-control input-underline input-lg" placeholder="Email" />
 
@@ -40,7 +49,7 @@
       settingsForm.get('email').dirty &&
       settingsForm.get('email').hasError('pattern')
         ">
-        *Invalid email
+        *Please, fill in a valid e-mail address.
       </div>
     </div>
     </ikubinfo-input>
