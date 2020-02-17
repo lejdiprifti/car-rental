@@ -1,4 +1,8 @@
+<button (click)="delete()" class="btn btn-danger" style="margin: 1%; float: right;">Delete Account</button>
+<div class="settings">
+  <h5>General Information</h5>
 <form role="form" [formGroup]="settingsForm">
+  <div class="settingsForm ui-g-5">
   <div [formGroup]="settingsForm" class="form-content">
      <!--First Name -->
      <ikubinfo-input label="First Name">
@@ -62,9 +66,11 @@
     </ikubinfo-input>
     </div>
     <button [disabled]="settingsForm.invalid" (click)="updateData()" class="btn btn-success">
-      Update Profile
+      Save
     </button>
+    </div>
     <!--Password -->
+  <div class="passwordForm ui-g-5">
    <h5>Change password</h5>
     <div [formGroup]="passwordForm">
       <div class="form-group">
@@ -87,7 +93,8 @@
           </div>
     </div>
   <button [disabled]="passwordForm.invalid" (click)="updatePassword()" class="btn btn-success">
-    Update Password
+    Update
   </button>
-  <button (click)="delete()" class="btn btn-danger" style="margin: 1%; float: right;">Delete Account</button>
+  </div>
 </form>
+</div>
