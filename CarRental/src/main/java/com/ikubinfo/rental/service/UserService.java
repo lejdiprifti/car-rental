@@ -1,7 +1,6 @@
 package com.ikubinfo.rental.service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.NoResultException;

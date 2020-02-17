@@ -1,5 +1,9 @@
 package com.ikubinfo.rental.service;
 
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
@@ -15,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
+import com.ikubinfo.rental.entity.ReservationEntity;
 import com.ikubinfo.rental.model.Mail;
 
 @Service
@@ -46,5 +51,25 @@ public class EmailService {
 	        final InputStreamSource imageSource = new ByteArrayResource(imageBytes);
 			messageHelper.addInline("imageResourceName", imageSource, "image/jpg");
 	        mailSender.send(message);
+	}
+	
+	public Mail setMailProperties(ReservationEntity reservation, double fee) {
+		Mail mail = new Mail();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+		mail.setFrom("ikubinfo.car.rentals@gmail.com");
+		Map<String, Object> content = new HashMap<String, Object>();
+		content.put("name", reservation.getUser().getFirstName() + ' ' + reservation.getUser().getLastName());
+		content.put("carName", reservation.getCar().getName());
+		content.put("carBrand", reservation.getCar().getType());
+		content.put("carPlate", reservation.getCar().getPlate());
+		content.put("price", fee);
+		content.put("startDate", reservation.getStartDate().format(formatter));
+		content.put("endDate", reservation.getEndDate().format(formatter));
+		content.put("signature", "Car Rentals Albania");
+		content.put("location", "Papa Gjon Pali 3rd St. , Tirana, Albania");
+		mail.setContent(content);
+		mail.setTo(reservation.getUser().getEmail());
+		mail.setSubject("Receipt Confirmation");
+		return mail;
 	}
 }

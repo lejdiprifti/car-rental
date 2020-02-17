@@ -98,6 +98,7 @@ export class BookingsComponent implements OnInit {
           let reservation: Reservation = {};
           reservation.startDate = new Date(Date.UTC(this.startDate.getFullYear(), this.startDate.getMonth(), this.startDate.getDate(), this.startTime.getHours(), this.startTime.getMinutes()));
           reservation.endDate = new Date(Date.UTC(this.endDate.getFullYear(), this.endDate.getMonth(), this.endDate.getDate(), this.endTime.getHours(), this.endTime.getMinutes()));
+          reservation.fee = this.fee;
           this.reservationService.edit(reservation,this.selectedReservation.id ).subscribe(res => {
             this.logger.success('Success', 'Reservation was saved successfully.');
             this.getMyReservations();
@@ -112,7 +113,9 @@ export class BookingsComponent implements OnInit {
 
   calculateFee(): void {
     if (this.startDate && this.endDate && this.startTime && this.endTime) {
-      this.fee = Number((((this.endDate.getTime()) - (this.startDate.getTime())) * (this.price / 86400000)).toFixed(2));
+      let start = new Date(Date.UTC(this.startDate.getFullYear(), this.startDate.getMonth(), this.startDate.getDate(), this.startTime.getHours(), this.startTime.getMinutes()));
+      let end = new Date(Date.UTC(this.endDate.getFullYear(), this.endDate.getMonth(), this.endDate.getDate(), this.endTime.getHours(), this.endTime.getMinutes()));
+      this.fee = Number((((end.getTime()) - (start.getTime())) * (this.price / 86400000)).toFixed(2));
     }
   }
 

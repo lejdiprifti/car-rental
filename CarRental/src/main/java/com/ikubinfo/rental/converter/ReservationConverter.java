@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import com.ikubinfo.rental.entity.ReservationEntity;
 import com.ikubinfo.rental.model.CarModel;
 import com.ikubinfo.rental.model.ReservationModel;
-import com.ikubinfo.rental.model.ReservedDates;
 import com.ikubinfo.rental.model.UserModel;
 
 @Component

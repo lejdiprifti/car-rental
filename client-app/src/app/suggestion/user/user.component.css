@@ -7,7 +7,19 @@
     margin-top: 5%;
     margin-left: 3%;
 }
+
+.settingsForm, .passwordForm {
+    border: 1px dotted rgb(156, 156, 156);
+}
 .passwordForm {
     margin-top: 10%;
     margin-left: 6%;
+}
+
+.settingsForm button, .passwordForm button {
+    float: right;
+}
+
+.passwordForm h5 {
+    margin-bottom: 3%;
 }

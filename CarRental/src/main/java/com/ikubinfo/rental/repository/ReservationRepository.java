@@ -9,8 +9,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,7 +76,7 @@ public class ReservationRepository {
 
 	public boolean checkIfAvailable(Long carId, LocalDateTime startDate, LocalDateTime endDate) {
 			TypedQuery<Long> query = em.createQuery(
-					"Select COUNT(r.id) from ReservationEntity r where r.car.id = ?1 and ((r.startDate >= ?2 and r.endDate >= ?3) or (r.startDate >= ?2 and r.endDate <= ?3)"
+					"Select COUNT(r.id) from ReservationEntity r where r.car.id = ?1 and ((r.startDate >= ?2 and r.endDate >= ?3 and r.startDate <= ?3) or (r.startDate >= ?2 and r.endDate <= ?3)"
 					+ "or (r.startDate <= ?2 and r.endDate >= ?3)) and r.active= ?4",
 					Long.class);
 			query.setParameter(1, carId);
@@ -92,7 +90,7 @@ public class ReservationRepository {
 			}
 		}
 	
-	public boolean updateIfAvailable(Long carId, LocalDateTime startDate, LocalDateTime endDate, Long id) {
+	public Long updateIfAvailable(Long carId, LocalDateTime startDate, LocalDateTime endDate, Long id) {
 		TypedQuery<Long> query = em.createQuery(
 				"Select COUNT(r.id) from ReservationEntity r where r.car.id = ?1 and ((r.startDate >= ?2 and r.endDate >= ?3) or (r.startDate >= ?2 and r.endDate <= ?3)"
 				+ "or (r.startDate <= ?2 and r.endDate >= ?3)) and r.active= ?4 and r.id <> ?5",
@@ -102,11 +100,7 @@ public class ReservationRepository {
 		query.setParameter(3, endDate);
 		query.setParameter(4, true);
 		query.setParameter(5, id);
-		if (query.getSingleResult() > 0) {
-			return false;
-		} else {
-			return true;
-		}
+		return query.getSingleResult();
 	}
 
 	public Long countNewBookings(Calendar date) {
