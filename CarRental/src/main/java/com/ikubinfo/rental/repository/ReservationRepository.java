@@ -74,7 +74,7 @@ public class ReservationRepository {
 		return query.getResultList();
 	}
 
-	public boolean checkIfAvailable(Long carId, LocalDateTime startDate, LocalDateTime endDate) {
+	public Long checkIfAvailable(Long carId, LocalDateTime startDate, LocalDateTime endDate) {
 			TypedQuery<Long> query = em.createQuery(
 					"Select COUNT(r.id) from ReservationEntity r where r.car.id = ?1 and ((r.startDate >= ?2 and r.endDate >= ?3 and r.startDate <= ?3) or (r.startDate >= ?2 and r.endDate <= ?3)"
 					+ "or (r.startDate <= ?2 and r.endDate >= ?3)) and r.active= ?4",
@@ -83,11 +83,7 @@ public class ReservationRepository {
 			query.setParameter(2, startDate);
 			query.setParameter(3, endDate);
 			query.setParameter(4, true);
-			if (query.getSingleResult() > 0) {
-				return false;
-			} else {
-				return true;
-			}
+			return query.getSingleResult();
 		}
 	
 	public Long updateIfAvailable(Long carId, LocalDateTime startDate, LocalDateTime endDate, Long id) {

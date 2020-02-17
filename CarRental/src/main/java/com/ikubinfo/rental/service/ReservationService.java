@@ -74,8 +74,8 @@ public class ReservationService {
 
 	public void save(ReservationModel model) throws MessagingException, IOException {
 		if (model.getEndDate().isAfter(model.getStartDate())) {
-			if (reservationRepository.checkIfAvailable(model.getCarId(), model.getStartDate(),
-					model.getEndDate()) == true) {
+		checkIfAvailable(model.getCarId(), model.getStartDate(),
+					model.getEndDate());
 				ReservationEntity entity = new ReservationEntity();
 				entity.setStartDate(model.getStartDate());
 				entity.setEndDate(model.getEndDate());
@@ -90,9 +90,6 @@ public class ReservationService {
 			} else {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Chosen car is not available.");
 			}
-		} else {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad dates are provided.");
-		}
 	}
 
 	public void edit(ReservationModel model, Long id) {
@@ -129,6 +126,13 @@ public class ReservationService {
 
 	public void updateIfAvailable(Long carId, LocalDateTime startDate, LocalDateTime endDate, Long id) {
 		Long reservations = reservationRepository.updateIfAvailable(carId, startDate, endDate, id);
+		if (reservations > 0) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car is reserved during the specified dates.");
+		}
+	}
+	
+	public void checkIfAvailable(Long carId, LocalDateTime startDate, LocalDateTime endDate) {
+		Long reservations = reservationRepository.checkIfAvailable(carId, startDate, endDate);
 		if (reservations > 0) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car is reserved during the specified dates.");
 		}
