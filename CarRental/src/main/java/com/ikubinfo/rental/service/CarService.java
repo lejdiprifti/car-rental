@@ -57,7 +57,7 @@ public class CarService {
 			}
 			return modelList;
 		} catch (ResponseStatusException e) {
-			List<CarModel> modelList = carConverter.toModel(carRepository.getAllAvailable());
+			List<CarModel> modelList = carConverter.toModelObject(carRepository.getAllAvailable());
 			for (CarModel car : modelList) {
 				car.setReservedDates(getReservedDatesByCar(car.getId()));
 			}
