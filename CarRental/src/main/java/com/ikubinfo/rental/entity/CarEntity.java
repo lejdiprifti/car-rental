@@ -13,47 +13,62 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="car", schema="rental")
+@Table(name = "car", schema = "rental")
 public class CarEntity {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
-	@Column(name="car_id")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column(name = "car_id")
 	private Long id;
-	
-	@Column(name="name")
+
+	@Column(name = "name")
 	private String name;
-	
-	@Column(name="plate")
+
+	@Column(name = "plate")
 	private String plate;
-	
-	@Column(name="year")
+
+	@Column(name = "year")
 	private int year;
-	
-	@Column(name="type")
+
+	@Column(name = "type")
 	private String type;
-	
-	@Column(name="description", length=10000)
+
+	@Column(name = "description", length = 10000)
 	private String description;
-	
+
 	@Lob
-	@Column(name="photo")
+	@Column(name = "photo")
 	private byte[] photo;
-	
-	@Column(name="price")
+
+	@Column(name = "price")
 	private double price;
-	
-	@Column(name="diesel")
+
+	@Column(name = "diesel")
 	private String diesel;
-	
+
 	@ManyToOne
-	@JoinColumn(name="category")
-	private CategoryEntity category;
+	@JoinColumn(name = "category")
+	private CategoryEntity category = new CategoryEntity();
 	private StatusEnum availability;
 	private boolean active;
-	
+
 	public CarEntity() {
-		
+
+	}
+
+	public CarEntity(Long id, byte[] photo, String name, String description, String plate, String diesel, String type, int year,
+			double price, StatusEnum availability, Long categoryId, String categoryName) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.photo = photo;
+		this.availability = availability;
+		this.diesel = diesel;
+		this.type = type;
+		this.price = price;
+		this.category.setId(categoryId);
+		this.category.setName(categoryName);
+		this.year = year;
 	}
 
 	public Long getId() {
@@ -128,8 +143,6 @@ public class CarEntity {
 		this.year = year;
 	}
 
-
-
 	public StatusEnum getAvailability() {
 		return availability;
 	}
@@ -162,6 +175,4 @@ public class CarEntity {
 				+ active + "]";
 	}
 
-	
-	
 }

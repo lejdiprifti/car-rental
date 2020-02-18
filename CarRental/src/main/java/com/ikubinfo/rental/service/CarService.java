@@ -51,7 +51,7 @@ public class CarService {
 	public List<CarModel> getAll() {
 		try {
 			authorizationService.isUserAuthorized();
-			List<CarModel> modelList = carConverter.toModel(carRepository.getAll());
+			List<CarModel> modelList = carConverter.toModelObject(carRepository.getAll());
 			for (CarModel car : modelList) {
 				car.setReservedDates(getReservedDatesByCar(car.getId()));
 			}

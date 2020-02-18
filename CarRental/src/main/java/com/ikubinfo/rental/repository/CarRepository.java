@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
@@ -33,8 +34,10 @@ public class CarRepository {
 	}
 	
 	@Transactional
-	public List<CarEntity> getAll() {
-		TypedQuery<CarEntity> query = em.createQuery("Select c from CarEntity c where c.active =?1 ORDER BY c.id DESC", CarEntity.class);
+	public List<Object[]> getAll() {
+		Query query = em.createQuery("Select c.id as id, c.photo as photo, c.name as name, c.description as description, c.plate as plate, c.diesel as diesel,"
+				+ " c.type as type, c.year as year, c.price as price, c.availability as availability"
+				+ ",c.category.id as categoryId, c.category.name as categoryName from CarEntity c where c.active =?1 ORDER BY c.id DESC");
 		query.setParameter(1,true);
 		return query.getResultList();
 	}
