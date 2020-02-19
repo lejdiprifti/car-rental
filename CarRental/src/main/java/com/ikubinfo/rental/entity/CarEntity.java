@@ -1,7 +1,5 @@
 package com.ikubinfo.rental.entity;
 
-import java.util.Arrays;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,8 +10,13 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "car", schema = "rental")
+@Getter @Setter @NoArgsConstructor
 public class CarEntity {
 
 	@Id
@@ -55,123 +58,5 @@ public class CarEntity {
 	
 	private StatusEnum availability;
 	private boolean active;
-
-	public CarEntity() {
-
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public byte[] getPhoto() {
-		return photo;
-	}
-
-	public void setPhoto(byte[] photo) {
-		this.photo = photo;
-	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
-	public String getDiesel() {
-		return diesel;
-	}
-
-	public void setDiesel(String diesel) {
-		this.diesel = diesel;
-	}
-
-	public CategoryEntity getCategory() {
-		return category;
-	}
-
-	public void setCategory(CategoryEntity category) {
-		this.category = category;
-	}
-
-	public int getYear() {
-		return year;
-	}
-
-	public void setYear(int year) {
-		this.year = year;
-	}
-
-	public StatusEnum getAvailability() {
-		return availability;
-	}
-
-	public Long getCategoryId() {
-		return categoryId;
-	}
-
-	public void setCategoryId(Long categoryId) {
-		this.categoryId = categoryId;
-	}
-
-	public void setAvailability(StatusEnum availability) {
-		this.availability = availability;
-	}
-
-	public String getPlate() {
-		return plate;
-	}
-
-	public void setPlate(String plate) {
-		this.plate = plate;
-	}
-
-	public boolean isActive() {
-		return active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-
-	@Override
-	public String toString() {
-		return "CarEntity [id=" + id + ", name=" + name + ", plate=" + plate + ", year=" + year + ", type=" + type
-				+ ", description=" + description + ", photo=" + Arrays.toString(photo) + ", price=" + price
-				+ ", diesel=" + diesel + ", categoryId=" + categoryId + ", category=" + category + ", availability="
-				+ availability + ", active=" + active + "]";
-	}
-
-	
 
 }

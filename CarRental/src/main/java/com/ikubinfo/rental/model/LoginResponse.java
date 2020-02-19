@@ -1,32 +1,15 @@
 package com.ikubinfo.rental.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
 public class LoginResponse {
 	
 	private String jwt;
 	private UserModel user;
 	
-	public LoginResponse() {
-		
-	}
-
-	public String getJwt() {
-		return jwt;
-	}
-
-	public void setJwt(String jwt) {
-		this.jwt = jwt;
-	}
-
-	public UserModel getUser() {
-		return user;
-	}
-
-	public void setUser(UserModel user) {
-		this.user = user;
-	}
-
-	@Override
-	public String toString() {
-		return "LoginResponse [jwt=" + jwt + ", user=" + user + "]";
-	}
 }
