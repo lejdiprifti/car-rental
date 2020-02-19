@@ -90,18 +90,9 @@ public class CarService {
 		try {
 			validateCarData(model, file);
 			saveIfAvailable(model.getPlate());
-			CarEntity entity = new CarEntity();
-			entity.setAvailability(model.getAvailability());
-			entity.setActive(true);
-			entity.setName(model.getName().trim());
+			CarEntity entity = carConverter.toEntity(model);
 			entity.setPhoto(file.getBytes());
-			entity.setDescription(model.getDescription().trim());
-			entity.setDiesel(model.getDiesel().trim());
-			entity.setPlate(model.getPlate().trim());
-			entity.setCategory(categoryRepository.getById(model.getCategoryId()));
-			entity.setPrice(model.getPrice());
-			entity.setYear(model.getYear());
-			entity.setType(model.getType().trim());
+			entity.setActive(true);
 			carRepository.save(entity);
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
@@ -120,19 +111,13 @@ public class CarService {
 		try {
 			validateCarData(model, file);
 			updateIfAvailable(model.getPlate(), id);
-			CarEntity entity = carRepository.getById(id);
-			entity.setPlate(model.getPlate().trim());
-			entity.setName(model.getName().trim());
+			CarEntity entity = carConverter.toEntity(model);
 			if (file != null) {
 				entity.setPhoto(file.getBytes());
+			} else {
+				entity.setPhoto(carRepository.getById(id).getPhoto());
 			}
-			entity.setPrice(model.getPrice());
-			entity.setType(model.getType().trim());
-			entity.setDescription(model.getDescription().trim());
-			entity.setAvailability(model.getAvailability());
-			entity.setDiesel(model.getDiesel().trim());
-			entity.setCategory(categoryRepository.getById(model.getCategoryId()));
-			entity.setYear(model.getYear());
+			entity.setActive(true);
 			carRepository.edit(entity);
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Car/Category not found.");

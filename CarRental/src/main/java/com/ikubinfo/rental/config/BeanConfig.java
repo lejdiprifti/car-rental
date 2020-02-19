@@ -1,6 +1,7 @@
 package com.ikubinfo.rental.config;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,6 +14,8 @@ public class BeanConfig {
 
 	@Bean
 	public ModelMapper modelMapper() {
-		return new ModelMapper();
+		ModelMapper mm = new ModelMapper();
+		mm.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		return mm;
 	}
 }

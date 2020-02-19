@@ -36,7 +36,7 @@ public class StatisticsService {
 		authorizationService.isUserAuthorized();
 		StatisticsModel stats = new StatisticsModel();
 		stats.setActiveUsers(userRepository.countActiveUsers());
-		stats.setAvailableCars(carRepository.countCars(StatusEnum.AVAILABLE));
+		stats.setAvailableCars(carRepository.countFreeCars());
 		stats.setRentedCars(carRepository.countRentedCars());
 		
 		Calendar calendar = Calendar.getInstance();

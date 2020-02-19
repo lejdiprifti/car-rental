@@ -59,13 +59,11 @@ public class CategoryService {
 		try {
 			validateCategoryData(model, file);
 			saveIfAvailable(model.getName());
-			CategoryEntity entity = new CategoryEntity();
-			entity.setName(model.getName());
+			CategoryEntity entity = catConverter.toEntity(model);
 			if (file != null) {
 				entity.setPhoto(file.getBytes());
 			}
 			entity.setActive(true);
-			entity.setDescription(model.getDescription());
 			catRepository.save(entity);
 		} catch (NonValidDataException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -78,10 +76,9 @@ public class CategoryService {
 		authorizationService.isUserAuthorized();
 		try {
 			validateCategoryData(model, file);
-			CategoryEntity entity = catRepository.getById(id);
+			CategoryEntity entity = catConverter.toEntity(model);
 			updateIfAvailable(model.getName(), id);
-			entity.setName(model.getName());
-			entity.setDescription(model.getDescription());
+			entity.setId(id);
 			entity.setPhoto(file.getBytes());
 			catRepository.edit(entity);
 		} catch (NoResultException e) {

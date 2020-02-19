@@ -58,7 +58,7 @@ export class BookingsComponent implements OnInit {
       })
       this.defineReservedDates();
     }, err => {
-      this.logger.error('Error', 'Could not find your reservations.');
+      this.logger.error('Error', err.error.message);
     })
   }
   onRowSelect(event) {
@@ -103,7 +103,7 @@ export class BookingsComponent implements OnInit {
             this.logger.success('Success', 'Reservation was saved successfully.');
             this.getMyReservations();
           }, err=>{
-            this.logger.error('Error', 'Invalid dates/time chosen!')
+            this.logger.error('Error', err.error.message)
           })
         }
       })
@@ -142,7 +142,7 @@ export class BookingsComponent implements OnInit {
           this.logger.info('Info','Reservation was canceled.');
           this.getMyReservations();
         }, err=>{
-          this.logger.error('Error', 'Reservation could not be canceled. Try later!');
+          this.logger.error('Error', err.error.message);
         })
       }
     })

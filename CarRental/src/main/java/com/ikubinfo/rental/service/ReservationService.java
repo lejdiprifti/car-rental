@@ -73,44 +73,36 @@ public class ReservationService {
 	}
 
 	public void save(ReservationModel model) throws MessagingException, IOException {
-		if (model.getEndDate().isAfter(model.getStartDate())) {
-		checkIfAvailable(model.getCarId(), model.getStartDate(),
-					model.getEndDate());
-				ReservationEntity entity = new ReservationEntity();
-				entity.setStartDate(model.getStartDate());
-				entity.setEndDate(model.getEndDate());
-				entity.setCreated_at(Calendar.getInstance());
-				entity.setActive(true);
-				CarEntity car = carRepository.getById(model.getCarId());
-				entity.setCar(car);
-				entity.setUser(userRepository.getByUsername(jwtTokenUtil.getUsername()));
-				reservationRepository.save(entity);
-				Mail mail = emailService.setMailProperties(entity, model.getFee());
-				emailService.prepareAndSend(mail, entity.getCar().getPhoto());
-			} else {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Chosen car is not available.");
-			}
+		checkDates(model.getStartDate(), model.getEndDate());
+		checkIfAvailable(model.getCarId(), model.getStartDate(), model.getEndDate());
+		ReservationEntity entity = reservationConverter.toEntity(model);
+		entity.setCreated_at(Calendar.getInstance());
+		entity.setActive(true);
+		entity.setUserId(userRepository.getByUsername(jwtTokenUtil.getUsername()).getId());
+		reservationRepository.save(entity);
+		Mail mail = emailService.setMailProperties(entity, model.getFee());
+		CarEntity car = carRepository.getById(entity.getCarId());
+		emailService.prepareAndSend(mail, car);
 	}
 
 	public void edit(ReservationModel model, Long id) {
-		if (model.getEndDate().isAfter(model.getStartDate())) {
-			ReservationEntity entity = reservationRepository.getById(id);
-			reservationRepository.updateIfAvailable(entity.getCar().getId(), model.getStartDate(), model.getEndDate(),
-					entity.getId());
-			try {
-				entity.setStartDate(model.getStartDate());
-				entity.setEndDate(model.getEndDate());
-				entity.setCreated_at(Calendar.getInstance());
-				reservationRepository.edit(entity);
-				Mail mail = emailService.setMailProperties(entity, model.getFee());
-				emailService.prepareAndSend(mail, entity.getCar().getPhoto());
-			} catch (NoResultException e) {
-				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Reservation was not found.");
-			} catch (MessagingException e) {
-				throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "Sorry, we are not able to send you the e-mail.");
-			}
-		} else {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Please, specify a valid time period.");
+		checkDates(model.getStartDate(), model.getEndDate());
+		ReservationEntity entity = reservationConverter.toEntity(model);
+		entity.setId(id);
+		reservationRepository.updateIfAvailable(entity.getCarId(), model.getStartDate(), model.getEndDate(),
+				entity.getId());
+		try {
+			entity.setCreated_at(Calendar.getInstance());
+			entity.setActive(true);
+			reservationRepository.edit(entity);
+			Mail mail = emailService.setMailProperties(entity, model.getFee());
+			CarEntity car = carRepository.getById(entity.getCarId());
+			emailService.prepareAndSend(mail, car);
+		} catch (NoResultException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Reservation was not found.");
+		} catch (MessagingException e) {
+			throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED,
+					"Sorry, we are not able to send you the e-mail.");
 		}
 	}
 
@@ -130,11 +122,17 @@ public class ReservationService {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car is reserved during the specified dates.");
 		}
 	}
-	
+
 	public void checkIfAvailable(Long carId, LocalDateTime startDate, LocalDateTime endDate) {
 		Long reservations = reservationRepository.checkIfAvailable(carId, startDate, endDate);
 		if (reservations > 0) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car is reserved during the specified dates.");
+		}
+	}
+
+	public void checkDates(LocalDateTime startDate, LocalDateTime endDate) {
+		if (!endDate.isAfter(startDate)) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Please, specify a valid time period.");
 		}
 	}
 }

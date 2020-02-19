@@ -45,30 +45,19 @@ public class CarEntity {
 
 	@Column(name = "diesel")
 	private String diesel;
+	
+	@Column(name="category_id")
+	private Long categoryId;
 
 	@ManyToOne
-	@JoinColumn(name = "category")
-	private CategoryEntity category = new CategoryEntity();
+	@JoinColumn(name = "category_id", referencedColumnName = "category_id", insertable=false, updatable=false)
+	private CategoryEntity category;
+	
 	private StatusEnum availability;
 	private boolean active;
 
 	public CarEntity() {
 
-	}
-
-	public CarEntity(Long id, byte[] photo, String name, String description, String plate, String diesel, String type, int year,
-			double price, StatusEnum availability, Long categoryId, String categoryName) {
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.photo = photo;
-		this.availability = availability;
-		this.diesel = diesel;
-		this.type = type;
-		this.price = price;
-		this.category.setId(categoryId);
-		this.category.setName(categoryName);
-		this.year = year;
 	}
 
 	public Long getId() {
@@ -147,6 +136,14 @@ public class CarEntity {
 		return availability;
 	}
 
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
+
 	public void setAvailability(StatusEnum availability) {
 		this.availability = availability;
 	}
@@ -171,8 +168,10 @@ public class CarEntity {
 	public String toString() {
 		return "CarEntity [id=" + id + ", name=" + name + ", plate=" + plate + ", year=" + year + ", type=" + type
 				+ ", description=" + description + ", photo=" + Arrays.toString(photo) + ", price=" + price
-				+ ", diesel=" + diesel + ", category=" + category + ", availability=" + availability + ", active="
-				+ active + "]";
+				+ ", diesel=" + diesel + ", categoryId=" + categoryId + ", category=" + category + ", availability="
+				+ availability + ", active=" + active + "]";
 	}
+
+	
 
 }

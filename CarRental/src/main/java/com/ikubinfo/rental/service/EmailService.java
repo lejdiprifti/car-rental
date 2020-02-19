@@ -19,8 +19,12 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
+import com.ikubinfo.rental.entity.CarEntity;
 import com.ikubinfo.rental.entity.ReservationEntity;
+import com.ikubinfo.rental.entity.UserEntity;
 import com.ikubinfo.rental.model.Mail;
+import com.ikubinfo.rental.repository.CarRepository;
+import com.ikubinfo.rental.repository.UserRepository;
 
 @Service
 public class EmailService {
@@ -31,12 +35,18 @@ public class EmailService {
 	
 	@Autowired
 	private SpringTemplateEngine springTemplateEngine;
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private CarRepository carRepository;
 
 	public EmailService() {
 
 	}
 
-	public void prepareAndSend(Mail mail, byte[] imageBytes) throws MessagingException {
+	public void prepareAndSend(Mail mail, CarEntity car) throws MessagingException {
 		logger.info("TRYING TO SEND MAIL");
 		MimeMessage message = mailSender.createMimeMessage();
 	        MimeMessageHelper messageHelper = new MimeMessageHelper(message, true);
@@ -48,7 +58,7 @@ public class EmailService {
 	        messageHelper.setFrom("ikubinfo.car.rentals@gmail.com");
 	        messageHelper.setTo(mail.getTo());
 	        messageHelper.setSubject(mail.getSubject());	
-	        final InputStreamSource imageSource = new ByteArrayResource(imageBytes);
+	        final InputStreamSource imageSource = new ByteArrayResource(car.getPhoto());
 			messageHelper.addInline("imageResourceName", imageSource, "image/jpg");
 	        mailSender.send(message);
 	}
@@ -58,17 +68,19 @@ public class EmailService {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 		mail.setFrom("ikubinfo.car.rentals@gmail.com");
 		Map<String, Object> content = new HashMap<String, Object>();
-		content.put("name", reservation.getUser().getFirstName() + ' ' + reservation.getUser().getLastName());
-		content.put("carName", reservation.getCar().getName());
-		content.put("carBrand", reservation.getCar().getType());
-		content.put("carPlate", reservation.getCar().getPlate());
+		UserEntity user = userRepository.getById(reservation.getUserId());
+		CarEntity car = carRepository.getById(reservation.getCarId());
+		content.put("name", user.getFirstName() + ' ' + user.getLastName());
+		content.put("carName", car.getName());
+		content.put("carBrand", car.getType());
+		content.put("carPlate", car.getPlate());
 		content.put("price", fee);
 		content.put("startDate", reservation.getStartDate().format(formatter));
 		content.put("endDate", reservation.getEndDate().format(formatter));
 		content.put("signature", "Car Rentals Albania");
 		content.put("location", "Papa Gjon Pali 3rd St. , Tirana, Albania");
 		mail.setContent(content);
-		mail.setTo(reservation.getUser().getEmail());
+		mail.setTo(user.getEmail());
 		mail.setSubject("Receipt Confirmation");
 		return mail;
 	}

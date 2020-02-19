@@ -73,26 +73,19 @@ public class UserService {
 	public void register(UserModel user) {
 		try {
 			validateUserData(user);
-			checkIfExists(user.getUsername());
 			logger.info("Registering new user.");
-			UserEntity entity = new UserEntity();
-			entity.setFirstName(user.getFirstName().trim());
-			entity.setLastName(user.getLastName().trim());
 			if (user.getUsername().trim().length() > 0) {
-			entity.setUsername(user.getUsername().trim());
+				checkIfExists(user.getUsername());
+				UserEntity entity = userConverter.toEntity(user);
+				entity.setPassword(passwordEncoder.encode(user.getPassword()));
+				entity.setActive(true);
+				RoleEntity role = new RoleEntity();
+				role.setId(2);
+				entity.setRole(role);
+				userRepository.save(entity);
 			} else {
 				throw new NonValidDataException("Username is required.");
 			}
-			entity.setPassword(passwordEncoder.encode(user.getPassword().trim()));
-			entity.setEmail(user.getEmail().trim());
-			entity.setPhone(user.getPhone().trim());
-			entity.setAddress(user.getAddress().trim());
-			entity.setBirthdate(user.getBirthdate());
-			entity.setActive(true);
-			RoleEntity role = new RoleEntity();
-			role.setId(2);
-			entity.setRole(role);
-			userRepository.save(entity);
 		} catch (UserAlreadyExistsException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exists.");
 		} catch (NonValidDataException e) {
@@ -103,16 +96,11 @@ public class UserService {
 	public void edit(UserModel user) {
 		try {
 			validateUserData(user);
-			UserEntity entity = userRepository.getByUsername(jwtTokenUtil.getUsername());
-			entity.setFirstName(user.getFirstName().trim());
-			entity.setLastName(user.getLastName().trim());
+			UserEntity entity = userConverter.toEntity(user);
+			entity.setId(userRepository.getByUsername(jwtTokenUtil.getUsername()).getId());
 			if (user.getPassword() != null) {
-			entity.setPassword(passwordEncoder.encode(user.getPassword().trim()));
+				entity.setPassword(passwordEncoder.encode(user.getPassword().trim()));
 			}
-			entity.setAddress(user.getAddress().trim());
-			entity.setEmail(user.getEmail().trim());
-			entity.setPhone(user.getPhone().trim());
-			entity.setBirthdate(user.getBirthdate());
 			userRepository.edit(entity);
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
@@ -149,31 +137,31 @@ public class UserService {
 
 	public void validateUserData(UserModel model) throws NonValidDataException {
 		try {
-		if (model.getFirstName().trim().length() == 0) {
-			throw new NonValidDataException("First name is required.");
-		}
-		if (model.getLastName().trim().length() == 0) {
-			throw new NonValidDataException("Last name is required.");
-		}
-		if (model.getBirthdate() == null) {
-			throw new NonValidDataException("Birthdate is required.");
-		} else if (!isOver18(model.getBirthdate())) {
-			throw new NonValidDataException("You must be over 18 years old.");
-		}
-		if (model.getAddress().trim().length() == 0) {
-			throw new NonValidDataException("Address is required.");
-		}
-		if (model.getPhone().trim().length() == 0) {
-			throw new NonValidDataException("Phone is required.");
-		}
-		if (model.getEmail().trim().length() == 0) {
-			throw new NonValidDataException("Email is required.");
-		}
+			if (model.getFirstName().trim().length() == 0) {
+				throw new NonValidDataException("First name is required.");
+			}
+			if (model.getLastName().trim().length() == 0) {
+				throw new NonValidDataException("Last name is required.");
+			}
+			if (model.getBirthdate() == null) {
+				throw new NonValidDataException("Birthdate is required.");
+			} else if (!isOver18(model.getBirthdate())) {
+				throw new NonValidDataException("You must be over 18 years old.");
+			}
+			if (model.getAddress().trim().length() == 0) {
+				throw new NonValidDataException("Address is required.");
+			}
+			if (model.getPhone().trim().length() == 0) {
+				throw new NonValidDataException("Phone is required.");
+			}
+			if (model.getEmail().trim().length() == 0) {
+				throw new NonValidDataException("Email is required.");
+			}
 		} catch (NullPointerException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User data are missing.");
 		}
 	}
-	
+
 	public boolean isOver18(LocalDateTime birthdate) {
 		if (LocalDateTime.now().getYear() - birthdate.getYear() >= 18) {
 			return true;

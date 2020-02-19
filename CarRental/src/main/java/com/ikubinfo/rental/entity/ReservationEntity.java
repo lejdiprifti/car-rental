@@ -2,8 +2,8 @@ package com.ikubinfo.rental.entity;
 
 import java.time.LocalDateTime;
 import java.util.Calendar;
-import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,13 +24,19 @@ public class ReservationEntity {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "user_id",referencedColumnName="user_id", insertable=false, updatable=false)
 	private UserEntity user;
-
+	
+	@Column(name="user_id")
+	private Long userId;
+	
 	@ManyToOne
-	@JoinColumn(name = "car_id")
+	@JoinColumn(name = "car_id", referencedColumnName="car_id",insertable=false, updatable=false)
 	private CarEntity car;
-
+	
+	@Column(name="car_id")
+	private Long carId;
+	
 	private LocalDateTime startDate;
 
 	private LocalDateTime endDate;
@@ -100,10 +106,29 @@ public class ReservationEntity {
 		this.created_at = created_at;
 	}
 
+	public Long getCarId() {
+		return carId;
+	}
+
+	public void setCarId(Long carId) {
+		this.carId = carId;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
 	@Override
 	public String toString() {
-		return "ReservationEntity [id=" + id + ", user=" + user + ", car=" + car + ", created_at=" + created_at
+		return "ReservationEntity [id=" + id + ", user=" + user + ", userId=" + userId + ", car=" + car + ", carId="
+				+ carId + ", startDate=" + startDate + ", endDate=" + endDate + ", created_at=" + created_at
 				+ ", active=" + active + "]";
 	}
+
+	
 
 }

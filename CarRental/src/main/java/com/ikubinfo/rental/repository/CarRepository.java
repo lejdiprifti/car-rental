@@ -68,9 +68,10 @@ public class CarRepository {
 		return query.getResultList();
 	}
 	
-	public Long countCars(StatusEnum status) {
-		TypedQuery<Long> query = em.createQuery("Select COUNT(c.id) from CarEntity c where c.availability = ?1 and c.active = ?2", Long.class);
-		query.setParameter(1, status);
+	public Long countFreeCars() {
+		TypedQuery<Long> query = em.createQuery("Select COUNT(DISTINCT c.id) from CarEntity c where c.id NOT IN (SELECT r.car.id from ReservationEntity r where"
+				+ " r.startDate <= ?1 and r.endDate >= ?1 and r.active = ?2) and c.active = ?2", Long.class);
+		query.setParameter(1, LocalDateTime.now());
 		query.setParameter(2, true);
 		return query.getSingleResult();
 	}
