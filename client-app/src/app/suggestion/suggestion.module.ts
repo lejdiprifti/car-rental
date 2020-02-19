@@ -15,13 +15,14 @@ import { CarComponent } from './car/car.component';
 import {FullCalendarModule} from '@fullcalendar/angular';
 import { BookingComponent } from './booking/booking.component';
 import { BookingsComponent } from './bookings/bookings.component';
+import { ClientsComponent } from './clients/clients.component';
 
 
 
 @NgModule({
     imports: [CommonsModule,DialogModule,SelectButtonModule, SplitButtonModule,  FullCalendarModule, ProgressSpinnerModule,DropdownModule,ToggleButtonModule,KeyFilterModule,InplaceModule,PanelModule, ToggleButtonModule, SuggestionRoutingModule,DataViewModule, LayoutModule,CardModule, FormsModule, PasswordModule, FileUploadModule],
     exports: [],
-    declarations: [DashboardComponent,BookingsComponent, BookingComponent,CarComponent, CarsComponent, UserComponent, CategoryComponent, CategoriesComponent],
+    declarations: [DashboardComponent,BookingsComponent, BookingComponent,CarComponent, ClientsComponent, CarsComponent, UserComponent, CategoryComponent, CategoriesComponent],
     providers: []
 })
 export class SuggestionModule { }

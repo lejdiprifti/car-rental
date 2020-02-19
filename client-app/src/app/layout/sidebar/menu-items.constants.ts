@@ -32,4 +32,10 @@ export const menuItems: Array<MenuItem> = [{
     icon: 'fas fa-sitemap',
     label: 'Categories',
     allowedRoles: [Role.ADMIN]
+},
+{
+    url: '/rental/clients',
+    icon: 'fa fa-users',
+    label: 'Clients',
+    allowedRoles: [Role.ADMIN]
 }]

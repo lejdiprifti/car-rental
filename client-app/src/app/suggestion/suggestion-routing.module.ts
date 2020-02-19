@@ -12,6 +12,7 @@ import { CarsComponent } from './cars/cars.component';
 import { CarComponent } from './car/car.component';
 import { BookingComponent } from './booking/booking.component';
 import { BookingsComponent } from './bookings/bookings.component';
+import { ClientsComponent } from './clients/clients.component';
 
 const suggestionRoutes: Routes = [
     {
@@ -27,6 +28,7 @@ const suggestionRoutes: Routes = [
             {path: 'car/:id', component: CarComponent, canActivate: [AdminGuard]},
             {path: 'car', component: CarComponent, canActivate: [AdminGuard]},
             {path: 'reservations', component: BookingsComponent},
+            {path: 'clients', component: ClientsComponent, canActivate: [AdminGuard]},
             {path: 'reservation/:carId', component: BookingComponent, canActivate: [UserGuard]}
         ]
     }
