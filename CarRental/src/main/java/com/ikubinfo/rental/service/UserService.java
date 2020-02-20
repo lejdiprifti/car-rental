@@ -96,18 +96,20 @@ public class UserService {
 	public void edit(UserModel user) {
 		try {
 			validateUserData(user);
-			UserEntity entity = userConverter.toEntity(user);
+			UserEntity entity = new UserEntity();
 			UserEntity loggedUser = userRepository.getByUsername(jwtTokenUtil.getUsername());
-			entity.setId(loggedUser.getId());
-			if (user.getPassword() != null) {
-				entity.setPassword(passwordEncoder.encode(user.getPassword().trim()));
-			} else {
+			if (user.getPassword() == null) {
+				entity = userConverter.toEntity(user);
 				entity.setPassword(loggedUser.getPassword());
+				entity.setId(loggedUser.getId());
+				entity.setActive(true);
+				entity.setRoleId(2);
+				entity.setUsername(loggedUser.getUsername());
+				userRepository.edit(entity);
+			} else {
+				loggedUser.setPassword(passwordEncoder.encode(user.getPassword().trim()));
+				userRepository.edit(loggedUser);
 			}
-			entity.setActive(true);
-			entity.setRoleId(2);
-			entity.setUsername(loggedUser.getUsername());
-			userRepository.edit(entity);
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
 		} catch (NonValidDataException e) {

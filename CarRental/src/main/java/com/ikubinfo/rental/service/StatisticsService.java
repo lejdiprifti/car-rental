@@ -5,7 +5,6 @@ import java.util.Calendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ikubinfo.rental.entity.StatusEnum;
 import com.ikubinfo.rental.model.StatisticsModel;
 import com.ikubinfo.rental.repository.CarRepository;
 import com.ikubinfo.rental.repository.ReservationRepository;

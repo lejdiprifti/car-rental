@@ -1,6 +1,7 @@
 export const diesels = ["Diesel", "Petrol", "Kerosene", "Hydrogen", "Biogas"];
 
 export const brands = [
+  { label: "Choose brand", value: "" },
   { label: "Audi", value: "Audi" },
   { label: "BMW", value: "BMW" },
   { label: "Fiat", value: "Fiat" },
