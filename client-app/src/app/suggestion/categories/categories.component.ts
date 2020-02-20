@@ -23,7 +23,7 @@ export class CategoriesComponent implements OnInit {
     private categoryService: CategoryService,
     private confirmationService: ConfirmationService,
     private logger: LoggerService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.categories = [];

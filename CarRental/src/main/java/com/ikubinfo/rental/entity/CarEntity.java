@@ -1,5 +1,8 @@
 package com.ikubinfo.rental.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,7 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Where;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -55,6 +61,10 @@ public class CarEntity {
 	@ManyToOne
 	@JoinColumn(name = "category_id", referencedColumnName = "category_id", insertable=false, updatable=false)
 	private CategoryEntity category;
+	
+	@Where(clause="active = true")
+	@OneToMany(mappedBy="car",targetEntity=ReservationEntity.class)
+	List<ReservationEntity> reservationList = new ArrayList<ReservationEntity>();
 	
 	private StatusEnum availability;
 	private boolean active;

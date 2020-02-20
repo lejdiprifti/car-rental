@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { Car } from '../../core/models/car';
+import { Router } from '@angular/router';
+
 import { SelectItem } from 'primeng/components/common/selectitem';
 import { CarService } from '@ikubinfo/core/services/car.service';
 import { LoggerService } from '@ikubinfo/core/utilities/logger.service';
 import { MenuItem } from 'primeng/components/common/menuitem';
-import { Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/primeng';
 import { User } from '@ikubinfo/core/models/user';
 import { AuthService } from '@ikubinfo/core/services/auth.service';
 import { CategoryService } from '@ikubinfo/core/services/category.service';
 import { Category } from '@ikubinfo/core/models/category';
 import { Status } from '@ikubinfo/core/models/status.enum';
+import { Car } from '@ikubinfo/core/models/car';
 @Component({
   selector: 'ikubinfo-cars',
   templateUrl: './cars.component.html',

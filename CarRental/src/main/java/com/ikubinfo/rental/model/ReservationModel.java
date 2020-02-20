@@ -6,11 +6,12 @@ import java.util.Date;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 @Getter
 @Setter
 @NoArgsConstructor
 public class ReservationModel {
-	
+
 	private Long id;
 	private UserModel user;
 	private CarModel car;
@@ -19,5 +20,5 @@ public class ReservationModel {
 	private LocalDateTime endDate;
 	private Date created_at;
 	private double fee;
-	private boolean active;	
+	private boolean active;
 }

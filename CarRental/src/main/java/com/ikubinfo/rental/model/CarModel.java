@@ -1,6 +1,5 @@
 package com.ikubinfo.rental.model;
 
-
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CarModel {
-	
+
 	private Long id;
 	private String name;
 	private String type;
@@ -29,6 +28,7 @@ public class CarModel {
 	private Long categoryId;
 	private byte[] photo;
 	private List<ReservedDates> reservedDates;
+	private List<ReservationModel> reservationList;
 	private StatusEnum availability;
-	private boolean active;	
+	private boolean active;
 }
