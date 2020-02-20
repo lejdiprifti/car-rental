@@ -5,6 +5,7 @@ import { CategoryService } from "@ikubinfo/core/services/category.service";
 import { Category } from "@ikubinfo/core/models/category";
 import { LoggerService } from "@ikubinfo/core/utilities/logger.service";
 import { cols } from "@ikubinfo/suggestion/categories/categories.constants";
+import { prepareFormData } from "@ikubinfo/suggestion/util";
 
 import { ConfirmationService } from "primeng/primeng";
 
@@ -76,10 +77,8 @@ export class CategoriesComponent implements OnInit {
           header: "Accept Confirmation",
           icon: "pi pi-info-circle",
           accept: () => {
-            let formData = new FormData();
-            formData.append("file", addedCategory.photo);
-            formData.append(
-              "properties",
+            let formData = prepareFormData(
+              addedCategory.photo,
               new Blob(
                 [
                   JSON.stringify({
@@ -101,7 +100,7 @@ export class CategoriesComponent implements OnInit {
                 this.getAll();
               },
               err => {
-                this.logger.error("Error", "Category name already exists.");
+                this.logger.error("Error", err.error.message);
               }
             );
           }
@@ -115,13 +114,8 @@ export class CategoriesComponent implements OnInit {
           header: "Accept Confirmation",
           icon: "pi pi-info-circle",
           accept: () => {
-            let formData = new FormData();
-            formData.append(
-              "file",
-              categories[this.categories.indexOf(this.selectedCategory)].photo
-            );
-            formData.append(
-              "properties",
+            let formData = prepareFormData(
+              categories[this.categories.indexOf(this.selectedCategory)].photo,
               new Blob(
                 [
                   JSON.stringify({
@@ -149,7 +143,7 @@ export class CategoriesComponent implements OnInit {
                   this.getAll();
                 },
                 err => {
-                  this.logger.error("Error", "Category name exists.");
+                  this.logger.error("Error", err.error.message);
                 }
               );
           }
