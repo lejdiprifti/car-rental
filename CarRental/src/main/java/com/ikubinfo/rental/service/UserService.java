@@ -97,10 +97,16 @@ public class UserService {
 		try {
 			validateUserData(user);
 			UserEntity entity = userConverter.toEntity(user);
-			entity.setId(userRepository.getByUsername(jwtTokenUtil.getUsername()).getId());
+			UserEntity loggedUser = userRepository.getByUsername(jwtTokenUtil.getUsername());
+			entity.setId(loggedUser.getId());
 			if (user.getPassword() != null) {
 				entity.setPassword(passwordEncoder.encode(user.getPassword().trim()));
+			} else {
+				entity.setPassword(loggedUser.getPassword());
 			}
+			entity.setActive(true);
+			entity.setRoleId(2);
+			entity.setUsername(loggedUser.getUsername());
 			userRepository.edit(entity);
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");

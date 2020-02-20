@@ -70,7 +70,7 @@
                         <p-calendar placeholder = "Pick a date" [style]="{'width':'350px','margin-top':'8px'}" [(ngModel)]="endDate" (click)="filterBookings()" showButtonBar="true"></p-calendar>
                     </div>
                     <p-dropdown *ngSwitchCase="'type'" [options]="brands" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'equals')"></p-dropdown>
-                    <p-multiSelect *ngSwitchCase="'diesel'" [options]="colors" defaultLabel="All Fuels" (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
+                    <p-multiSelect *ngSwitchCase="'diesel'" [options]="fuels" defaultLabel="All Fuels" (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
                     <input *ngSwitchCase="'price'"  pKeyFilter="int" pInputText type="text" placeholder="Greater Than" (input)="filterBookingsByPrice($event)">
                 </th>
             </tr>

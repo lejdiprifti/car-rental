@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CategoryService } from '@ikubinfo/core/services/category.service';
 import { ActivatedRoute, Router } from '@angular/router';
+
+import { CategoryService } from '@ikubinfo/core/services/category.service';
 import { Category } from '@ikubinfo/core/models/category';
 import { LoggerService } from '@ikubinfo/core/utilities/logger.service';
+
 import { ConfirmationService } from 'primeng/primeng';
 
 @Component({
@@ -22,7 +24,7 @@ export class CategoryComponent implements OnInit {
     this.categoryForm = this.fb.group({
       name: ['', Validators.required],
       photo: ['', Validators.required],
-      description: ['', [Validators.required,Validators.minLength(50), Validators.maxLength(255)]],
+      description: ['', [Validators.required, Validators.minLength(50), Validators.maxLength(255)]],
     });
     this.loadData();
   }
@@ -52,7 +54,7 @@ export class CategoryComponent implements OnInit {
             this.logger.error("Error", "Category name exists.");
           });
         }
-        })
+      })
     }
     else {
       this.confirmationService.confirm({
@@ -78,7 +80,7 @@ export class CategoryComponent implements OnInit {
       });
     }
   }
- 
+
   fillForm(data: Category = {}): void {
     this.categoryForm.get('name').setValue(data.name);
     this.categoryForm.get('description').setValue(data.description);

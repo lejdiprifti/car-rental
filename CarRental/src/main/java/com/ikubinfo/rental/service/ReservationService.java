@@ -87,13 +87,13 @@ public class ReservationService {
 
 	public void edit(ReservationModel model, Long id) {
 		checkDates(model.getStartDate(), model.getEndDate());
-		ReservationEntity entity = reservationConverter.toEntity(model);
-		entity.setId(id);
-		reservationRepository.updateIfAvailable(entity.getCarId(), model.getStartDate(), model.getEndDate(),
-				entity.getId());
 		try {
+			ReservationEntity entity = reservationRepository.getById(id);
+			reservationRepository.updateIfAvailable(entity.getCarId(), model.getStartDate(), model.getEndDate(),
+					entity.getId());
 			entity.setCreated_at(Calendar.getInstance());
-			entity.setActive(true);
+			entity.setStartDate(model.getStartDate());
+			entity.setEndDate(model.getEndDate());
 			reservationRepository.edit(entity);
 			Mail mail = emailService.setMailProperties(entity, model.getFee());
 			CarEntity car = carRepository.getById(entity.getCarId());

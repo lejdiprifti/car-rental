@@ -1,7 +1,10 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
 import { LoggerService } from '@ikubinfo/core/utilities/logger.service';
 import { ReservationService } from '@ikubinfo/core/services/reservation.service';
 import { Reservation } from '@ikubinfo/core/models/reservation';
+import { cols } from '@ikubinfo/suggestion/bookings/bookings.constants';
+
 import { ConfirmationService } from 'primeng/primeng';
 
 @Component({
@@ -21,24 +24,18 @@ export class BookingsComponent implements OnInit {
   endTime: Date;
   endDate: Date;
   reservedDates: Array<Date>;
-  minDate : Date;
+  minDate: Date;
   fee: number = 0;
-  price : number;
-  
+  price: number;
+
   constructor(private confirmationService: ConfirmationService,
     private reservationService: ReservationService, private logger: LoggerService) { }
 
   ngOnInit() {
-    this.reservation= {};
+    this.reservation = {};
     this.getMyReservations();
-    this.cols = [
-      {field: 'photo', header: 'Photo'},
-      { field: 'car.type', header: 'Car' },
-      { field: 'startDate', header: 'Start Date'},
-      {field: 'endDate', header: 'End Date'},
-      {field: 'fee', header: 'Total Fee'}
-    ];
-    this.reservedDates= [];
+    this.cols = cols;
+    this.reservedDates = [];
     this.minDate = new Date();
   }
 
@@ -67,12 +64,12 @@ export class BookingsComponent implements OnInit {
     let today = new Date();
     if (startDate.getTime() <= today.getTime() && endDate.getTime() >= today.getTime()) {
       this.logger.warning('Warning!', 'You cannot edit active reservations.');
-    } else if (endDate.getTime() < today.getTime()){
+    } else if (endDate.getTime() < today.getTime()) {
       this.logger.warning('Warning!', 'You cannot edit previous reservations.');
     } else {
-    this.newReservation = false;
-    this.reservation = this.cloneCategory(event.data);
-    this.displayDialog = true;
+      this.newReservation = false;
+      this.reservation = this.cloneCategory(event.data);
+      this.displayDialog = true;
     }
   }
 
@@ -90,25 +87,25 @@ export class BookingsComponent implements OnInit {
   save(): void {
     let reservations = [...this.reservations];
     reservations[this.reservations.indexOf(this.selectedReservation)] = this.reservation;
-      this.confirmationService.confirm({
-        message: 'Are you sure you want to save this category?',
-        header: 'Accept Confirmation',
-        icon: 'pi pi-info-circle',
-        accept: () => {
-          let reservation: Reservation = {};
-          reservation.startDate = new Date(Date.UTC(this.startDate.getFullYear(), this.startDate.getMonth(), this.startDate.getDate(), this.startTime.getHours(), this.startTime.getMinutes()));
-          reservation.endDate = new Date(Date.UTC(this.endDate.getFullYear(), this.endDate.getMonth(), this.endDate.getDate(), this.endTime.getHours(), this.endTime.getMinutes()));
-          reservation.fee = this.fee;
-          this.reservationService.edit(reservation,this.selectedReservation.id ).subscribe(res => {
-            this.logger.success('Success', 'Reservation was saved successfully.');
-            this.getMyReservations();
-          }, err=>{
-            this.logger.error('Error', err.error.message)
-          })
-        }
-      })
-      this.reservation = null;
-      this.displayDialog = false;
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to save this category?',
+      header: 'Accept Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        let reservation: Reservation = {};
+        reservation.startDate = new Date(Date.UTC(this.startDate.getFullYear(), this.startDate.getMonth(), this.startDate.getDate(), this.startTime.getHours(), this.startTime.getMinutes()));
+        reservation.endDate = new Date(Date.UTC(this.endDate.getFullYear(), this.endDate.getMonth(), this.endDate.getDate(), this.endTime.getHours(), this.endTime.getMinutes()));
+        reservation.fee = this.fee;
+        this.reservationService.edit(reservation, this.selectedReservation.id).subscribe(res => {
+          this.logger.success('Success', 'Reservation was saved successfully.');
+          this.getMyReservations();
+        }, err => {
+          this.logger.error('Error', err.error.message)
+        })
+      }
+    })
+    this.reservation = null;
+    this.displayDialog = false;
   }
 
   calculateFee(): void {
@@ -122,13 +119,13 @@ export class BookingsComponent implements OnInit {
   defineReservedDates(): void {
     this.reservedDates = [];
     this.reservations.forEach(el => {
-    if (el.active === true){
-      let startDate = new Date(el.startDate);
-      let endDate = new Date(el.endDate);
-      for (let i=startDate.getTime(); i<=endDate.getTime(); i=i+86400000){
-        this.reservedDates.push(new Date(i));
+      if (el.active === true) {
+        let startDate = new Date(el.startDate);
+        let endDate = new Date(el.endDate);
+        for (let i = startDate.getTime(); i <= endDate.getTime(); i = i + 86400000) {
+          this.reservedDates.push(new Date(i));
+        }
       }
-    }
     })
   }
 
@@ -139,9 +136,9 @@ export class BookingsComponent implements OnInit {
       icon: 'pi pi-info-circle',
       accept: () => {
         this.reservationService.cancel(this.selectedReservation.id).subscribe(res => {
-          this.logger.info('Info','Reservation was canceled.');
+          this.logger.info('Info', 'Reservation was canceled.');
           this.getMyReservations();
-        }, err=>{
+        }, err => {
           this.logger.error('Error', err.error.message);
         })
       }

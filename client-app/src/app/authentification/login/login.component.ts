@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -28,7 +27,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
-    this.authService.login(this.loginForm.value).subscribe((data:any) => {
+    this.authService.login(this.loginForm.value).subscribe((data: any) => {
       this.authService.setData(data);
       if (this.authService.user.role.name === 'ADMIN') {
         this.router.navigate(['/rental/dashboard']);
@@ -36,7 +35,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/rental/cars']);
       }
       this.logger.success('Success', 'You logged in successfully!');
-    }, err=>{
+    }, err => {
       this.logger.error('Error', 'Username or password is incorrect!');
     });
   }

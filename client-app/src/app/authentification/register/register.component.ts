@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { Router } from '@angular/router';
+
 import { LoggerService } from '@ikubinfo/core/utilities/logger.service';
 import { RegisterService } from '@ikubinfo/core/services/register.service';
 import { Role } from '@ikubinfo/core/models/role';
-import { Router } from '@angular/router';
 import { User } from '@ikubinfo/core/models/user';
 
 @Component({
@@ -23,63 +24,62 @@ export class RegisterComponent implements OnInit {
     return birthDatePlus18 < new Date() ? null : { tooYoung: true };
   }
 
-static passwordMatch(group: FormGroup):any{
-  const password= group.get('password').value;
-  const repeatPassword= group.get('repeatPassword').value;
-  return password === repeatPassword ? null : { matchingError: true};
-}
+  static passwordMatch(group: FormGroup): any {
+    const password = group.get('password').value;
+    const repeatPassword = group.get('repeatPassword').value;
+    return password === repeatPassword ? null : { matchingError: true };
+  }
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private  registerService: RegisterService,
+    private registerService: RegisterService,
     private logger: LoggerService
-  ) 
-  {
+  ) {
     this.registerUser = {};
   }
   ngOnInit() {
- 
-    this.passwordForm=this.fb.group({
-    password: [
-      "", 
-      [
-        Validators.required,
-        Validators.pattern("(?=.*d)(?=.*[a-z])(?=.*[A-Z]).{8,}")
-      ]
-    ],
-    repeatPassword: [
-      "",
-      [
-        Validators.required,
-      ]
-    ] 
-  },
-  {validators: RegisterComponent.passwordMatch});
 
-  this.registerForm = this.fb.group({
-    username: [
-      "",
-      [
-        Validators.required,
-        Validators.minLength(4)
+    this.passwordForm = this.fb.group({
+      password: [
+        "",
+        [
+          Validators.required,
+          Validators.pattern("(?=.*d)(?=.*[a-z])(?=.*[A-Z]).{8,}")
+        ]
       ],
-     
-    ],
-    birthdate: ["", [Validators.required, RegisterComponent.isOldEnough]],
-    firstName: ['', [Validators.required]],
-    lastName: ['', Validators.required],
-    phone: ['', Validators.required],
-    email: [
-      "",
-      [
-        Validators.required,
-        Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,}$")
+      repeatPassword: [
+        "",
+        [
+          Validators.required,
+        ]
       ]
-    ],
-    address: ["", Validators.required],
-    passwordForm: this.passwordForm
-   
-  });
+    },
+      { validators: RegisterComponent.passwordMatch });
+
+    this.registerForm = this.fb.group({
+      username: [
+        "",
+        [
+          Validators.required,
+          Validators.minLength(4)
+        ],
+
+      ],
+      birthdate: ["", [Validators.required, RegisterComponent.isOldEnough]],
+      firstName: ['', [Validators.required]],
+      lastName: ['', Validators.required],
+      phone: ['', Validators.required],
+      email: [
+        "",
+        [
+          Validators.required,
+          Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,}$")
+        ]
+      ],
+      address: ["", Validators.required],
+      passwordForm: this.passwordForm
+
+    });
 
 
   }
@@ -93,11 +93,11 @@ static passwordMatch(group: FormGroup):any{
     this.registerUser.email = this.registerForm.value.email;
     this.registerUser.phone = this.registerForm.value.phone;
     this.registerUser.birthdate = this.registerForm.value.birthdate;
-    this.registerService.register(this.registerUser).subscribe(res=> {
+    this.registerService.register(this.registerUser).subscribe(res => {
       this.logger.success("Success", "You registered successfully.")
       this.router.navigate(["/login"]);
-    }, err=>{
-      this.logger.error("Error","Username is already taken.");
+    }, err => {
+      this.logger.error("Error", "Username is already taken.");
       this.router.navigate(['/register']);
     });
   }

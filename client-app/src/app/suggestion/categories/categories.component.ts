@@ -1,9 +1,12 @@
 import { Component, OnInit } from "@angular/core";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+
 import { CategoryService } from "@ikubinfo/core/services/category.service";
 import { Category } from "@ikubinfo/core/models/category";
 import { LoggerService } from "@ikubinfo/core/utilities/logger.service";
+import { cols } from "@ikubinfo/suggestion/categories/categories.constants";
+
 import { ConfirmationService } from "primeng/primeng";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 
 @Component({
   selector: "ikubinfo-categories",
@@ -23,15 +26,11 @@ export class CategoriesComponent implements OnInit {
     private categoryService: CategoryService,
     private confirmationService: ConfirmationService,
     private logger: LoggerService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.categories = [];
-    this.cols = [
-      { field: "photo", header: "Photo" },
-      { field: "name", header: "Name" },
-      { field: "description", header: "Description" }
-    ];
+    this.cols = cols;
     this.getAll();
 
     this.categoryForm = this.fb.group({
@@ -199,7 +198,7 @@ export class CategoriesComponent implements OnInit {
       const file = event.target.files[0];
       this.category.photo = file;
     } else {
-      this.logger.warning('Warning!', 'Photo must be less than 50 Kb.');
+      this.logger.warning("Warning!", "Photo must be less than 50 Kb.");
     }
   }
 }

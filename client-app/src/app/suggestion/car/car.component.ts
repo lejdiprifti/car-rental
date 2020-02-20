@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+
 import { CarService } from '@ikubinfo/core/services/car.service';
 import { LoggerService } from '@ikubinfo/core/utilities/logger.service';
-import { ConfirmationService, SelectItem } from 'primeng/primeng';
 import { Car } from '@ikubinfo/core/models/car';
 import { CategoryService } from '@ikubinfo/core/services/category.service';
 import { Category } from '@ikubinfo/core/models/category';
 import { Status } from '@ikubinfo/core/models/status.enum';
+import { diesels, brands, types } from '@ikubinfo/suggestion/car/car.constants';
+
+import { ConfirmationService, SelectItem } from 'primeng/primeng';
 @Component({
   selector: 'ikubinfo-car',
   templateUrl: './car.component.html',
@@ -22,41 +25,21 @@ export class CarComponent implements OnInit {
   categories: Array<Category>;
   diesels: Array<string>;
   editable: boolean;
-  blockSpecial: RegExp = /^[^:>#*]+|([^:>#*][^>#*]+[^:>#*])$/ ;
+  blockSpecial: RegExp = /^[^:>#*]+|([^:>#*][^>#*]+[^:>#*])$/;
   types: SelectItem[];
   constructor(private fb: FormBuilder, private router: Router, private confirmationService: ConfirmationService,
     private carService: CarService, private categoryService: CategoryService,
-     private active: ActivatedRoute, private logger: LoggerService) { }
+    private active: ActivatedRoute, private logger: LoggerService) { }
 
   ngOnInit() {
     this.car = {};
     this.editable = false;
     this.loadForm();
     this.getCategories();
-    this.diesels = [
-      'Diesel',
-      'Petrol',
-      'Kerosene',
-      'Hydrogen',
-      'Biogas'
-    ];
-    this.brands = [
-      {label: 'Audi', value: 'Audi'},
-      {label: 'BMW', value: 'BMW'},
-      {label: 'Fiat', value: 'Fiat'},
-      {label: 'Ford', value: 'Ford'},
-      {label: 'Honda', value: 'Honda'},
-      {label: 'Jaguar', value: 'Jaguar'},
-      {label: 'Mercedes', value: 'Mercedes'},
-      {label: 'Renault', value: 'Renault'},
-      {label: 'VW', value: 'VW'},
-      {label: 'Volvo', value: 'Volvo'}
-  ];
-  this.types = [
-    {label: 'Available', value: 'AVAILABLE', icon: 'fa fa-check-circle'},
-    {label: 'Service', value: 'SERVIS', icon: 'fa fa-wrench'}
-];
-  this.loadData();
+    this.diesels = diesels;
+    this.brands = brands;
+    this.types = types;
+    this.loadData();
   }
 
   reset(): void {
@@ -65,13 +48,13 @@ export class CarComponent implements OnInit {
 
   loadForm(): void {
     this.carForm = this.fb.group({
-      name: new FormControl({value:'', disabled:this.editable}, Validators.required),
-      photo: [{value:'', disabled:this.editable}],
-      description: [{value:'', disabled:this.editable}, [Validators.required, Validators.minLength(50), Validators.maxLength(10000)]],
-      year: [{value:'', disabled:this.editable}, [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
-      diesel: [{value:'', disabled:this.editable}, Validators.required],
-      category: [{value:'', disabled:this.editable}, Validators.required],
-      price: [{value:'', disabled:this.editable}, Validators.required],
+      name: new FormControl({ value: '', disabled: this.editable }, Validators.required),
+      photo: [{ value: '', disabled: this.editable }],
+      description: [{ value: '', disabled: this.editable }, [Validators.required, Validators.minLength(50), Validators.maxLength(10000)]],
+      year: [{ value: '', disabled: this.editable }, [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
+      diesel: [{ value: '', disabled: this.editable }, Validators.required],
+      category: [{ value: '', disabled: this.editable }, Validators.required],
+      price: [{ value: '', disabled: this.editable }, Validators.required],
       brand: ['', Validators.required],
       plate: ['', [Validators.required, Validators.minLength(7)]],
       availability: ['', Validators.required]
@@ -89,79 +72,79 @@ export class CarComponent implements OnInit {
     this.carForm.get('availability').setValue(data.availability);
     this.carForm.get('price').setValue(data.price);
   }
-  
+
   edit(): void {
     this.reset();
   }
 
   submit(): void {
     if (this.file) {
-    if (this.car.id !== undefined) {
-      this.confirmationService.confirm({
-        message: 'Are you sure you want to save the changes?',
-        header: 'Accept Confirmation',
-        icon: 'pi pi-info-circle',
-        accept: () => {
-          let formData = new FormData();
-          formData.append("file", (this.file));
-          formData.append("properties", new Blob([JSON.stringify({
-            "id": this.car.id,
-            "name": this.carForm.get('name').value,
-            "description": this.carForm.get('description').value,
-            "type": this.carForm.get('brand').value || "Audi",
-            "diesel": this.carForm.get('diesel').value,
-            "categoryId": this.carForm.get('category').value,
-            "availability": this.carForm.get('availability').value || Status.AVAILABLE,
-            "year": this.carForm.get('year').value,
-            "plate": this.carForm.get('plate').value,
-            "price": this.carForm.get('price').value
-          })], {
-            type: "application/json"
-          }));
-          this.carService.edit(formData, this.car.id).subscribe(res => {
-            this.router.navigate(['rental/cars']);
-            this.logger.success("Success", "Data saved successfully!");
-          }, err => {
-            this.logger.error("Error", err.error.message);
-          });
-        }
+      if (this.car.id !== undefined) {
+        this.confirmationService.confirm({
+          message: 'Are you sure you want to save the changes?',
+          header: 'Accept Confirmation',
+          icon: 'pi pi-info-circle',
+          accept: () => {
+            let formData = new FormData();
+            formData.append("file", (this.file));
+            formData.append("properties", new Blob([JSON.stringify({
+              "id": this.car.id,
+              "name": this.carForm.get('name').value,
+              "description": this.carForm.get('description').value,
+              "type": this.carForm.get('brand').value || "Audi",
+              "diesel": this.carForm.get('diesel').value,
+              "categoryId": this.carForm.get('category').value,
+              "availability": this.carForm.get('availability').value || Status.AVAILABLE,
+              "year": this.carForm.get('year').value,
+              "plate": this.carForm.get('plate').value,
+              "price": this.carForm.get('price').value
+            })], {
+              type: "application/json"
+            }));
+            this.carService.edit(formData, this.car.id).subscribe(res => {
+              this.router.navigate(['rental/cars']);
+              this.logger.success("Success", "Data saved successfully!");
+            }, err => {
+              this.logger.error("Error", err.error.message);
+            });
+          }
         })
+      }
+      else {
+        this.confirmationService.confirm({
+          message: 'Are you sure you want to add this car?',
+          header: 'Accept Confirmation',
+          icon: 'pi pi-info-circle',
+          accept: () => {
+            let formData = new FormData();
+            formData.append("file", (this.file));
+            formData.append("properties", new Blob([JSON.stringify({
+              "name": this.carForm.get('name').value,
+              "description": this.carForm.get('description').value,
+              "type": this.carForm.get('brand').value || "Audi",
+              "diesel": this.carForm.get('diesel').value,
+              "categoryId": this.carForm.get('category').value,
+              "availability": this.carForm.get('availability').value || Status.AVAILABLE,
+              "year": this.carForm.get('year').value,
+              "plate": this.carForm.get('plate').value,
+              "price": this.carForm.get('price').value
+            })], {
+              type: "application/json"
+            }));
+            return this.carService.add(formData).subscribe(res => {
+              this.router.navigate(['rental/cars']);
+              this.logger.success("Success", "Car was successfully created.");
+            }, err => {
+              this.logger.error("Error", err.error.message);
+            });
+          }
+        });
+      }
+    } else {
+      this.logger.warning('Warning!', 'Please select a photo for this car!');
     }
-    else {
-      this.confirmationService.confirm({
-        message: 'Are you sure you want to add this car?',
-        header: 'Accept Confirmation',
-        icon: 'pi pi-info-circle',
-        accept: () => {
-          let formData = new FormData();
-          formData.append("file", (this.file));
-          formData.append("properties", new Blob([JSON.stringify({
-            "name": this.carForm.get('name').value,
-            "description": this.carForm.get('description').value,
-            "type": this.carForm.get('brand').value || "Audi",
-            "diesel": this.carForm.get('diesel').value,
-            "categoryId": this.carForm.get('category').value,
-            "availability": this.carForm.get('availability').value || Status.AVAILABLE,
-            "year": this.carForm.get('year').value,
-            "plate": this.carForm.get('plate').value,
-            "price": this.carForm.get('price').value
-          })], {
-            type: "application/json"
-          }));
-          return this.carService.add(formData).subscribe(res => {
-            this.router.navigate(['rental/cars']);
-            this.logger.success("Success", "Car was successfully created.");
-          }, err => {
-            this.logger.error("Error", err.error.message);
-          });
-        }
-      });
-    }
-  } else {
-    this.logger.warning('Warning!', 'Please select a photo for this car!');
   }
-}
- 
+
   loadData(): void {
     const id = this.active.snapshot.paramMap.get('id');
     if (id) {
@@ -195,8 +178,8 @@ export class CarComponent implements OnInit {
   getCategories(): void {
     this.categoryService.getAll().subscribe(res => {
       this.categories = res
-    }, err=> {
-      this.logger.error('Error','Categories were not found.');
+    }, err => {
+      this.logger.error('Error', 'Categories were not found.');
     })
   }
 }

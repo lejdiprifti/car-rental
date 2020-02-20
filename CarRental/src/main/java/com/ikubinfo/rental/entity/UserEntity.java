@@ -17,45 +17,47 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="user", schema="rental")
+@Table(name = "user", schema = "rental")
 @Getter
 @Setter
 @NoArgsConstructor
 public class UserEntity {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@Column(name="user_id")
+	@Column(name = "user_id")
 	private Long id;
-	
-	@Column(name="username")
+
+	@Column(name = "username")
 	private String username;
-	
-	@Column(name="password")
+
+	@Column(name = "password")
 	private String password;
-	
-	@Column(name="first_name")
+
+	@Column(name = "first_name")
 	private String firstName;
-	
-	@Column(name="last_name")
+
+	@Column(name = "last_name")
 	private String lastName;
-	
 
 	private LocalDateTime birthdate;
-	
-	@Column(name="address")
+
+	@Column(name = "address")
 	private String address;
-	
-	@Column(name="contact_number")
+
+	@Column(name = "contact_number")
 	private String phone;
-	
-	@Column(name="email")
+
+	@Column(name = "email")
 	private String email;
-	
+
+	@Column(name = "role_id")
+	private int roleId;
+
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="role_id")
+	@JoinColumn(name = "role_id", referencedColumnName = "id", insertable = false, updatable = false)
 	private RoleEntity role;
-	
-	@Column(name="active")
+
+	@Column(name = "active")
 	private boolean active;
 }

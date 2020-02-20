@@ -41,7 +41,7 @@ public class CarResource {
 	
 	@GetMapping
 	public ResponseEntity<List<CarModel>> getAll(){
-		return new ResponseEntity<List<CarModel>>(carService.getAll(), HttpStatus.OK);
+		return new ResponseEntity<List<CarModel>>(carService.getAllCars(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")

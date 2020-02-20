@@ -22,7 +22,6 @@ import com.ikubinfo.rental.entity.StatusEnum;
 import com.ikubinfo.rental.model.CarModel;
 import com.ikubinfo.rental.model.ReservedDates;
 import com.ikubinfo.rental.repository.CarRepository;
-import com.ikubinfo.rental.repository.CategoryRepository;
 import com.ikubinfo.rental.repository.ReservationRepository;
 
 @Service
@@ -35,9 +34,6 @@ public class CarService {
 	private CarConverter carConverter;
 
 	@Autowired
-	private CategoryRepository categoryRepository;
-
-	@Autowired
 	private AuthorizationService authorizationService;
 
 	@Autowired
@@ -48,21 +44,29 @@ public class CarService {
 
 	}
 
-	public List<CarModel> getAll() {
+	public List<CarModel> getAllCars() {
 		try {
 			authorizationService.isUserAuthorized();
-			List<CarModel> modelList = carConverter.toModelObject(carRepository.getAll());
-			for (CarModel car : modelList) {
-				car.setReservedDates(getReservedDatesByCar(car.getId()));
-			}
-			return modelList;
+			return getAll();
 		} catch (ResponseStatusException e) {
-			List<CarModel> modelList = carConverter.toModelObject(carRepository.getAllAvailable());
-			for (CarModel car : modelList) {
-				car.setReservedDates(getReservedDatesByCar(car.getId()));
-			}
-			return modelList;
+			return getAllAvailable();
 		}
+	}
+
+	public List<CarModel> getAll() {
+		List<CarModel> modelList = carConverter.toModelObject(carRepository.getAll());
+		for (CarModel car : modelList) {
+			car.setReservedDates(getReservedDatesByCar(car.getId()));
+		}
+		return modelList;
+	}
+
+	public List<CarModel> getAllAvailable() {
+		List<CarModel> modelList = carConverter.toModelObject(carRepository.getAllAvailable());
+		for (CarModel car : modelList) {
+			car.setReservedDates(getReservedDatesByCar(car.getId()));
+		}
+		return modelList;
 	}
 
 	public List<ReservedDates> getReservedDatesByCar(Long carId) {

@@ -1,6 +1,7 @@
 package com.ikubinfo.rental.model;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,7 +29,6 @@ public class CarModel {
 	private Long categoryId;
 	private byte[] photo;
 	private List<ReservedDates> reservedDates;
-	private List<ReservationModel> reservationList;
 	private StatusEnum availability;
 	private boolean active;
 }
