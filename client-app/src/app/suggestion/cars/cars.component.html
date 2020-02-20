@@ -122,8 +122,11 @@
 
     <div class="ui-g-4"><b>Category:</b></div>
     <div class="ui-g-8">{{selectedCar.category.name}}</div>
-    <div class="ui-g-4">
+    <div class="ui-g-12">
         <b>Reserved dates:</b>
+        <ul *ngFor="let reservation of selectedCar.reservedDates"> 
+            <li>{{reservation[0] | date:'medium'}} - {{reservation[1] | date:'medium'}}</li>
+        </ul>
     </div>
     <div class="ui-g-8 calendar">
         <p-calendar [inline]="true">

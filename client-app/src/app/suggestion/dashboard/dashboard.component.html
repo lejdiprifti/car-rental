@@ -61,6 +61,7 @@
                 <th *ngFor="let col of columns" [ngSwitch]="col.field">
                     <input *ngSwitchCase="'user'" pInputText placeholder="Search by user name" type="text" (input)="dt.filter($event.target.value, col.field, 'contains')">
                     <input *ngSwitchCase="'car'" pInputText placeholder = "Search by car name" type="text" (input)="dt.filter($event.target.value, 'car.name', 'contains')">
+                    <input *ngSwitchCase="'plate'" pInputText placeholder = "Search by car plate" type="text" (input)="dt.filter($event.target.value, 'car.plate', 'contains')">
                     <div *ngSwitchCase="'startDate'">
                         Later than
                         <p-calendar placeholder = "Pick a date" [style]="{'width':'350px','margin-top':'8px'}" [(ngModel)]="date" (click)="filterBookings()" showButtonBar="true"></p-calendar>
@@ -80,6 +81,7 @@
                 <td *ngFor="let col of columns">
                     <p *ngIf="col.field === 'user'">{{rowData[col.field].firstName}} {{rowData[col.field].lastName}}</p>
                    <p *ngIf="col.field === 'car'">{{rowData[col.field].type}} {{rowData[col.field].name}}</p>
+                   <p *ngIf="col.field === 'plate'">{{rowData.car.plate}}</p>
                    <p *ngIf="col.field === 'price'">{{calculateFee(rowData.car, rowData.startDate, rowData.endDate)}}</p>
                    <p *ngIf="col.field === 'startDate' || col.field === 'endDate'">{{rowData[col.field] | date: 'medium'}}</p>
                 </td>

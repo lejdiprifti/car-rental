@@ -22,6 +22,7 @@ export const fuels = [
 export const cols = [
   { field: "user", header: "User" },
   { field: "car", header: "Car" },
+  { field: "plate", header: "Plate" },
   { field: "startDate", header: "Start Date" },
   { field: "endDate", header: "End Date" },
   { field: "price", header: "Total Fee" }

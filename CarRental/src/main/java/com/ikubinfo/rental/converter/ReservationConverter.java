@@ -53,8 +53,9 @@ public class ReservationConverter {
 		model.getUser().setId((Long) object[7]);
 		model.getUser().setFirstName((String) object[8]);
 		model.getUser().setLastName((String) object[9]);
-		if (object.length > 10) {
-		model.getCar().setPhoto((byte[]) object[10]);
+		model.getCar().setPlate((String) object[10]);
+		if (object.length > 11) {
+		model.getCar().setPhoto((byte[]) object[11]);
 		}
 		return model;
 	}
