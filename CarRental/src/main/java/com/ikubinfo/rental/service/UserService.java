@@ -95,10 +95,10 @@ public class UserService {
 
 	public void edit(UserModel user) {
 		try {
-			validateUserData(user);
 			UserEntity entity = new UserEntity();
 			UserEntity loggedUser = userRepository.getByUsername(jwtTokenUtil.getUsername());
 			if (user.getPassword() == null) {
+				validateUserData(user);
 				entity = userConverter.toEntity(user);
 				entity.setPassword(loggedUser.getPassword());
 				entity.setId(loggedUser.getId());
