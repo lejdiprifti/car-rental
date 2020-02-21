@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Car Rentals</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<link href='http://fonts.googleapis.com/css?family=Roboto'
+	rel='stylesheet' type='text/css'>
+
+<style>
+body {
+	font-family: 'Roboto', sans-serif;
+	font-size: 48px;
+}
+</style>
+</head>
+<body style="margin: 0; padding: 0;">
+
+	<table align="center" border="0" cellpadding="0" cellspacing="0"
+		width="600" style="border-collapse: collapse;">
+		<tr>
+			<td align="center" bgcolor="#f99602" style="padding: 40px 0 30px 0;">
+				<h1>Car Rentals</h1>
+			</td>
+		</tr>
+		<tr>
+			<td bgcolor="#eaeaea" style="padding: 40px 30px 40px 30px;">
+				<p>
+					<b>Dear <b th:text="${name}"></b>,
+					</b>
+				</p>
+				<p>
+					We are terribly sorry to let you know that the car <i
+						th:text="${carName}" /> with plate no. <i th:text=${carPlate} />
+					you had reserved for the following days
+					<ul>
+						<li th:text=${startDate}></li>
+						<li th:text=${endDate}></li>
+					</ul>
+					will stay in service due to a malfunction.
+				</p>
+				<p>Our team is taking care that it is in optimal condition as soon as
+					possible for our loyal clients.</p>
+				<p>In the mean time, we would like to invite you to reserve
+					another car in our site.</p>
+
+				<p>
+					For every question, please do not hesitate to contact us. <br></br>
+					Thank you for your understanding!
+				</p> <b>Car Rentals Team</b>
+			</td>
+		</tr>
+		<tr>
+			<td bgcolor="#777777" style="padding: 30px 30px 30px 30px;">
+				<p>
+					<span th:text=${signature}></span>
+				</p>
+				<p>
+					<span th:text=${location}></span>
+				</p>
+			</td>
+		</tr>
+	</table>
+
+</body>
+</html>

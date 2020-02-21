@@ -2,6 +2,7 @@ package com.ikubinfo.rental.service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -135,12 +136,25 @@ public class ReservationService {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Please, specify a valid time period.");
 		}
 	}
-	
+
 	public int cancelByCarAndDate(LocalDateTime date, Long carId) {
+		List<ReservationEntity> reservationList = new ArrayList<ReservationEntity>();
+
 		if (date.isAfter(LocalDateTime.now())) {
-			return reservationRepository.cancelByCarAndDate(date, carId);
+			reservationList = reservationRepository.getByCarAndDate(date, carId);
 		} else {
-			return reservationRepository.cancelByCar(carId);
+			reservationList = reservationRepository.getByCar(carId);
+		}
+
+		try {
+			for (ReservationEntity entity : reservationList) {
+				entity.setActive(false);
+				reservationRepository.edit(entity);
+				emailService.sendCancelMail(emailService.setCancelMailProperties(entity));
+			}
+			return reservationList.size();
+		} catch (MessagingException e) {
+			throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "Email could not be sent.");
 		}
 	}
 }

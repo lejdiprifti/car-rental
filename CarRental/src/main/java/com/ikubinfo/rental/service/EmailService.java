@@ -84,4 +84,37 @@ public class EmailService {
 		mail.setSubject("Receipt Confirmation");
 		return mail;
 	}
+	
+	
+	public Mail setCancelMailProperties(ReservationEntity reservation) {
+		Mail mail = new Mail();
+		mail.setFrom("ikubinfo.car.rentals@gmail.com");
+		Map<String, Object> content = new HashMap<String, Object>();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+		content.put("name", reservation.getUser().getFirstName() +" " + reservation.getUser().getLastName());
+		content.put("carPlate", reservation.getCar().getPlate());
+		content.put("carName", reservation.getCar().getName());
+		content.put("startDate", reservation.getStartDate().format(formatter));
+		content.put("endDate", reservation.getEndDate().format(formatter));
+		content.put("signature", "Car Rentals Albania");
+		content.put("location", "Papa Gjon Pali 3rd St. , Tirana, Albania");
+		mail.setContent(content);
+		mail.setTo(reservation.getUser().getEmail());
+		mail.setSubject("Canceled Reservation");
+		return mail;
+	}
+	
+	public void sendCancelMail(Mail mail) throws MessagingException {
+		MimeMessage message = mailSender.createMimeMessage();
+	        MimeMessageHelper messageHelper = new MimeMessageHelper(message, true);
+	        Context context = new Context();
+	        context.setVariables(mail.getContent());
+	        String html = springTemplateEngine.process("cancelMail", context);
+	        messageHelper.setText(html, true);
+	        messageHelper.addAttachment("logo.png", new ClassPathResource("car-rentals.png"), "image/png");
+	        messageHelper.setFrom("ikubinfo.car.rentals@gmail.com");
+	        messageHelper.setTo(mail.getTo());
+	        messageHelper.setSubject(mail.getSubject());	
+	        mailSender.send(message);
+	}
 }

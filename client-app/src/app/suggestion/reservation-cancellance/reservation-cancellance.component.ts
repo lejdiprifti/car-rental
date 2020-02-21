@@ -20,8 +20,7 @@ export class ReservationCancellanceComponent implements OnInit {
   cols: any[];
   minDate: Date;
   checked: boolean;
-  constructor(private router: Router, private logger: LoggerService, 
-    private reservationService: ReservationService, private active: ActivatedRoute,
+  constructor(private router: Router, private logger: LoggerService, private active: ActivatedRoute,
     private confirmationService: ConfirmationService, private carService: CarService) { }
 
   ngOnInit() {

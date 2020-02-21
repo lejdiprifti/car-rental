@@ -118,13 +118,12 @@ public class ReservationRepository {
 	}
 	
 	@Transactional
-	public int cancelByCarAndDate(LocalDateTime date, Long carId) {
-		Query query = em.createQuery("Update ReservationEntity r Set r.active = ?1 where (r.startDate <=?2 or r.endDate <=?2) and r.active = ?3 and r.car.id = ?4");
-		query.setParameter(1, false);
+	public List<ReservationEntity> getByCarAndDate(LocalDateTime date, Long carId) {
+		TypedQuery<ReservationEntity> query = em.createQuery("Select r from ReservationEntity r where r.active = ?1 and (r.startDate <=?2 or r.endDate <=?2) and r.car.id = ?3", ReservationEntity.class);
+		query.setParameter(1, true);
 		query.setParameter(2, date);
-		query.setParameter(3, true);
-		query.setParameter(4, carId);
-		return query.executeUpdate();
+		query.setParameter(3, carId);
+		return query.getResultList();
 	}
 
 	@Transactional
@@ -135,14 +134,5 @@ public class ReservationRepository {
 	@Transactional
 	public void edit(ReservationEntity entity) {
 		em.merge(entity);
-	}
-
-	@Transactional
-	public int cancelByCar(Long carId) {
-		Query query = em.createQuery("Update ReservationEntity r Set r.active = ?1 where r.active = ?2 and r.car.id = ?3");
-		query.setParameter(1, false);
-		query.setParameter(2, true);
-		query.setParameter(3, carId);
-		return query.executeUpdate();
 	}
 }
