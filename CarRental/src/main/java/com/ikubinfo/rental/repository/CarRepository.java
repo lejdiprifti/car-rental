@@ -70,9 +70,10 @@ public class CarRepository {
 	
 	public Long countFreeCars() {
 		TypedQuery<Long> query = em.createQuery("Select COUNT(DISTINCT c.id) from CarEntity c where c.id NOT IN (SELECT r.car.id from ReservationEntity r where"
-				+ " r.startDate <= ?1 and r.endDate >= ?1 and r.active = ?2) and c.active = ?2", Long.class);
+				+ " r.startDate <= ?1 and r.endDate >= ?1 and r.active = ?2) and c.active = ?2 and c.availability = ?3", Long.class);
 		query.setParameter(1, LocalDateTime.now());
 		query.setParameter(2, true);
+		query.setParameter(3, StatusEnum.AVAILABLE);
 		return query.getSingleResult();
 	}
 	
