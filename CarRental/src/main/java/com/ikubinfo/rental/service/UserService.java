@@ -79,9 +79,7 @@ public class UserService {
 				UserEntity entity = userConverter.toEntity(user);
 				entity.setPassword(passwordEncoder.encode(user.getPassword()));
 				entity.setActive(true);
-				RoleEntity role = new RoleEntity();
-				role.setId(2);
-				entity.setRole(role);
+				entity.setRoleId(2);
 				userRepository.save(entity);
 			} else {
 				throw new NonValidDataException("Username is required.");

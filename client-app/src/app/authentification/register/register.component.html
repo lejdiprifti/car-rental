@@ -53,7 +53,7 @@
           <!--Birthdate -->
           <div class="form-group">
             <input type="date" formControlName="birthdate" class="form-control input-underline input-lg"
-              placeholder="Birthdate" />
+              placeholder="Birthdate"  format="yyyy-MM-dd"  />
             <div class="required" *ngIf="
                 registerForm.get('birthdate').dirty &&
                 registerForm.get('birthdate').hasError('required')
