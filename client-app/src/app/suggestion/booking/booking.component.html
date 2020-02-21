@@ -1,5 +1,25 @@
 <ikubinfo-panel header="Booking">
   <div panel-content>
+    <div class="reservations">
+      <img src="assets/images/general/reservations.svg" alt="Reservations" />
+      <p-table [columns]="cols" [value]="car.reservedDates" [paginator]="true" [rows]="10">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns">
+                    {{col.header}}
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr>
+                <td *ngFor="let col of columns">
+                    {{rowData[col.field] | date: 'medium'}}
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <p>*Please, notice the current reserved dates of the {{car.type}} {{car.name}} .</p>
+    </div>
 <form role="form" [formGroup]="bookingForm">
   <img src="data:image/jpeg;base64,{{car.photo}}">
   <ikubinfo-input label="Car">

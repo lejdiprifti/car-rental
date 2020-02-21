@@ -8,6 +8,7 @@ import { Car } from "@ikubinfo/core/models/car";
 import { LoggerService } from "@ikubinfo/core/utilities/logger.service";
 import { Reservation } from "@ikubinfo/core/models/reservation";
 import { ReservationService } from "@ikubinfo/core/services/reservation.service";
+import { cols } from '@ikubinfo/suggestion/booking/booking.constants';
 
 import { ConfirmationService } from "primeng/primeng";
 
@@ -27,6 +28,7 @@ export class BookingComponent implements OnInit {
   startTime: Date;
   endTime: Date;
   minDate: Date;
+  cols: any[];
   reservations: Array<Reservation>;
   constructor(
     private fb: FormBuilder,
@@ -53,6 +55,7 @@ export class BookingComponent implements OnInit {
     this.getReservedDatesByCar();
     this.reservedDates = [];
     this.minDate = new Date();
+    this.cols = cols;
   }
 
   getCarById(): void {
@@ -77,7 +80,6 @@ export class BookingComponent implements OnInit {
       .subscribe(
         res => {
           this.reservations = res;
-          this.defineReservedDates();
         },
         err => {
           this.logger.error("Error", "Reservations could not be found.");
@@ -167,19 +169,5 @@ export class BookingComponent implements OnInit {
         (endDate.getTime() - startDate.getTime()) * (this.car.price / 86400000);
       this.bookingForm.get("fee").setValue(fee.toFixed(2));
     }
-  }
-
-  defineReservedDates(): void {
-    this.reservations.forEach(el => {
-      let startDate = new Date(el.startDate);
-      let endDate = new Date(el.endDate);
-      for (
-        let i = startDate.getTime();
-        i <= endDate.getTime();
-        i = i + 86400000
-      ) {
-        this.reservedDates.push(new Date(i));
-      }
-    });
   }
 }

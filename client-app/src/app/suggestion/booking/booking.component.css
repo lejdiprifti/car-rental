@@ -6,3 +6,20 @@ img {
 .time {
     margin-right: 3%;
 }
+
+.reservations {
+    float:right;
+    margin-right: 5%;
+    width: 30%;
+}
+
+.reservations p {
+    font-size: 12px;
+    color: red;
+    margin-left: 10%;
+}
+
+.reservations img {
+    width: 80%;
+    margin-left: 8%;
+}

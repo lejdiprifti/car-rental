@@ -75,7 +75,9 @@ public class CarService {
 
 	public CarModel getById(Long id) {
 		try {
-			return carConverter.toModel(carRepository.getById(id));
+			CarModel car = carConverter.toModel(carRepository.getById(id));
+			car.setReservedDates(getReservedDatesByCar(id));
+			return car;
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Car not found.");
 		}
