@@ -161,7 +161,7 @@ export class CarsComponent implements OnInit {
   }
 
   stylePopUp(): object {
-    return { 'width': '550px', 'height': '500px' };
+    return { 'width': '650px', 'height': '600px' };
   }
 
   checkIfUser(): boolean {

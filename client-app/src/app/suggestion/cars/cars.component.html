@@ -128,15 +128,17 @@
             <li>{{reservation[0] | date:'medium'}} - {{reservation[1] | date:'medium'}}</li>
         </ul>
     </div>
-    <div class="ui-g-8 calendar">
+    <div class="ui-g-12 calendar">
         <p-calendar [inline]="true">
             <ng-template pTemplate="date" let-date>
                 <span [ngStyle]="styleUnavailableDates(date)" style="border-radius:50%;padding: .25em;width: 1.75em; height:1.75em; display:block;">{{date.day}}</span>
             </ng-template>
         </p-calendar>
     </div>
-
-    <div class="ui-g-4" *ngIf="checkIfUser()">
+    <div class="ui-g-8" *ngIf="!checkIfUser() && selectedCar.availability === 'SERVIS'">
+        <button pButton type="button" label="Cancel bookings" class="ui-button-raised ui-button-danger"></button>
+    </div>
+    <div class="ui-g-8" *ngIf="checkIfUser()">
     <button  pButton type="button" label="Book now" (click)="book()" class="ui-button-raised ui-button-success"></button>
 </div>
 </div>

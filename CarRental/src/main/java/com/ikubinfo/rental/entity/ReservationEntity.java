@@ -15,6 +15,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.JoinColumnOrFormula;
+import org.hibernate.annotations.JoinColumnsOrFormulas;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -38,7 +41,8 @@ public class ReservationEntity {
 	private Long userId;
 
 	@ManyToOne
-	@JoinColumn(name = "car_id", referencedColumnName = "car_id", insertable = false, updatable = false)
+	@JoinColumnsOrFormulas({
+			@JoinColumnOrFormula(column = @JoinColumn(name = "car_id", referencedColumnName = "car_id", insertable = false, updatable = false)) })
 	private CarEntity car;
 
 	@Column(name = "car_id")

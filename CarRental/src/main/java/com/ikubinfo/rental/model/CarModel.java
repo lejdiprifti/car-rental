@@ -1,10 +1,10 @@
 package com.ikubinfo.rental.model;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ikubinfo.rental.entity.ReservationEntity;
 import com.ikubinfo.rental.entity.StatusEnum;
 
 import lombok.Getter;
