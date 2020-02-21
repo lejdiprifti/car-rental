@@ -136,7 +136,7 @@
         </p-calendar>
     </div>
     <div class="ui-g-8" *ngIf="!checkIfUser() && selectedCar.availability === 'SERVIS'">
-        <button pButton type="button" label="Cancel bookings" class="ui-button-raised ui-button-danger"></button>
+        <button pButton type="button" label="Cancel bookings" (click)="cancelBookings(selectedCar.id)" class="ui-button-raised ui-button-danger"></button>
     </div>
     <div class="ui-g-8" *ngIf="checkIfUser()">
     <button  pButton type="button" label="Book now" (click)="book()" class="ui-button-raised ui-button-success"></button>

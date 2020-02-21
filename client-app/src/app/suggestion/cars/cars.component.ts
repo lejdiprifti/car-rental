@@ -178,7 +178,7 @@ export class CarsComponent implements OnInit {
         this.items = [
           {
             label: 'Book now', icon: 'fa fa-edit', command: () => {
-              this.router.navigate(['/rental/reservation/' + this.selectedCar.id])
+              this.router.navigate(['/rental/car/' + this.selectedCar.id+'/reservation'])
             }
           }
         ];
@@ -200,7 +200,7 @@ export class CarsComponent implements OnInit {
   }
 
   book(): void {
-    this.router.navigate(['/rental/reservation/' + this.selectedCar.id]);
+    this.router.navigate(['/rental/car/' + this.selectedCar.id+'/reservation']);
   }
 
   filterBookings(): void {
@@ -349,5 +349,9 @@ export class CarsComponent implements OnInit {
         }
         return status;
     }
+  }
+
+  cancelBookings(carId: number): void {
+    this.router.navigate(['/rental/car/'+carId+'/reservations/cancel']);
   }
 }

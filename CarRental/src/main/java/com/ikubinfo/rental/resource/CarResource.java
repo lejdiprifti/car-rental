@@ -1,5 +1,6 @@
 package com.ikubinfo.rental.resource;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.websocket.server.PathParam;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -66,6 +68,10 @@ public class CarResource {
 		carService.edit(model,file, id);
 	}
 
+	@PutMapping(path="/{id}/reservations")
+	public ResponseEntity<Integer> cancelReservationsByCar(@RequestBody LocalDateTime date, @PathVariable("id") Long carId) {
+		return new ResponseEntity<Integer>(reservationService.cancelByCarAndDate(date, carId), HttpStatus.OK);
+	}
 	
 	@DeleteMapping(path="/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)

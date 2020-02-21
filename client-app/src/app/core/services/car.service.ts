@@ -36,4 +36,8 @@ constructor(private apiService: ApiService, private httpClient: HttpClient) { }
   getReservationsByCar(carId: number): Observable<Array<Reservation>>{
     return this.apiService.get(this.url + '/' + carId+'/reservations');
   }
+
+  cancelByCarAndDate(date: Date, carId: number): Observable<number>{
+    return this.apiService.put(this.url + '/' + carId + '/reservations', date);
+  }
 }

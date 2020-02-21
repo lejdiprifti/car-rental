@@ -1,0 +1,29 @@
+img {
+    width: 550px;
+    margin-bottom: 2%;
+}
+
+.reservations {
+    float:right;
+    margin-right: 5%;
+    width: 40%;
+}
+
+#note {
+    font-size: 12px;
+    color: red;
+    margin-left: 10%;
+}
+
+.reservations img {
+    width: 80%;
+    margin-left: 8%;
+}
+
+.date {
+    margin-left: 3%;
+}
+
+.confirm {
+    margin-top: 2%;
+}

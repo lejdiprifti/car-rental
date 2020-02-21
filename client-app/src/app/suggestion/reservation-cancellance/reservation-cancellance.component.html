@@ -1,0 +1,49 @@
+<ikubinfo-panel header="Cancellance">
+  <div panel-content>
+    <div class="reservations">
+      <img src="assets/images/general/reservations.svg" alt="Reservations" />
+      <p-table [columns]="cols" [value]="car.reservedDates" [paginator]="true" [rows]="10">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns">
+                    {{col.header}}
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr>
+                <td *ngFor="let col of columns">
+                    {{rowData[col.field] | date: 'medium'}}
+                  </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <p id="note">*Please, notice , if any , the current reserved dates of the {{car.type}} {{car.name}} .</p>
+    </div>
+  <img src="data:image/jpeg;base64,{{car.photo}}">
+  <ikubinfo-input label="Name">
+    <div class="form-group">
+     <input type="text" pInputText [(ngModel)]="car.name" disabled placeholder="Car name"/>
+    </div>
+  </ikubinfo-input>
+  <ikubinfo-input label="Plate">
+    <div class="form-group">
+      <input type="text" pInputText [(ngModel)]="car.plate" disabled placeholder="Car plate" />
+    </div>
+  </ikubinfo-input>
+  <div *ngIf="!checked">
+  <ikubinfo-input label="Until when do you want to cancel the reservations?">
+    <div class="form-group">
+      <p-calendar class="time" placeholder="What time?" [(ngModel)]="startTime" [timeOnly]="true"></p-calendar>
+      <p-calendar class="date" [minDate]="minDate" placeholder="What date?" [(ngModel)]="startDate"  [readonlyInput]="true"></p-calendar>
+    </div>
+  </ikubinfo-input>
+</div>
+<div>
+  <p-toggleButton [(ngModel)]="checked" onLabel="Cancel all" offLabel="Cancel partly" onIcon="pi pi-check" offIcon="pi pi-times" [style]="{'width':'150px'}"></p-toggleButton>
+  </div>
+  <div class="confirm">
+  <button pButton type="button" label="Confirm" (click)="cancelReservations()" class="ui-button-raised ui-button-success"></button>
+  </div>
+</div>
+  </ikubinfo-panel>

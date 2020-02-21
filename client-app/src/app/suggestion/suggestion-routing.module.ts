@@ -12,6 +12,7 @@ import { CarComponent } from "@ikubinfo/suggestion/car/car.component";
 import { BookingComponent } from "@ikubinfo/suggestion/booking/booking.component";
 import { BookingsComponent } from "@ikubinfo/suggestion/bookings/bookings.component";
 import { ClientsComponent } from "@ikubinfo/suggestion/clients/clients.component";
+import { ReservationCancellanceComponent } from '@ikubinfo/suggestion/reservation-cancellance/reservation-cancellance.component';
 
 const suggestionRoutes: Routes = [
   {
@@ -39,9 +40,14 @@ const suggestionRoutes: Routes = [
         canActivate: [AdminGuard]
       },
       {
-        path: "reservation/:carId",
+        path: "car/:carId/reservation",
         component: BookingComponent,
         canActivate: [UserGuard]
+      },
+      {
+        path: "car/:carId/reservations/cancel",
+        component: ReservationCancellanceComponent,
+        canActivate: [AdminGuard]
       }
     ]
   }

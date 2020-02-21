@@ -52,7 +52,6 @@ export class BookingComponent implements OnInit {
     this.car = {};
     this.reservation = {};
     this.getCarById();
-    this.getReservedDatesByCar();
     this.reservedDates = [];
     this.minDate = new Date();
     this.cols = cols;
@@ -70,19 +69,6 @@ export class BookingComponent implements OnInit {
         },
         err => {
           this.logger.error("Error", "Car could not be found.");
-        }
-      );
-  }
-
-  getReservedDatesByCar(): void {
-    this.carService
-      .getReservationsByCar(Number(this.active.snapshot.paramMap.get("carId")))
-      .subscribe(
-        res => {
-          this.reservations = res;
-        },
-        err => {
-          this.logger.error("Error", "Reservations could not be found.");
         }
       );
   }

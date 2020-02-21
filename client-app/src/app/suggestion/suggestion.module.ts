@@ -14,6 +14,7 @@ import { CarComponent } from "@ikubinfo/suggestion/car/car.component";
 import { BookingComponent } from "@ikubinfo/suggestion/booking/booking.component";
 import { BookingsComponent } from "@ikubinfo/suggestion/bookings/bookings.component";
 import { ClientsComponent } from "@ikubinfo/suggestion/clients/clients.component";
+import { ReservationCancellanceComponent } from '@ikubinfo/suggestion/reservation-cancellance/reservation-cancellance.component';
 
 import { DataViewModule } from "primeng/dataview";
 import {
@@ -62,7 +63,8 @@ import {
     ClientsComponent,
     CarsComponent,
     UserComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    ReservationCancellanceComponent
   ],
   providers: []
 })

@@ -9,6 +9,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,9 +67,10 @@ public class ReservationRepository {
 	@Transactional
 	public List<ReservationEntity> getByCar(Long carId) {
 		TypedQuery<ReservationEntity> query = em.createQuery(
-				"Select r from ReservationEntity r where r.car.id = ?1 and r.active = ?2", ReservationEntity.class);
+				"Select r from ReservationEntity r where r.car.id = ?1 and r.active = ?2 and (r.startDate >= ?3 or r.endDate >= ?3)", ReservationEntity.class);
 		query.setParameter(1, carId);
 		query.setParameter(2, true);
+		query.setParameter(3, LocalDateTime.now());
 		return query.getResultList();
 	}
 
@@ -114,6 +116,16 @@ public class ReservationRepository {
 		query.setParameter(3, LocalDateTime.now());
 		return query.getSingleResult();
 	}
+	
+	@Transactional
+	public int cancelByCarAndDate(LocalDateTime date, Long carId) {
+		Query query = em.createQuery("Update ReservationEntity r Set r.active = ?1 where (r.startDate <=?2 or r.endDate <=?2) and r.active = ?3 and r.car.id = ?4");
+		query.setParameter(1, false);
+		query.setParameter(2, date);
+		query.setParameter(3, true);
+		query.setParameter(4, carId);
+		return query.executeUpdate();
+	}
 
 	@Transactional
 	public void save(ReservationEntity entity) {
@@ -123,5 +135,14 @@ public class ReservationRepository {
 	@Transactional
 	public void edit(ReservationEntity entity) {
 		em.merge(entity);
+	}
+
+	@Transactional
+	public int cancelByCar(Long carId) {
+		Query query = em.createQuery("Update ReservationEntity r Set r.active = ?1 where r.active = ?2 and r.car.id = ?3");
+		query.setParameter(1, false);
+		query.setParameter(2, true);
+		query.setParameter(3, carId);
+		return query.executeUpdate();
 	}
 }

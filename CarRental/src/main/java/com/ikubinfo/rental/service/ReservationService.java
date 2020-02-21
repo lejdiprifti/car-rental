@@ -135,4 +135,12 @@ public class ReservationService {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Please, specify a valid time period.");
 		}
 	}
+	
+	public int cancelByCarAndDate(LocalDateTime date, Long carId) {
+		if (date.isAfter(LocalDateTime.now())) {
+			return reservationRepository.cancelByCarAndDate(date, carId);
+		} else {
+			return reservationRepository.cancelByCar(carId);
+		}
+	}
 }
