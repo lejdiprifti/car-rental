@@ -19,34 +19,33 @@ import com.ikubinfo.rental.model.UserModel;
 import com.ikubinfo.rental.service.UserService;
 
 @RestController
-@RequestMapping(path="/user",produces="application/json")
+@RequestMapping(path = "/user", produces = "application/json")
 @CrossOrigin("http://localhost:4200")
 public class UserResource {
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	public UserResource() {
-		
+
 	}
-	
+
 	@GetMapping
-	public ResponseEntity<List<UserModel>> getAll(){
+	public ResponseEntity<List<UserModel>> getAll() {
 		return new ResponseEntity<List<UserModel>>(userService.getAll(), HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/{id}")
-	public ResponseEntity<UserModel> getById(@PathVariable("id") Long id){
+	public ResponseEntity<UserModel> getById(@PathVariable("id") Long id) {
 		return new ResponseEntity<UserModel>(userService.getById(id), HttpStatus.OK);
 	}
 
-	
-	@PutMapping(consumes="application/json")
+	@PutMapping(consumes = "application/json")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void edit(@RequestBody UserModel user) {
 		userService.edit(user);
 	}
-	
+
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete() {

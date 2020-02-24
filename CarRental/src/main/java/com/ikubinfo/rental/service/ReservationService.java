@@ -2,23 +2,29 @@ package com.ikubinfo.rental.service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.persistence.NoResultException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ikubinfo.rental.converter.ReservationConverter;
+import com.ikubinfo.rental.converter.ReservationPageConverter;
 import com.ikubinfo.rental.entity.CarEntity;
 import com.ikubinfo.rental.entity.ReservationEntity;
 import com.ikubinfo.rental.model.Mail;
 import com.ikubinfo.rental.model.ReservationModel;
+import com.ikubinfo.rental.model.ReservationPage;
 import com.ikubinfo.rental.repository.CarRepository;
 import com.ikubinfo.rental.repository.ReservationRepository;
 import com.ikubinfo.rental.repository.UserRepository;
@@ -26,7 +32,6 @@ import com.ikubinfo.rental.security.JwtTokenUtil;
 
 @Service
 public class ReservationService {
-
 	@Autowired
 	private ReservationRepository reservationRepository;
 
@@ -48,6 +53,9 @@ public class ReservationService {
 	@Autowired
 	private EmailService emailService;
 
+	@Autowired
+	private ReservationPageConverter reservationPageConverter;
+
 	public ReservationService() {
 
 	}
@@ -55,6 +63,40 @@ public class ReservationService {
 	public List<ReservationModel> getAll() {
 		authorizationService.isUserAuthorized();
 		return reservationConverter.toModelObject(reservationRepository.getAll());
+	}
+
+	public ReservationPage getByUsername(int startIndex, int pageSize, String carName, String startDate,
+			String endDate) {
+		LocalDateTime startDate2 = getFilterData(startDate, endDate).get("startDate");
+		LocalDateTime endDate2 = getFilterData(startDate, endDate).get("endDate");
+		if (carName == null) {
+			carName = "";
+		}
+		List<ReservationModel> reservationList = reservationConverter.toModelObject(reservationRepository
+				.getByUser(jwtTokenUtil.getUsername(), startIndex, pageSize, carName, startDate2, endDate2));
+		Long totalRecords = reservationRepository.countNumberOfReservationsByUsername(jwtTokenUtil.getUsername(),
+				carName, startDate2, endDate2);
+		return reservationPageConverter.toModel(reservationList, totalRecords);
+	}
+
+	public HashMap<String, LocalDateTime> getFilterData(String startDate, String endDate) {
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		HashMap<String, LocalDateTime> dataMap = new HashMap<String, LocalDateTime>();
+		LocalDateTime startDate2;
+		LocalDateTime endDate2;
+		if (startDate != null) {
+			startDate2 = LocalDateTime.parse(startDate, dateFormatter);
+		} else {
+			startDate2 = LocalDateTime.parse("1900-01-01 00:00:00", dateFormatter);
+		}
+		dataMap.put("startDate", startDate2);
+		if (endDate != null) {
+			endDate2 = LocalDateTime.parse(endDate, dateFormatter);
+		} else {
+			endDate2 = LocalDateTime.parse("2900-01-01 00:00:00", dateFormatter);
+		}
+		dataMap.put("endDate", endDate2);
+		return dataMap;
 	}
 
 	public List<ReservationModel> getByUsername() {

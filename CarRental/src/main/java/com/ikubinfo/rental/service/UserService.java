@@ -16,7 +16,6 @@ import org.springframework.web.server.ResponseStatusException;
 import com.ikubinfo.rental.config.NonValidDataException;
 import com.ikubinfo.rental.config.UserAlreadyExistsException;
 import com.ikubinfo.rental.converter.UserConverter;
-import com.ikubinfo.rental.entity.RoleEntity;
 import com.ikubinfo.rental.entity.UserEntity;
 import com.ikubinfo.rental.model.ReservationModel;
 import com.ikubinfo.rental.model.UserModel;

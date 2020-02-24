@@ -106,7 +106,7 @@ export class CarsComponent implements OnInit {
         this.addCategoryItems(el);
       })
     }, err => {
-      this.logger.error('Error', 'Categories could not be found.');
+      this.logger.error('Error', err.error.message);
     })
   }
 
