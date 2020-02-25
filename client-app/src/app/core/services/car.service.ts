@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../utilities/api.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Car } from '../models/car';
 import { Reservation } from '../models/reservation';
+import { CarsPage } from '../models/cars-page';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +13,20 @@ import { Reservation } from '../models/reservation';
 export class CarService {
 
   url = 'cars';
-constructor(private apiService: ApiService, private httpClient: HttpClient) { }
+constructor(private apiService: ApiService, private httpClient: HttpClient, private datePipe: DatePipe) { }
 
-  getAll(): Observable<Array<Car>>{
-    return this.apiService.get(this.url);
+  getAll(startIndex: number, pageSize: number, selectedCategories?: number[], startDate?: Date, endDate?: Date): Observable<CarsPage>{
+    let params = new HttpParams();
+    if (selectedCategories.length > 0) {
+      params = params.set('selectedCategories', selectedCategories.toLocaleString());
+    }
+    if (startDate){
+      params = params.set('startDate', this.datePipe.transform(startDate, 'yyyy-MM-dd HH:mm:ss'));
+    }
+    if (endDate){
+      params = params.set('endDate', this.datePipe.transform(endDate, 'yyyy-MM-dd HH:mm:ss'));
+    }
+    return this.apiService.get(this.url + '?startIndex='+ startIndex + '&pageSize='+pageSize, params);
   }
 
   getById(id: number): Observable<Car>{

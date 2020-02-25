@@ -22,11 +22,14 @@ public class UserRepository {
 
 	}
 
-	public List<UserEntity> getAll() {
+	public List<UserEntity> getAll(int startIndex, int pageSize, String name) {
 		TypedQuery<UserEntity> query = em
-				.createQuery("Select u from UserEntity u where u.role.id = ?1 and u.active =?2", UserEntity.class);
+				.createQuery("Select u from UserEntity u where u.role.id = ?1 and u.active =?2 and ((u.firstName Like ?3) or (u.lastName Like ?3))", UserEntity.class);
 		query.setParameter(1, 2);
 		query.setParameter(2, true);
+		query.setParameter(3, '%'+name+'%');
+		query.setFirstResult(startIndex);
+		query.setMaxResults(pageSize);
 		return query.getResultList();
 	}
 
@@ -55,6 +58,16 @@ public class UserRepository {
 		return query.getSingleResult();
 	}
 
+	public Long countActiveUsers(String name) {
+		TypedQuery<Long> query = em
+				.createQuery("Select Count(u.id) from UserEntity u where u.role.id = ?1 and u.active = ?2 and ((u.firstName LIKE ?3) or "
+						+ "(u.lastName LIKE ?3))", Long.class);
+		query.setParameter(1, 2);
+		query.setParameter(2, true);
+		query.setParameter(3, name);
+		return query.getSingleResult();
+	}
+	
 	public Long countActiveUsers() {
 		TypedQuery<Long> query = em
 				.createQuery("Select Count(u.id) from UserEntity u where u.role.id = ?1 and u.active = ?2", Long.class);
@@ -62,6 +75,7 @@ public class UserRepository {
 		query.setParameter(2, true);
 		return query.getSingleResult();
 	}
+
 
 	@Transactional
 	public void save(UserEntity user) {

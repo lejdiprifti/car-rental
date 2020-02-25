@@ -1,6 +1,9 @@
 package com.ikubinfo.rental.service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -20,6 +23,7 @@ import com.ikubinfo.rental.converter.CarConverter;
 import com.ikubinfo.rental.entity.CarEntity;
 import com.ikubinfo.rental.entity.StatusEnum;
 import com.ikubinfo.rental.model.CarModel;
+import com.ikubinfo.rental.model.CarsPage;
 import com.ikubinfo.rental.model.ReservedDates;
 import com.ikubinfo.rental.repository.CarRepository;
 import com.ikubinfo.rental.repository.ReservationRepository;
@@ -44,29 +48,61 @@ public class CarService {
 
 	}
 
-	public List<CarModel> getAllCars() {
+	public CarsPage getAllCars(int startIndex, int pageSize, List<Long> selectedCategoryIds, String startDate,
+			String endDate) {
+		LocalDateTime startDate2 = getFilterData(startDate,endDate).get("startDate");
+		LocalDateTime endDate2 = getFilterData(startDate, endDate).get("endDate");
 		try {
 			authorizationService.isUserAuthorized();
-			return getAll();
+			CarsPage carPage = new CarsPage();
+			carPage.setCarsList(getAll(startIndex, pageSize, selectedCategoryIds, startDate2, endDate2));
+			carPage.setTotalRecords(carRepository.countAllCars(selectedCategoryIds, startDate2, endDate2));
+			;
+			return carPage;
 		} catch (ResponseStatusException e) {
-			return getAllAvailable();
+			CarsPage carPage = new CarsPage();
+			carPage.setCarsList(getAllAvailable(startIndex, pageSize,selectedCategoryIds, startDate2, endDate2));
+			carPage.setTotalRecords(carRepository.countAvailableCars(selectedCategoryIds, startDate2, endDate2));
+			return carPage;
 		}
 	}
 
-	public List<CarModel> getAll() {
-		List<CarModel> modelList = carConverter.toModelObject(carRepository.getAll());
+	public List<CarModel> getAll(int startIndex, int pageSize, List<Long> selectedCategoryIds, LocalDateTime startDate,
+			LocalDateTime endDate) {
+		List<CarModel> modelList = carConverter
+				.toModelObject(carRepository.getAll(startIndex, pageSize, selectedCategoryIds, startDate, endDate));
 		for (CarModel car : modelList) {
 			car.setReservedDates(getReservedDatesByCar(car.getId()));
 		}
 		return modelList;
 	}
 
-	public List<CarModel> getAllAvailable() {
-		List<CarModel> modelList = carConverter.toModelObject(carRepository.getAllAvailable());
+	public List<CarModel> getAllAvailable(int startIndex, int pageSize, List<Long> selectedCategoryIds, LocalDateTime startDate, LocalDateTime endDate) {
+		List<CarModel> modelList = carConverter.toModelObject(carRepository.getAllAvailable(startIndex, pageSize, selectedCategoryIds, startDate,endDate));
 		for (CarModel car : modelList) {
 			car.setReservedDates(getReservedDatesByCar(car.getId()));
 		}
 		return modelList;
+	}
+
+	public HashMap<String, LocalDateTime> getFilterData(String startDate, String endDate) {
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		HashMap<String, LocalDateTime> dataMap = new HashMap<String, LocalDateTime>();
+		LocalDateTime startDate2;
+		LocalDateTime endDate2;
+		if (startDate != null) {
+			startDate2 = LocalDateTime.parse(startDate, dateFormatter);
+		} else {
+			startDate2 = LocalDateTime.parse("1900-01-01 00:00:00", dateFormatter);
+		}
+		dataMap.put("startDate", startDate2);
+		if (endDate != null) {
+			endDate2 = LocalDateTime.parse(endDate, dateFormatter);
+		} else {
+			endDate2 = LocalDateTime.parse("1900-01-01 00:00:00", dateFormatter);
+		}
+		dataMap.put("endDate", endDate2);
+		return dataMap;
 	}
 
 	public List<ReservedDates> getReservedDatesByCar(Long carId) {

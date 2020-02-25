@@ -1,11 +1,12 @@
-<p-table #dt [columns]="cols" [value]="clients" [paginator]="true" [rows]="10">
+<p-table #dt [columns]="cols" [value]="clients" [(first)]="first" (onPage)="paginate($event)"
+ [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [lazy]="true">
   <ng-template pTemplate="caption">
     <div style="text-align: left;">
       <i class="fa fa-users"></i> List of Clients
     </div>
       <div style="text-align: right">        
           <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-          <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+          <input #filter type="text" pInputText size="50" placeholder="Global Filter" (keyup.enter)="search(filter.value)" [(ngModel)]="name" style="width:auto">
       </div>
   </ng-template>
   <ng-template pTemplate="header" let-columns>

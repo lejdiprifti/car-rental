@@ -19,6 +19,7 @@ import com.ikubinfo.rental.converter.UserConverter;
 import com.ikubinfo.rental.entity.UserEntity;
 import com.ikubinfo.rental.model.ReservationModel;
 import com.ikubinfo.rental.model.UserModel;
+import com.ikubinfo.rental.model.UserPage;
 import com.ikubinfo.rental.repository.UserRepository;
 import com.ikubinfo.rental.security.JwtTokenUtil;
 
@@ -55,9 +56,17 @@ public class UserService {
 		}
 	}
 
-	public List<UserModel> getAll() {
+	public UserPage getAll(int startIndex, int pageSize,String name) {
 		logger.info("Getting all users.");
-		return userConverter.toModel(userRepository.getAll());
+		if(name==null) {
+			name="";
+		}
+		List<UserModel> userList = userConverter.toModel(userRepository.getAll(startIndex, pageSize,name));
+		Long totalRecords = userRepository.countActiveUsers(name);
+		UserPage userPage = new UserPage();
+		userPage.setTotalRecords(totalRecords);
+		userPage.setUserList(userList);
+		return userPage;
 	}
 
 	public UserModel getByUsername(String username) {

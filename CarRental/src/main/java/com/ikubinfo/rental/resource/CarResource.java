@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ikubinfo.rental.model.CarModel;
+import com.ikubinfo.rental.model.CarsPage;
 import com.ikubinfo.rental.model.ReservationModel;
 import com.ikubinfo.rental.service.CarService;
 import com.ikubinfo.rental.service.ReservationService;
@@ -42,8 +44,13 @@ public class CarResource {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<CarModel>> getAll(){
-		return new ResponseEntity<List<CarModel>>(carService.getAllCars(), HttpStatus.OK);
+	public ResponseEntity<CarsPage> getAll(@RequestParam("startIndex") int startIndex, 
+			@RequestParam("pageSize") int pageSize,
+			@RequestParam(name="selectedCategories",required=false) List<Long> selectedCategoryIds,
+			@RequestParam(name="startDate", required=false) String startDate,
+			@RequestParam(name="endDate",required=false) String endDate
+			){
+		return new ResponseEntity<CarsPage>(carService.getAllCars(startIndex, pageSize,selectedCategoryIds, startDate,endDate), HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")

@@ -6,7 +6,7 @@
 </div>
 <div *ngIf = 'cars'>
     <div class="filters">
-    <div class="ui-g">
+    <div class="ui-g" *ngIf="advancedFilters">
         <div class="ui-g-2">
             <p><b>Filter results by:</b></p>
                 </div>
@@ -27,24 +27,24 @@
         </div>
             <div class="ui-g-3">
                From
-                <p-calendar placeholder = "Pick a date" [minDate]="today" [maxDate]="endDate" [style]="{'width':'300px','margin-top':'8px'}" [(ngModel)]="startDate" (click)="filterBookings()" showButtonBar="true"></p-calendar>
+                <p-calendar placeholder = "Pick a date" [minDate]="today" [maxDate]="endDate" [style]="{'width':'300px','margin-top':'8px'}" [(ngModel)]="startDate" showButtonBar="true"></p-calendar>
             </div>
             <div class="ui-g-3">
                 Until
-                <p-calendar placeholder = "Pick a date"   [minDate]="startDate" [style]="{'width':'300px','margin-top':'8px'}" [(ngModel)]="endDate" (click)="filterBookings()" showButtonBar="true"></p-calendar>
+                <p-calendar placeholder = "Pick a date"   [minDate]="startDate" [style]="{'width':'300px','margin-top':'8px'}" [(ngModel)]="endDate" showButtonBar="true"></p-calendar>
             </div>
-            <div id="results" class="ui-g-2">
-                <p>Showing {{cars.length}} out of {{originalCars.length}} results</p>
-            </div>
+            <div id="results" class="ui-g-3">
+                <button pButton icon="pi pi-search" type="button" label="Search" (click)="search()" class="ui-button-rounded"></button>
+                <button id="reset" pButton type="button" label="Reset" icon="pi pi-times" class="ui-button-rounded ui-button-secondary" (click)="reset()"></button>
+              </div>
         </div>
     </div>
-<p-dataView #dv [value]="cars" [paginator]="true" [rows]="4" paginatorPosition="top" filterBy="type"
-[sortField]="sortField" [sortOrder]="sortOrder"> 
+<p-dataView #dv [value]="cars" [paginator]="true" [rows]="4" [lazy]="true" [(first)]="first" [totalRecords]="totalRecords" (onPage)="paginate($event)" paginatorPosition="top" filterBy="type"> 
 <p-header>
     <div class="ui-helper-clearfix">
         <div class="ui-g"> 
             <div class="ui-g-12 ui-md-4">
-                <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By" (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown>
+                <p id="advanced" (click)="selectIfAdvanced()">Advanced filters...</p>
             </div>   
             <div class="ui-g-6 ui-md-4 filter-container">
                 <div style="position:relative">
