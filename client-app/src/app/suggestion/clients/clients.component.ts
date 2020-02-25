@@ -45,7 +45,6 @@ export class ClientsComponent implements OnInit {
 
   search(name: string): void {
     this.name = name;
-    console.log(name);
     this.loadClients(this.first, 10, name);
   }
 }

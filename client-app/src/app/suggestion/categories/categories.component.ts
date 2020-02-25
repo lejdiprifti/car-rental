@@ -82,7 +82,7 @@ export class CategoriesComponent implements OnInit {
           icon: "pi pi-info-circle",
           accept: () => {
             let formData = prepareFormData(
-              addedCategory.photo,
+              addedCategory.photo || null,
               new Blob(
                 [
                   JSON.stringify({
@@ -104,7 +104,8 @@ export class CategoriesComponent implements OnInit {
                 this.getAll(0,5);
               },
               err => {
-                this.logger.error("Error", err.error.message);
+                this.logger.log('Error', err.error.message);
+                this.logger.error("Error", "Category could not be added.");
               }
             );
           }
@@ -119,10 +120,11 @@ export class CategoriesComponent implements OnInit {
           icon: "pi pi-info-circle",
           accept: () => {
             let formData = prepareFormData(
-              categories[this.categories.indexOf(this.selectedCategory)].photo,
+              categories[this.categories.indexOf(this.selectedCategory)].photo || null,
               new Blob(
                 [
                   JSON.stringify({
+                    id: categories[this.categories.indexOf(this.selectedCategory)].id,
                     name:
                       categories[this.categories.indexOf(this.selectedCategory)]
                         .name,
@@ -192,11 +194,9 @@ export class CategoriesComponent implements OnInit {
   }
 
   uploadFile(event): void{
-    if (event.target.files.length > 0 && event.target.files[0] < 50000) {
+    if (event.target.files.length > 0) {
       const file = event.target.files[0];
       this.category.photo = file;
-    } else {
-      this.logger.warning("Warning!", "Photo must be less than 50 Kb.");
     }
   }
 

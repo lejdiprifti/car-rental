@@ -54,8 +54,9 @@ public class CategoryService {
 	public List<CategoryModel> getAll() {
 		logger.info("Getting all the categories.");
 		return catConverter.toModel(catRepository.getAll());
-		
+
 	}
+
 	public CategoryModel getById(Long id) {
 		try {
 			return catConverter.toModel(catRepository.getById(id));
@@ -85,10 +86,13 @@ public class CategoryService {
 		authorizationService.isUserAuthorized();
 		try {
 			validateCategoryData(model, file);
-			CategoryEntity entity = catConverter.toEntity(model);
+			CategoryEntity entity = catRepository.getById(model.getId());
 			updateIfAvailable(model.getName(), id);
-			entity.setId(id);
-			entity.setPhoto(file.getBytes());
+			entity.setDescription(model.getDescription());
+			entity.setName(model.getName());
+			if (file != null) {
+				entity.setPhoto(file.getBytes());
+			}
 			catRepository.edit(entity);
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
@@ -145,8 +149,6 @@ public class CategoryService {
 				if (model.getId() == null) {
 					throw new NonValidDataException("Photo is required.");
 				}
-			} else if (file.getSize() > 100000) {
-				throw new NonValidDataException("Photo needs to be less than 100Kb.");
 			}
 		} catch (NullPointerException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User data are missing.");

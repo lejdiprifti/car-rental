@@ -155,7 +155,7 @@ export class CarsComponent implements OnInit {
         this.carService.delete(car.id).subscribe(
           res => {
             this.logger.success("Success", "Car was deleted successfully!");
-            this.loadCars(0, 4);
+            this.loadCars(0, 4, this.selectedCategoryIds, this.startDate,this.endDate);
           },
           err => {
             this.logger.error("Error", err.error.message);
