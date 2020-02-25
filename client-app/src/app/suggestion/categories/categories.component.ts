@@ -202,6 +202,6 @@ export class CategoriesComponent implements OnInit {
 
   paginate(event): void {
     this.first = event.first;
-    this.getAll(this.first , 5);
+    this.getAll(event.first , 5);
   }
 }

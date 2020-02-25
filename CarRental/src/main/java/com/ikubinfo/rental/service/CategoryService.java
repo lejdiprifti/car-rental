@@ -46,7 +46,7 @@ public class CategoryService {
 	public CategoryPage getAll(int startIndex, int pageSize) {
 		logger.info("Getting all the categories.");
 		CategoryPage categoryPage = new CategoryPage();
-		categoryPage.setTotalRecords(catRepository.countCategories(startIndex, pageSize));
+		categoryPage.setTotalRecords(catRepository.countCategories());
 		categoryPage.setCategoryList(catConverter.toModel(catRepository.getAll(startIndex, pageSize)));
 		return categoryPage;
 	}

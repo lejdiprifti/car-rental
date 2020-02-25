@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ikubinfo.rental.entity.ReservationEntity;
 import com.ikubinfo.rental.entity.StatusEnum;
 
 import lombok.Getter;

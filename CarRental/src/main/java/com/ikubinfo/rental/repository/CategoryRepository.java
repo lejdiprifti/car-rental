@@ -59,12 +59,10 @@ public class CategoryRepository {
 		return query.getResultList();
 	}
 	
-	public Long countCategories(int startIndex, int pageSize) {
+	public Long countCategories() {
 		TypedQuery<Long> query = em.createQuery("Select Count(c.id) from CategoryEntity c where c.active = ?1",
 				Long.class);
 		query.setParameter(1, true);
-		query.setFirstResult(startIndex);
-		query.setMaxResults(pageSize);
 		return query.getSingleResult();
 	}
 
