@@ -20,8 +20,6 @@ import com.ikubinfo.rental.model.ReservedDates;
 
 @Repository
 public class ReservationRepository {
-	
-	private static Logger logger = LogManager.getLogger(ReservationRepository.class);
 
 	@PersistenceContext
 	private EntityManager em;
@@ -51,7 +49,6 @@ public class ReservationRepository {
 	@Transactional
 	public List<Object[]> getByUser(String username, int startIndex, int pageSize, String carName,
 			LocalDateTime startDate, LocalDateTime endDate) throws NoResultException {
-		logger.info("%"+carName+"%");
 		Query query = em.createQuery(
 				"Select r.id, r.startDate, r.endDate, c.id, c.name, c.type, c.price, u.id, u.firstName, u.lastName,c.plate, c.photo from ReservationEntity r "
 						+ "Join CarEntity c ON c.id = r.car " + "Join UserEntity u ON u.id = r.user "
