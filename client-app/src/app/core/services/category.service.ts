@@ -18,7 +18,7 @@ public getAll(startIndex: number, pageSize: number): Observable<CategoryPage>{
   return this.apiService.get(this.url+'?startIndex='+startIndex+'&pageSize='+pageSize);
 }
 
-public getAllCategories(): Observable<CategoryPage>{
+public getAllCategories(): Observable<Array<Category>>{
   return this.apiService.get(this.url+'/all');
 }
 
