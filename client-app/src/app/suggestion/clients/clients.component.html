@@ -6,7 +6,7 @@
     </div>
       <div style="text-align: right">        
           <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-          <input #filter type="text" pInputText size="50" placeholder="Global Filter" (keyup.enter)="search(filter.value)" [(ngModel)]="name" style="width:auto">
+          <input #filter type="text" pInputText size="50" placeholder="Search by client's name" (keyup.enter)="search(filter.value)" [(ngModel)]="name" style="width:auto">
       </div>
   </ng-template>
   <ng-template pTemplate="header" let-columns>

@@ -18,6 +18,7 @@ import com.ikubinfo.rental.config.NonValidDataException;
 import com.ikubinfo.rental.converter.CategoryConverter;
 import com.ikubinfo.rental.entity.CategoryEntity;
 import com.ikubinfo.rental.model.CategoryModel;
+import com.ikubinfo.rental.model.CategoryPage;
 import com.ikubinfo.rental.repository.CarRepository;
 import com.ikubinfo.rental.repository.CategoryRepository;
 
@@ -42,11 +43,19 @@ public class CategoryService {
 
 	}
 
+	public CategoryPage getAll(int startIndex, int pageSize) {
+		logger.info("Getting all the categories.");
+		CategoryPage categoryPage = new CategoryPage();
+		categoryPage.setTotalRecords(catRepository.countCategories(startIndex, pageSize));
+		categoryPage.setCategoryList(catConverter.toModel(catRepository.getAll(startIndex, pageSize)));
+		return categoryPage;
+	}
+
 	public List<CategoryModel> getAll() {
 		logger.info("Getting all the categories.");
 		return catConverter.toModel(catRepository.getAll());
+		
 	}
-
 	public CategoryModel getById(Long id) {
 		try {
 			return catConverter.toModel(catRepository.getById(id));

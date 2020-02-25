@@ -48,9 +48,10 @@ public class CarResource {
 			@RequestParam("pageSize") int pageSize,
 			@RequestParam(name="selectedCategories",required=false) List<Long> selectedCategoryIds,
 			@RequestParam(name="startDate", required=false) String startDate,
-			@RequestParam(name="endDate",required=false) String endDate
+			@RequestParam(name="endDate",required=false) String endDate,
+			@RequestParam(name="brand", required=false) String brand
 			){
-		return new ResponseEntity<CarsPage>(carService.getAllCars(startIndex, pageSize,selectedCategoryIds, startDate,endDate), HttpStatus.OK);
+		return new ResponseEntity<CarsPage>(carService.getAllCars(startIndex, pageSize,selectedCategoryIds, startDate,endDate,brand), HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")

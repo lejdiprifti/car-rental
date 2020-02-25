@@ -225,7 +225,7 @@ export class CarComponent implements OnInit {
   }
 
   getCategories(): void {
-    this.categoryService.getAll().subscribe(
+    this.categoryService.getAllCategories().subscribe(
       res => {
         this.categories = res;
       },

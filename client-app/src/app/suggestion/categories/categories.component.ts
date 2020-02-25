@@ -22,6 +22,8 @@ export class CategoriesComponent implements OnInit {
   newCategory: boolean;
   cols: any[];
   categoryForm: FormGroup;
+  totalRecords: number;
+  first: number;
   constructor(
     private fb: FormBuilder,
     private categoryService: CategoryService,
@@ -32,7 +34,8 @@ export class CategoriesComponent implements OnInit {
   ngOnInit() {
     this.categories = [];
     this.cols = cols;
-    this.getAll();
+    this.first = 0;
+    this.getAll(0,5);
 
     this.categoryForm = this.fb.group({
       name: ["", Validators.required],
@@ -47,10 +50,11 @@ export class CategoriesComponent implements OnInit {
     });
   }
 
-  getAll() {
-    this.categoryService.getAll().subscribe(
+  getAll(startIndex: number, pageSize: number) {
+    this.categoryService.getAll(startIndex,pageSize).subscribe(
       res => {
-        this.categories = res;
+        this.categories = res.categoryList;
+        this.totalRecords = res.totalRecords;
       },
       err => {
         this.logger.error("Error", "Categories could not be found.");
@@ -97,7 +101,7 @@ export class CategoriesComponent implements OnInit {
                   "Success",
                   "Category was successfully created."
                 );
-                this.getAll();
+                this.getAll(0,5);
               },
               err => {
                 this.logger.error("Error", err.error.message);
@@ -140,7 +144,7 @@ export class CategoriesComponent implements OnInit {
               .subscribe(
                 res => {
                   this.logger.success("Success", "Data saved successfully!");
-                  this.getAll();
+                  this.getAll(0,5);
                 },
                 err => {
                   this.logger.error("Error", err.error.message);
@@ -171,7 +175,7 @@ export class CategoriesComponent implements OnInit {
         this.logger.success("Success", "Category was deleted successfully!");
         this.category = null;
         this.displayDialog = false;
-        this.getAll();
+        this.getAll(0,5);
       },
       err => {
         this.logger.error("Error", err.error.message);
@@ -187,12 +191,17 @@ export class CategoriesComponent implements OnInit {
     return category;
   }
 
-  uploadFile(event) {
+  uploadFile(event): void{
     if (event.target.files.length > 0 && event.target.files[0] < 50000) {
       const file = event.target.files[0];
       this.category.photo = file;
     } else {
       this.logger.warning("Warning!", "Photo must be less than 50 Kb.");
     }
+  }
+
+  paginate(event): void {
+    this.first = event.first;
+    this.getAll(this.first , 5);
   }
 }

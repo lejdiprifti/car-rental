@@ -48,7 +48,7 @@
             </div>   
             <div class="ui-g-6 ui-md-4 filter-container">
                 <div style="position:relative">
-                    <input type="search" pInputText placeholder="Search by brand" (input)="dv.filter($event.target.value)">
+                    <input type="search" pInputText placeholder="Search by brand" [(ngModel)]="brand" (keyup.enter)="search()">
                 </div>
             </div>       
             <div class="ui-g-6 ui-md-4 text" style="text-align:right;">

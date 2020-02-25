@@ -1,12 +1,13 @@
-<p-table [columns]="cols" [value]="categories" selectionMode="single" [(selection)]="selectedCategory" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
+<p-table [columns]="cols" [value]="categories" [totalRecords]="totalRecords" (onPage)="paginate($event)"
+ selectionMode="single" [(selection)]="selectedCategory" (onRowSelect)="onRowSelect($event)"
+  [paginator]="true" [rows]="5" [(first)]="first" [lazy]="true">
   <ng-template pTemplate="caption">
       List of categories
   </ng-template>
   <ng-template pTemplate="header" let-columns>
       <tr>
-          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          <th *ngFor="let col of columns">
               {{col.header}}
-              <p-sortIcon [field]="col.field"></p-sortIcon>
           </th>
       </tr>
   </ng-template>

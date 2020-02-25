@@ -57,6 +57,8 @@ export class CarsComponent implements OnInit {
   selectedCategoryIds: number[];
 
   advancedFilters: boolean = false;
+
+  brand: string;
   constructor(
     private carService: CarService,
     private categoryService: CategoryService,
@@ -90,7 +92,7 @@ export class CarsComponent implements OnInit {
   }
 
   loadCategories(): void {
-    this.categoryService.getAll().subscribe(
+    this.categoryService.getAllCategories().subscribe(
       res => {
         this.categories = res;
         this.categories.forEach(el => {
@@ -119,10 +121,11 @@ export class CarsComponent implements OnInit {
     pageSize: number,
     selectedCategories?: any[],
     startDate?: Date,
-    endDate?: Date
+    endDate?: Date,
+    brand?: string
   ): void {
     this.carService
-      .getAll(startIndex, pageSize, selectedCategories, startDate, endDate)
+      .getAll(startIndex, pageSize, selectedCategories, startDate, endDate,brand)
       .subscribe(
         res => {
           this.cars = res.carsList;
@@ -309,7 +312,8 @@ export class CarsComponent implements OnInit {
       4,
       this.selectedCategoryIds,
       this.startDate,
-      this.endDate
+      this.endDate,
+      this.brand
     );
   }
 
@@ -319,7 +323,8 @@ export class CarsComponent implements OnInit {
       4,
       this.selectedCategoryIds,
       this.startDate,
-      this.endDate
+      this.endDate,
+      this.brand
     );
   }
 
@@ -328,6 +333,7 @@ export class CarsComponent implements OnInit {
     this.selectedCategoryIds = [];
     this.startDate = null;
     this.endDate = null;
+    this.brand=null;
     this.loadCars(
       this.first,
       4,
