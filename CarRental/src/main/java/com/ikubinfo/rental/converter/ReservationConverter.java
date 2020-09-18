@@ -18,11 +18,7 @@ public class ReservationConverter {
 	
 	@Autowired
 	private ModelMapper modelMapper;
-	
-	public ReservationConverter() {
-		
-	}
-	
+
 	public ReservationModel toModel(ReservationEntity entity) {
 		return modelMapper.map(entity, ReservationModel.class);
 	}
@@ -32,7 +28,7 @@ public class ReservationConverter {
 	}
 	
 	public List<ReservationModel> toModel(List<ReservationEntity> entityList){
-		List<ReservationModel> modelList = new ArrayList<ReservationModel>();
+		List<ReservationModel> modelList = new ArrayList<>();
 		for (ReservationEntity entity: entityList) {
 			modelList.add(toModel(entity));
 		}
@@ -62,7 +58,7 @@ public class ReservationConverter {
 	
 	
 	public List<ReservationModel> toModelObject(List<Object[]> objectList){
-		List<ReservationModel> modelList = new ArrayList<ReservationModel>();
+		List<ReservationModel> modelList = new ArrayList<>();
 		for (Object[] entity: objectList) {
 			modelList.add(toModel(entity));
 		}

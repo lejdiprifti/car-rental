@@ -42,10 +42,6 @@ public class EmailService {
 	@Autowired
 	private CarRepository carRepository;
 
-	public EmailService() {
-
-	}
-
 	public void prepareAndSend(Mail mail, CarEntity car) throws MessagingException {
 		logger.info("TRYING TO SEND MAIL");
 		MimeMessage message = mailSender.createMimeMessage();

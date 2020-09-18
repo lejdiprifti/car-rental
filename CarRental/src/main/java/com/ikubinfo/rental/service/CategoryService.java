@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.ikubinfo.rental.config.CategoryAlreadyExistsException;
-import com.ikubinfo.rental.config.NonValidDataException;
+import com.ikubinfo.rental.exceptions.CategoryAlreadyExistsException;
+import com.ikubinfo.rental.exceptions.NonValidDataException;
 import com.ikubinfo.rental.converter.CategoryConverter;
 import com.ikubinfo.rental.entity.CategoryEntity;
 import com.ikubinfo.rental.model.CategoryModel;
@@ -38,10 +38,6 @@ public class CategoryService {
 	private CarRepository carRepository;
 
 	private static Logger logger = LogManager.getLogger(CategoryService.class);
-
-	public CategoryService() {
-
-	}
 
 	public CategoryPage getAll(int startIndex, int pageSize) {
 		logger.info("Getting all the categories.");

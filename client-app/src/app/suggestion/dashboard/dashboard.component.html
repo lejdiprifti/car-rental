@@ -59,7 +59,7 @@
             </tr>
             <tr>
                 <th *ngFor="let col of columns" [ngSwitch]="col.field">
-                    <input class="filterInput" *ngSwitchCase="'user'" pInputText placeholder="Search by user name" type="text" (input)="dt.filter($event.target.value, col.field, 'contains')">
+                    <input class="filterInput" *ngSwitchCase="'user'" pInputText placeholder="Search by user name" type="text" (input)="dt.filter($event.target.value, 'user.firstName', 'contains')">
                     <input class="filterInput" *ngSwitchCase="'car'" pInputText placeholder = "Search by car name" type="text" (input)="dt.filter($event.target.value, 'car.name', 'contains')">
                     <input class="filterInput" *ngSwitchCase="'plate'" pInputText placeholder = "Search by car plate" type="text" (input)="dt.filter($event.target.value, 'car.plate', 'contains')">
                     <div class="filterInput" *ngSwitchCase="'startDate'">

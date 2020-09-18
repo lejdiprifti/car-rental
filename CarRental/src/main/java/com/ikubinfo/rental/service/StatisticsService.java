@@ -25,12 +25,6 @@ public class StatisticsService {
 	@Autowired
 	private AuthorizationService authorizationService;
 	
-	
-	public StatisticsService() {
-		
-	}
-	
-	
 	public StatisticsModel getStatistics() {
 		authorizationService.isUserAuthorized();
 		StatisticsModel stats = new StatisticsModel();

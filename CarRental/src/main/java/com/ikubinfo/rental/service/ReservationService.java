@@ -54,10 +54,6 @@ public class ReservationService {
 	@Autowired
 	private ReservationPageConverter reservationPageConverter;
 
-	public ReservationService() {
-
-	}
-
 	public List<ReservationModel> getAll() {
 		authorizationService.isUserAuthorized();
 		return reservationConverter.toModelObject(reservationRepository.getAll());

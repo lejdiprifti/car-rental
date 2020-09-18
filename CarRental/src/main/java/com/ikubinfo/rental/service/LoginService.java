@@ -36,10 +36,6 @@ public class LoginService implements UserDetailsService {
 	
 	@Autowired
 	private RoleConverter roleConverter;
-	
-	public LoginService() {
-		
-	}
 
 	public LoginResponse authenticate(LoginRequest loginRequest) throws Exception {
 		authenticate(loginRequest.getUsername(), loginRequest.getPassword());

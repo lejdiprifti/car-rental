@@ -8,14 +8,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BeanConfig {
 
-	public BeanConfig() {
-
-	}
-
-	@Bean
-	public ModelMapper modelMapper() {
-		ModelMapper mm = new ModelMapper();
-		mm.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-		return mm;
-	}
+    @Bean
+    public ModelMapper modelMapper() {
+        ModelMapper mm = new ModelMapper();
+        mm.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        return mm;
+    }
 }

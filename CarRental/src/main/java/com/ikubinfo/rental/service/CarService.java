@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.ikubinfo.rental.config.ActiveReservationsException;
-import com.ikubinfo.rental.config.CarAlreadyExistsException;
-import com.ikubinfo.rental.config.NonValidDataException;
+import com.ikubinfo.rental.exceptions.ActiveReservationsException;
+import com.ikubinfo.rental.exceptions.CarAlreadyExistsException;
+import com.ikubinfo.rental.exceptions.NonValidDataException;
 import com.ikubinfo.rental.converter.CarConverter;
 import com.ikubinfo.rental.entity.CarEntity;
 import com.ikubinfo.rental.entity.StatusEnum;
@@ -43,10 +43,6 @@ public class CarService {
 	@Autowired
 	private ReservationRepository reservationRepository;
 	private static Logger logger = LogManager.getLogger(CarService.class);
-
-	public CarService() {
-
-	}
 
 	public CarsPage getAllCars(int startIndex, int pageSize, List<Long> selectedCategoryIds, String startDate,
 			String endDate, String brand) {
