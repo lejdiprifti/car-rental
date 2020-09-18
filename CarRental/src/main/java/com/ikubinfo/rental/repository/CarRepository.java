@@ -144,8 +144,9 @@ public class CarRepository {
     }
 
     @Transactional
-    public void save(CarEntity entity) {
+    public CarEntity save(CarEntity entity) {
         em.persist(entity);
+        return entity;
     }
 
     @Transactional

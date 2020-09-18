@@ -17,7 +17,7 @@ public class LoginResource {
     private LoginService loginService;
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) throws Exception {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         return new ResponseEntity<LoginResponse>(loginService.authenticate(request), HttpStatus.OK);
     }
 }

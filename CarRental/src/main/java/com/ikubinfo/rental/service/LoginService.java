@@ -37,7 +37,7 @@ public class LoginService implements UserDetailsService {
 	@Autowired
 	private RoleConverter roleConverter;
 
-	public LoginResponse authenticate(LoginRequest loginRequest) throws Exception {
+	public LoginResponse authenticate(LoginRequest loginRequest) {
 		authenticate(loginRequest.getUsername(), loginRequest.getPassword());
 		final UserDetails userDetails = loginService.loadUserByUsername(loginRequest.getUsername());
 		final UserModel model = userService.getByUsername(loginRequest.getUsername());
@@ -48,13 +48,13 @@ public class LoginService implements UserDetailsService {
 		return loginResponse;
 	}
 
-	private void authenticate(String username, String password) throws Exception {
+	private void authenticate(String username, String password) {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 		} catch (DisabledException e) {
-			throw new Exception("USER_DISABLED", e);
+			throw new RuntimeException("USER_DISABLED", e);
 		} catch (BadCredentialsException e) {
-			throw new Exception("INVALID_CREDENTIALS", e);
+			throw new RuntimeException("INVALID_CREDENTIALS", e);
 		}
 	}
 	

@@ -127,7 +127,7 @@ public class CarService {
 		}
 	}
 
-	public void save(CarModel model, MultipartFile file) {
+	public CarEntity save(CarModel model, MultipartFile file) {
 		authorizationService.isUserAuthorized();
 		try {
 			validateCarData(model, file);
@@ -135,7 +135,7 @@ public class CarService {
 			CarEntity entity = carConverter.toEntity(model);
 			entity.setPhoto(file.getBytes());
 			entity.setActive(true);
-			carRepository.save(entity);
+			return carRepository.save(entity);
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
 		} catch (CarAlreadyExistsException e) {
@@ -188,7 +188,7 @@ public class CarService {
 		}
 	}
 
-	public void saveIfAvailable(String plate) throws CarAlreadyExistsException {
+	private void saveIfAvailable(String plate) throws CarAlreadyExistsException {
 		try {
 			carRepository.getByPlate(plate);
 			throw new CarAlreadyExistsException("Car already exists.");
@@ -197,7 +197,7 @@ public class CarService {
 		}
 	}
 
-	public void updateIfAvailable(String plate, Long id) throws CarAlreadyExistsException {
+	private void updateIfAvailable(String plate, Long id) throws CarAlreadyExistsException {
 		try {
 			carRepository.checkIfExistsAnother(plate, id);
 			throw new CarAlreadyExistsException("Car already exists.");
@@ -206,13 +206,13 @@ public class CarService {
 		}
 	}
 
-	public void hasActiveReservations(Long carId) throws ActiveReservationsException {
+	private void hasActiveReservations(Long carId) throws ActiveReservationsException {
 		if (reservationRepository.countActiveReservationsByCar(carId) > 0) {
 			throw new ActiveReservationsException("Car has still active reservations.");
 		}
 	}
 
-	public void validateCarData(CarModel model, MultipartFile file) throws NonValidDataException {
+	private void validateCarData(CarModel model, MultipartFile file) throws NonValidDataException {
 		try {
 			if (model.getName().trim() == "") {
 				throw new NonValidDataException("Name is required.");
