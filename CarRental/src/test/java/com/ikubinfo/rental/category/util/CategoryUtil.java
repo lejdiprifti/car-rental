@@ -1,16 +1,17 @@
 package com.ikubinfo.rental.category.util;
 
 import com.ikubinfo.rental.entity.CategoryEntity;
+import com.ikubinfo.rental.model.CategoryModel;
 
 public class CategoryUtil {
 
-    public static CategoryEntity createCategoryEntity() {
-        CategoryEntity categoryEntity = new CategoryEntity();
-        categoryEntity.setPhoto(new byte[0]);
-        categoryEntity.setDescription("some description");
-        categoryEntity.setName("some name");
-        categoryEntity.setActive(true);
-        return categoryEntity;
+    public static CategoryModel createCategoryModel() {
+        CategoryModel categoryModel = new CategoryModel();
+        categoryModel.setPhoto(new byte[0]);
+        categoryModel.setDescription("some description");
+        categoryModel.setName("some name");
+        categoryModel.setActive(true);
+        return categoryModel;
     }
 
     private CategoryUtil() {}

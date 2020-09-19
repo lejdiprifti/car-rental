@@ -61,7 +61,8 @@ public class CategoryService {
 		}
 	}
 
-	public void save(CategoryModel model, MultipartFile file) throws IOException {
+	public CategoryModel save(CategoryModel model, MultipartFile file) {
+		authorizationService.isUserAuthorized();
 		try {
 			validateCategoryData(model, file);
 			saveIfAvailable(model.getName());
@@ -70,19 +71,20 @@ public class CategoryService {
 				entity.setPhoto(file.getBytes());
 			}
 			entity.setActive(true);
-			catRepository.save(entity);
-		} catch (NonValidDataException e) {
+			CategoryEntity categoryEntity = catRepository.save(entity);
+			return catConverter.toModel(categoryEntity);
+		} catch (NonValidDataException | IOException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		} catch (CategoryAlreadyExistsException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category already exists.");
 		}
 	}
 
-	public void edit(CategoryModel model, MultipartFile file, Long id) throws IOException {
+	public void edit(CategoryModel model, MultipartFile file, Long id) {
 		authorizationService.isUserAuthorized();
 		try {
 			validateCategoryData(model, file);
-			CategoryEntity entity = catRepository.getById(model.getId());
+			CategoryEntity entity = catRepository.getById(id);
 			updateIfAvailable(model.getName(), id);
 			entity.setDescription(model.getDescription());
 			entity.setName(model.getName());
@@ -94,7 +96,7 @@ public class CategoryService {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
 		} catch (CategoryAlreadyExistsException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category already exists.");
-		} catch (NonValidDataException e) {
+		} catch (NonValidDataException | IOException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 	}
@@ -115,7 +117,7 @@ public class CategoryService {
 		}
 	}
 
-	public void saveIfAvailable(String name) throws CategoryAlreadyExistsException {
+	private void saveIfAvailable(String name) throws CategoryAlreadyExistsException {
 		try {
 			catRepository.getByName(name);
 			throw new CategoryAlreadyExistsException("Category already exists.");
@@ -124,7 +126,7 @@ public class CategoryService {
 		}
 	}
 
-	public void updateIfAvailable(String name, Long id) throws CategoryAlreadyExistsException {
+	private void updateIfAvailable(String name, Long id) throws CategoryAlreadyExistsException {
 		try {
 			catRepository.checkIfExistsAnother(name, id);
 			throw new CategoryAlreadyExistsException("Category already exists.");
@@ -133,7 +135,7 @@ public class CategoryService {
 		}
 	}
 
-	public void validateCategoryData(CategoryModel model, MultipartFile file) throws NonValidDataException {
+	private void validateCategoryData(CategoryModel model, MultipartFile file) throws NonValidDataException {
 		try {
 			if (model.getName().trim() == "") {
 				throw new NonValidDataException("Name is required.");

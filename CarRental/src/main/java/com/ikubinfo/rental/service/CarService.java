@@ -127,7 +127,7 @@ public class CarService {
 		}
 	}
 
-	public CarEntity save(CarModel model, MultipartFile file) {
+	public CarModel save(CarModel model, MultipartFile file) {
 		authorizationService.isUserAuthorized();
 		try {
 			validateCarData(model, file);
@@ -135,7 +135,8 @@ public class CarService {
 			CarEntity entity = carConverter.toEntity(model);
 			entity.setPhoto(file.getBytes());
 			entity.setActive(true);
-			return carRepository.save(entity);
+			CarEntity carEntity = carRepository.save(entity);
+			return carConverter.toModel(carEntity);
 		} catch (NoResultException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
 		} catch (CarAlreadyExistsException e) {

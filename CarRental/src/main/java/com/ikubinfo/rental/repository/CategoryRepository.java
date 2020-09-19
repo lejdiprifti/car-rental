@@ -57,8 +57,9 @@ public class CategoryRepository {
     }
 
     @Transactional
-    public void save(CategoryEntity entity) {
+    public CategoryEntity save(CategoryEntity entity) {
         em.persist(entity);
+        return entity;
     }
 
     @Transactional
