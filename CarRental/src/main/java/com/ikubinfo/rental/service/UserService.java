@@ -93,7 +93,7 @@ public class UserService {
 
     public void edit(UserModel user) {
         try {
-            UserEntity entity = new UserEntity();
+            UserEntity entity;
             UserEntity loggedUser = userRepository.getByUsername(jwtTokenUtil.getUsername());
             if (user.getPassword() == null) {
                 validateUserData(user);
@@ -131,7 +131,7 @@ public class UserService {
         }
     }
 
-    public void checkIfExists(String username) throws UserAlreadyExistsException {
+    private void checkIfExists(String username) throws UserAlreadyExistsException {
         try {
             logger.info("Checking if user already exists.");
             userRepository.getByUsername(username);
@@ -141,7 +141,7 @@ public class UserService {
         }
     }
 
-    public void validateUserData(UserModel model) throws NonValidDataException {
+    private void validateUserData(UserModel model) throws NonValidDataException {
         try {
             if (model.getFirstName().trim().length() == 0) {
                 throw new NonValidDataException("First name is required.");
@@ -168,7 +168,7 @@ public class UserService {
         }
     }
 
-    public boolean isOver18(LocalDateTime birthdate) {
+    private boolean isOver18(LocalDateTime birthdate) {
         return LocalDateTime.now().getYear() - birthdate.getYear() >= 18;
     }
 }

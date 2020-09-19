@@ -152,8 +152,9 @@ public class ReservationRepository {
     }
 
     @Transactional
-    public void save(ReservationEntity entity) {
+    public ReservationEntity save(ReservationEntity entity) {
         em.persist(entity);
+        return entity;
     }
 
     @Transactional

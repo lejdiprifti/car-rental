@@ -1,6 +1,5 @@
 package com.ikubinfo.rental.category.util;
 
-import com.ikubinfo.rental.entity.CategoryEntity;
 import com.ikubinfo.rental.model.CategoryModel;
 
 public class CategoryUtil {

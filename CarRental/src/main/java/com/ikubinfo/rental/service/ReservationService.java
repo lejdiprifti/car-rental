@@ -109,17 +109,22 @@ public class ReservationService {
 		return reservationConverter.toModel(reservationRepository.getByCar(carId));
 	}
 
-	public void save(ReservationModel model) throws MessagingException, IOException {
+	public ReservationModel save(ReservationModel model) {
 		checkDates(model.getStartDate(), model.getEndDate());
 		checkIfAvailable(model.getCarId(), model.getStartDate(), model.getEndDate());
 		ReservationEntity entity = reservationConverter.toEntity(model);
 		entity.setCreated_at(Calendar.getInstance());
 		entity.setActive(true);
 		entity.setUserId(userRepository.getByUsername(jwtTokenUtil.getUsername()).getId());
-		reservationRepository.save(entity);
+		ReservationEntity reservationEntity = reservationRepository.save(entity);
 		Mail mail = emailService.setMailProperties(entity, model.getFee());
 		CarEntity car = carRepository.getById(entity.getCarId());
-		emailService.prepareAndSend(mail, car);
+		try {
+			emailService.prepareAndSend(mail, car);
+		} catch (MessagingException e) {
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "Email sending failed.");
+		}
+		return reservationConverter.toModel(reservationEntity);
 	}
 
 	public void edit(ReservationModel model, Long id) {
@@ -153,21 +158,21 @@ public class ReservationService {
 		}
 	}
 
-	public void updateIfAvailable(Long carId, LocalDateTime startDate, LocalDateTime endDate, Long id) {
+	private void updateIfAvailable(Long carId, LocalDateTime startDate, LocalDateTime endDate, Long id) {
 		Long reservations = reservationRepository.updateIfAvailable(carId, startDate, endDate, id);
 		if (reservations > 0) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car is reserved during the specified dates.");
 		}
 	}
 
-	public void checkIfAvailable(Long carId, LocalDateTime startDate, LocalDateTime endDate) {
+	private void checkIfAvailable(Long carId, LocalDateTime startDate, LocalDateTime endDate) {
 		Long reservations = reservationRepository.checkIfAvailable(carId, startDate, endDate);
 		if (reservations > 0) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car is reserved during the specified dates.");
 		}
 	}
 
-	public void checkDates(LocalDateTime startDate, LocalDateTime endDate) {
+	private void checkDates(LocalDateTime startDate, LocalDateTime endDate) {
 		if (!endDate.isAfter(startDate)) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Please, specify a valid time period.");
 		}

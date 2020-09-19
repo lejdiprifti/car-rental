@@ -18,8 +18,17 @@ public class TokenCreator {
     public void createAdminToken() {
         RoleEntity roleEntity = new RoleEntity();
         roleEntity.setId(1);
-        String token = jwtTokenUtil.generateToken(createUserDetails(FakeUsers.ADMIN.username, FakeUsers.ADMIN.password), roleEntity);
-        jwtTokenUtil.validateToken(token, createUserDetails(FakeUsers.ADMIN.username, FakeUsers.ADMIN.password));
+        UserDetails userDetails = createUserDetails(FakeUsers.ADMIN.username, FakeUsers.ADMIN.password);
+        String token = jwtTokenUtil.generateToken(userDetails, roleEntity);
+        jwtTokenUtil.validateToken(token, userDetails);
+    }
+
+    public void createUserToken() {
+        RoleEntity roleEntity = new RoleEntity();
+        roleEntity.setId(2);
+        UserDetails userDetails = createUserDetails(FakeUsers.USER.username, FakeUsers.USER.password);
+        String token = jwtTokenUtil.generateToken(userDetails, roleEntity);
+        jwtTokenUtil.validateToken(token, userDetails);
     }
 
     private UserDetails createUserDetails(String username, String password) {
@@ -31,12 +40,12 @@ public class TokenCreator {
 
             @Override
             public String getPassword() {
-                return "Admin123_";
+                return password;
             }
 
             @Override
             public String getUsername() {
-                return "admintester";
+                return username;
             }
 
             @Override
