@@ -32,6 +32,7 @@ public class CarGivenStage extends Stage<CarGivenStage> {
     }
 
     public CarGivenStage admin_saves_new_car() {
+        user_is_logged_in_as_admin();
         savedCarModel = carService.save(createCarModelWithStatus(StatusEnum.AVAILABLE), createMultipartFile());
         return self();
     }

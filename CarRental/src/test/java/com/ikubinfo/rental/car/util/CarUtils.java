@@ -5,6 +5,9 @@ import com.ikubinfo.rental.model.CarModel;
 
 public class CarUtils {
 
+    public static final Long NON_EXISTING_CAR_ID = 0L;
+    public static final Long NON_EXISTING_CATEGORY_ID = 0L;
+
     private CarUtils() {
     }
 
