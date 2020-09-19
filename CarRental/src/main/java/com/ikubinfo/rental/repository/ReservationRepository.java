@@ -19,7 +19,7 @@ public class ReservationRepository {
     public List<Object[]> getAll() {
         Query query = em.createQuery(
                 "Select r.id, r.startDate, r.endDate, c.id, c.name, c.type, c.price, u.id, u.firstName, u.lastName, c.plate from ReservationEntity r "
-                        + "Join CarEntity c ON c.id = r.car " + "Join UserEntity u ON u.id = r.user "
+                        + "Join CarEntity c ON c.id = r.car.id " + "Join UserEntity u ON u.id = r.user.id "
                         + "where r.active=?1 order by r.created_at DESC");
         query.setParameter(1, true);
         return query.getResultList();
@@ -39,7 +39,7 @@ public class ReservationRepository {
                                     LocalDateTime startDate, LocalDateTime endDate) throws NoResultException {
         Query query = em.createQuery(
                 "Select r.id, r.startDate, r.endDate, c.id, c.name, c.type, c.price, u.id, u.firstName, u.lastName,c.plate, c.photo from ReservationEntity r "
-                        + "Join CarEntity c ON c.id = r.car " + "Join UserEntity u ON u.id = r.user "
+                        + "Join CarEntity c ON c.id = r.car.id " + "Join UserEntity u ON u.id = r.user.id "
                         + "where u.username = ?1 and r.active = ?2 and (COALESCE(c.name, ?3) LIKE ?3 or COALESCE(c.type,?3) LIKE ?3) and COALESCE(r.startDate,?4) >= ?4 "
                         + "and COALESCE(r.endDate,?5) <= ?5 " + "Order by r.created_at DESC");
         query.setParameter(1, username);
@@ -56,7 +56,7 @@ public class ReservationRepository {
     public List<Object[]> getByUser(String username) throws NoResultException {
         Query query = em.createQuery(
                 "Select r.id, r.startDate, r.endDate, c.id, c.name, c.type, c.price, u.id, u.firstName, u.lastName,c.plate, c.photo from ReservationEntity r "
-                        + "Join CarEntity c ON c.id = r.car " + "Join UserEntity u ON u.id = r.user "
+                        + "Join CarEntity c ON c.id = r.car.id " + "Join UserEntity u ON u.id = r.user.id "
                         + "where u.username = ?1 and r.active = ?2 Order by r.created_at DESC");
         query.setParameter(1, username);
         query.setParameter(2, true);
