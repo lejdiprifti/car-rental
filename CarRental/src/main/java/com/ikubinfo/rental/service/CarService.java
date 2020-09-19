@@ -128,7 +128,6 @@ public class CarService {
         try {
             validateCarData(model, file);
             saveIfAvailable(model.getPlate());
-            categoryService.checkIfCategoryExists(model.getCategoryId());
             CarEntity entity = carConverter.toEntity(model);
             entity.setPhoto(file.getBytes());
             entity.setActive(true);
@@ -145,6 +144,7 @@ public class CarService {
         authorizationService.isUserAuthorized();
         try {
             validateCarData(model, file);
+            checkIfCarExists(id);
             updateIfAvailable(model.getPlate(), id);
             CarEntity entity = carConverter.toEntity(model);
             if (file != null) {
@@ -154,8 +154,6 @@ public class CarService {
             }
             entity.setActive(true);
             carRepository.edit(entity);
-        } catch (NoResultException e) {
-            throw new CarRentalNotFoundException(NotFound.CAR_NOT_FOUND.getErrorMessage());
         } catch (IOException e) {
             throw new CarRentalBadRequestException("Something bad happened. Please, try again later.");
         }
@@ -163,14 +161,10 @@ public class CarService {
 
     public void delete(Long id) {
         authorizationService.isUserAuthorized();
-        try {
-            hasActiveReservations(id);
-            CarEntity entity = carRepository.getById(id);
-            entity.setActive(false);
-            carRepository.edit(entity);
-        } catch (NoResultException e) {
-            throw new CarRentalNotFoundException(NotFound.USER_NOT_FOUND.getErrorMessage());
-        }
+        hasActiveReservations(id);
+        CarEntity entity = carConverter.toEntity(getById(id));
+        entity.setActive(false);
+        carRepository.edit(entity);
     }
 
     private void saveIfAvailable(String plate) throws CarAlreadyExistsException {
@@ -183,13 +177,23 @@ public class CarService {
         }
     }
 
-    private void updateIfAvailable(String plate, Long id) throws CarAlreadyExistsException {
+    private void updateIfAvailable(String plate, Long id) {
         try {
             carRepository.checkIfExistsAnother(plate, id);
             LOGGER.debug("Another car exists with the same plate.");
             throw new CarRentalBadRequestException(BadRequest.CAR_ALREADY_EXISTS.getErrorMessage());
         } catch (NoResultException e) {
             LOGGER.debug("No car exists with the plate {} except of car {} ", plate, id);
+        }
+    }
+
+    private void checkIfCarExists(Long carId) {
+        try {
+            carRepository.getById(carId);
+            LOGGER.debug("Car with id {} exists", carId);
+        } catch (NoResultException exception) {
+            LOGGER.debug("Car with id {} does not exists", carId);
+            throw new CarRentalNotFoundException(NotFound.CAR_NOT_FOUND.getErrorMessage());
         }
     }
 
@@ -201,6 +205,7 @@ public class CarService {
 
     private void validateCarData(CarModel model, MultipartFile file) {
         try {
+            categoryService.checkIfCategoryExists(model.getCategoryId());
             if (model.getName().trim().equals("")) {
                 throw new CarRentalBadRequestException(BadRequest.NAME_REQUIRED.getErrorMessage());
             }

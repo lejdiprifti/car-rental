@@ -20,14 +20,14 @@ public class ReservationWhenStage extends Stage<ReservationWhenStage> {
     private ReservationService reservationService;
 
     @ExpectedScenarioState
-    private CarModel carModel;
+    private CarModel savedCarModel;
 
     @ExpectedScenarioState
     private ReservationModel savedReservationModel;
 
     public ReservationWhenStage user_tries_to_reserve_car() {
         ReservationModel reservationModel = createReservationModel();
-        reservationModel.setCarId(carModel.getId());
+        reservationModel.setCarId(savedCarModel.getId());
         reservationService.save(reservationModel);
         return self();
     }

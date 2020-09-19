@@ -29,6 +29,9 @@ public class CarWhenStage extends Stage<CarWhenStage> {
     @ExpectedScenarioState
     private CarModel savedCarModel;
 
+    @ExpectedScenarioState
+    private CategoryModel savedCategoryModel;
+
     @ProvidedScenarioState
     private CarRentalBadRequestException carRentalBadRequestException;
 
@@ -37,9 +40,8 @@ public class CarWhenStage extends Stage<CarWhenStage> {
 
     public CarWhenStage admin_tries_to_add_new_car() {
         try {
-            CategoryModel categoryModel = categoryService.save(createCategoryModel(), createMultipartFile());
             CarModel carModel = createCarModelWithStatus(StatusEnum.AVAILABLE);
-            carModel.setCategoryId(categoryModel.getId());
+            carModel.setCategoryId(savedCategoryModel.getId());
             carService.save(carModel, createMultipartFile());
         } catch (CarRentalBadRequestException exception) {
             carRentalBadRequestException = exception;
@@ -48,13 +50,22 @@ public class CarWhenStage extends Stage<CarWhenStage> {
     }
 
     public CarWhenStage admin_tries_to_update_car() {
-        CarModel toUpdateCarModel = createCarModelWithStatus(StatusEnum.SERVIS);
-        carService.edit(toUpdateCarModel, createMultipartFile(), savedCarModel.getId());
+        try {
+            CarModel toUpdateCarModel = createCarModelWithStatus(StatusEnum.SERVIS);
+            toUpdateCarModel.setCategoryId(savedCategoryModel.getId());
+            carService.edit(toUpdateCarModel, createMultipartFile(), savedCarModel.getId());
+        } catch (CarRentalBadRequestException exception) {
+            carRentalBadRequestException = exception;
+        }
         return self();
     }
 
     public CarWhenStage admin_tries_to_delete_car() {
-        carService.delete(savedCarModel.getId());
+        try {
+            carService.delete(savedCarModel.getId());
+        } catch (CarRentalBadRequestException exception) {
+            carRentalBadRequestException = exception;
+        }
         return self();
     }
 
@@ -85,6 +96,27 @@ public class CarWhenStage extends Stage<CarWhenStage> {
             CarModel carModel = createCarModelWithStatus(StatusEnum.AVAILABLE);
             carModel.setCategoryId(categoryId);
             carService.save(carModel, createMultipartFile());
+        } catch (CarRentalNotFoundException exception) {
+            carRentalNotFoundException = exception;
+        }
+        return self();
+    }
+
+    public CarWhenStage admin_tries_to_update_non_existing_car_with_id_$(Long carId) {
+        try {
+            CarModel toUpdateCarModel = createCarModelWithStatus(StatusEnum.SERVIS);
+            toUpdateCarModel.setId(carId);
+            toUpdateCarModel.setCategoryId(savedCategoryModel.getId());
+            carService.edit(toUpdateCarModel, createMultipartFile(), carId);
+        } catch (CarRentalNotFoundException exception) {
+            carRentalNotFoundException = exception;
+        }
+        return self();
+    }
+
+    public CarWhenStage admin_tries_to_delete_car_with_id_$(Long carId) {
+        try {
+            carService.delete(carId);
         } catch (CarRentalNotFoundException exception) {
             carRentalNotFoundException = exception;
         }
