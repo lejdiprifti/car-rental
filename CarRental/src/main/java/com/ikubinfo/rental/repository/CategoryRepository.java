@@ -23,7 +23,7 @@ public class CategoryRepository {
     }
 
     @Transactional
-    public CategoryEntity getById(Long id) throws NoResultException, NonUniqueResultException {
+    public CategoryEntity getById(Long id) throws NoResultException {
         TypedQuery<CategoryEntity> query = em
                 .createQuery("Select c from CategoryEntity c where c.id = ?1 and c.active =?2", CategoryEntity.class);
         query.setParameter(1, id);
@@ -69,7 +69,7 @@ public class CategoryRepository {
 
     public void checkIfExistsAnother(String name, Long id) throws NoResultException {
         TypedQuery<String> query = em.createQuery(
-                "Select c.name from CategoryEntity c where c.name = ?1 and c.id != ?2 and c.active = ?3", String.class);
+                "Select c.name from CategoryEntity c where c.name = ?1 and c.id <> ?2 and c.active = ?3", String.class);
         query.setParameter(1, name);
         query.setParameter(2, id);
         query.setParameter(3, true);

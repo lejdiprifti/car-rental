@@ -2,9 +2,10 @@ package com.ikubinfo.rental.service;
 
 import com.ikubinfo.rental.converter.CategoryConverter;
 import com.ikubinfo.rental.entity.CategoryEntity;
+import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.exceptions.CarRentalNotFoundException;
 import com.ikubinfo.rental.exceptions.CategoryAlreadyExistsException;
-import com.ikubinfo.rental.exceptions.NonValidDataException;
+import com.ikubinfo.rental.exceptions.messages.BadRequest;
 import com.ikubinfo.rental.exceptions.messages.NotFound;
 import com.ikubinfo.rental.model.CategoryModel;
 import com.ikubinfo.rental.model.CategoryPage;
@@ -36,7 +37,7 @@ public class CategoryService {
     private CarRepository carRepository;
 
     public CategoryPage getAll(int startIndex, int pageSize) {
-		LOGGER.info("Getting all the categories.");
+        LOGGER.debug("Getting all the categories.");
         CategoryPage categoryPage = new CategoryPage();
         categoryPage.setTotalRecords(catRepository.countCategories());
         categoryPage.setCategoryList(catConverter.toModel(catRepository.getAll(startIndex, pageSize)));
@@ -44,7 +45,7 @@ public class CategoryService {
     }
 
     public List<CategoryModel> getAll() {
-		LOGGER.info("Getting all the categories.");
+        LOGGER.debug("Getting all the categories.");
         return catConverter.toModel(catRepository.getAll());
 
     }
@@ -53,7 +54,7 @@ public class CategoryService {
         try {
             return catConverter.toModel(catRepository.getById(id));
         } catch (NoResultException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
+            throw new CarRentalNotFoundException(NotFound.CATEGORY_NOT_FOUND.getErrorMessage());
         }
     }
 
@@ -61,7 +62,7 @@ public class CategoryService {
         authorizationService.isUserAuthorized();
         try {
             validateCategoryData(model, file);
-            saveIfAvailable(model.getName());
+            checkIfSaveIsAvailable(model.getName());
             CategoryEntity entity = catConverter.toEntity(model);
             if (file != null) {
                 entity.setPhoto(file.getBytes());
@@ -69,10 +70,17 @@ public class CategoryService {
             entity.setActive(true);
             CategoryEntity categoryEntity = catRepository.save(entity);
             return catConverter.toModel(categoryEntity);
-        } catch (NonValidDataException | IOException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        } catch (CategoryAlreadyExistsException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category already exists.");
+        } catch (IOException e) {
+            throw new CarRentalBadRequestException(e.getMessage());
+        }
+    }
+
+    private void checkIfSaveIsAvailable(String name) throws CategoryAlreadyExistsException {
+        try {
+            catRepository.getByName(name);
+            throw new CarRentalBadRequestException(BadRequest.CATEGORY_ALREADY_EXISTS.getErrorMessage());
+        } catch (NoResultException e) {
+            LOGGER.debug("Category is available to be added.");
         }
     }
 
@@ -80,59 +88,46 @@ public class CategoryService {
         authorizationService.isUserAuthorized();
         try {
             validateCategoryData(model, file);
+            checkIfCategoryExists(id);
+            checkIfUpdateIsAvailable(model.getName(), id);
             CategoryEntity entity = catRepository.getById(id);
-            updateIfAvailable(model.getName(), id);
             entity.setDescription(model.getDescription());
             entity.setName(model.getName());
             if (file != null) {
                 entity.setPhoto(file.getBytes());
             }
             catRepository.edit(entity);
-        } catch (NoResultException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
-        } catch (CategoryAlreadyExistsException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category already exists.");
-        } catch (NonValidDataException | IOException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (IOException e) {
+            throw new CarRentalBadRequestException(e.getMessage());
         }
     }
 
-    public void delete(Long id) {
-        authorizationService.isUserAuthorized();
-        if (carRepository.getByCategory(id).size() == 0) {
-            try {
-                CategoryEntity entity = catRepository.getById(id);
-                entity.setActive(false);
-                catRepository.edit(entity);
-            } catch (NoResultException e) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
-            }
-        } else {
-            throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED,
-                    "Category cannot be deleted as it has cars registered in it.");
-        }
-    }
-
-    private void saveIfAvailable(String name) throws CategoryAlreadyExistsException {
-        try {
-            catRepository.getByName(name);
-            throw new CategoryAlreadyExistsException("Category already exists.");
-        } catch (NoResultException e) {
-            LOGGER.info("Category is available to be added.");
-        }
-    }
-
-    private void updateIfAvailable(String name, Long id) throws CategoryAlreadyExistsException {
+    private void checkIfUpdateIsAvailable(String name, Long id) throws CategoryAlreadyExistsException {
         try {
             catRepository.checkIfExistsAnother(name, id);
-            throw new CategoryAlreadyExistsException("Category already exists.");
+            throw new CarRentalBadRequestException(BadRequest.CATEGORY_ALREADY_EXISTS.getErrorMessage());
         } catch (NoResultException e) {
             LOGGER.info("Category is available to be updated.");
         }
     }
 
+    public void delete(Long id) {
+        authorizationService.isUserAuthorized();
+        checkIfCategoryExists(id);
+        checkIfCategoryCanBeDeleted(id);
+        CategoryEntity entity = catRepository.getById(id);
+        entity.setActive(false);
+        catRepository.edit(entity);
+    }
+
+    private void checkIfCategoryCanBeDeleted(Long categoryId) {
+        if (carRepository.getByCategory(categoryId).size() != 0) {
+            throw new CarRentalBadRequestException(BadRequest.CATEGORY_CONTAINS_CARS.getErrorMessage());
+        }
+    }
+
     public void checkIfCategoryExists(Long categoryId) {
-    	LOGGER.debug("Checking if category with id {} exists", categoryId);
+        LOGGER.debug("Checking if category with id {} exists", categoryId);
         try {
             catRepository.getById(categoryId);
         } catch (NoResultException e) {
@@ -141,21 +136,21 @@ public class CategoryService {
         }
     }
 
-    private void validateCategoryData(CategoryModel model, MultipartFile file) throws NonValidDataException {
+    private void validateCategoryData(CategoryModel model, MultipartFile file) {
         try {
-            if (model.getName().trim() == "") {
-                throw new NonValidDataException("Name is required.");
+            if (model.getName().trim().equals("")) {
+                throw new CarRentalBadRequestException(BadRequest.NAME_REQUIRED.getErrorMessage());
             }
-            if (model.getDescription().trim() == "") {
-                throw new NonValidDataException("Description is required.");
+            if (model.getDescription().trim().equals("")) {
+                throw new CarRentalBadRequestException(BadRequest.DESCRIPTION_REQUIRED.getErrorMessage());
             }
             if (file == null) {
                 if (model.getId() == null) {
-                    throw new NonValidDataException("Photo is required.");
+                    throw new CarRentalBadRequestException(BadRequest.PHOTO_REQUIRED.getErrorMessage());
                 }
             }
         } catch (NullPointerException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User data are missing.");
+            throw new CarRentalBadRequestException(BadRequest.USER_DATA_MISSING.getErrorMessage());
         }
     }
 }
