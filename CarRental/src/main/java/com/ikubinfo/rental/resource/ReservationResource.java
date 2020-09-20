@@ -22,12 +22,12 @@ public class ReservationResource {
 
     @GetMapping
     public ResponseEntity<List<ReservationModel>> getAll() {
-        return new ResponseEntity<List<ReservationModel>>(reservationService.getAll(), HttpStatus.OK);
+        return new ResponseEntity<>(reservationService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ReservationModel> getById(@PathVariable("id") Long id) {
-        return new ResponseEntity<ReservationModel>(reservationService.getById(id), HttpStatus.OK);
+        return new ResponseEntity<>(reservationService.getById(id), HttpStatus.OK);
     }
 
     @GetMapping(path = "/user", params = {"startIndex", "pageSize"})
@@ -35,13 +35,13 @@ public class ReservationResource {
                                                          @RequestParam("pageSize") int pageSize, @RequestParam(name = "carName", required = false) String carName,
                                                          @RequestParam(name = "startDate", required = false) String startDate,
                                                          @RequestParam(name = "endDate", required = false) String endDate) {
-        return new ResponseEntity<ReservationPage>(
+        return new ResponseEntity<>(
                 reservationService.getByUsername(startIndex, pageSize, carName, startDate, endDate), HttpStatus.OK);
     }
 
     @PostMapping(consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public void save(@RequestBody ReservationModel model) throws MessagingException, IOException {
+    public void save(@RequestBody ReservationModel model) {
         reservationService.save(model);
     }
 

@@ -35,17 +35,17 @@ public class CarResource {
                                            @RequestParam(name = "endDate", required = false) String endDate,
                                            @RequestParam(name = "brand", required = false) String brand
     ) {
-        return new ResponseEntity<CarsPage>(carService.getAllCars(startIndex, pageSize, selectedCategoryIds, startDate, endDate, brand), HttpStatus.OK);
+        return new ResponseEntity<>(carService.getAllCars(startIndex, pageSize, selectedCategoryIds, startDate, endDate, brand), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CarModel> getById(@PathVariable("id") Long id) {
-        return new ResponseEntity<CarModel>(carService.getById(id), HttpStatus.OK);
+        return new ResponseEntity<>(carService.getById(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}/reservations")
     public ResponseEntity<List<ReservationModel>> getReservationsByCar(@PathVariable("id") Long carId) {
-        return new ResponseEntity<List<ReservationModel>>(reservationService.getByCar(carId), HttpStatus.OK);
+        return new ResponseEntity<>(reservationService.getByCar(carId), HttpStatus.OK);
     }
 
     @PostMapping(consumes = {"multipart/form-data", "application/json"})

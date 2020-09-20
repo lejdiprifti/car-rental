@@ -28,36 +28,35 @@ public class CategoryResource {
 
     @GetMapping("/all")
     public ResponseEntity<List<CategoryModel>> getAll() {
-        return new ResponseEntity<List<CategoryModel>>(categoryService.getAll(), HttpStatus.OK);
+        return new ResponseEntity<>(categoryService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<CategoryPage> getAll(@RequestParam(name = "startIndex") int startIndex,
                                                @RequestParam(name = "pageSize") int pageSize) {
-        return new ResponseEntity<CategoryPage>(categoryService.getAll(startIndex, pageSize), HttpStatus.OK);
+        return new ResponseEntity<>(categoryService.getAll(startIndex, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CategoryModel> getById(@PathVariable("id") Long id) {
-        return new ResponseEntity<CategoryModel>(categoryService.getById(id), HttpStatus.OK);
+        return new ResponseEntity<>(categoryService.getById(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}/cars")
     public ResponseEntity<List<CarModel>> getCarsByCategory(@PathVariable("id") Long categoryId) {
-        return new ResponseEntity<List<CarModel>>(carService.getByCategory(categoryId), HttpStatus.OK);
+        return new ResponseEntity<>(carService.getByCategory(categoryId), HttpStatus.OK);
     }
 
     @PostMapping(consumes = {"multipart/form-data", "application/json"})
     @ResponseStatus(HttpStatus.CREATED)
-    public void save(@RequestPart("properties") CategoryModel model, @RequestPart("file") MultipartFile file)
-            throws IOException {
+    public void save(@RequestPart("properties") CategoryModel model, @RequestPart("file") MultipartFile file) {
         categoryService.save(model, file);
     }
 
     @PutMapping(path = "/{id}", consumes = {"application/json", "multipart/form-data"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void edit(@PathVariable("id") Long id, @RequestPart("properties") CategoryModel model,
-                     @PathParam("file") MultipartFile file) throws IOException {
+                     @PathParam("file") MultipartFile file) {
         categoryService.edit(model, file, id);
     }
 

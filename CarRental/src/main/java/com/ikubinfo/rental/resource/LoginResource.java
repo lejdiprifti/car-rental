@@ -18,6 +18,6 @@ public class LoginResource {
 
     @PostMapping(consumes = "application/json")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
-        return new ResponseEntity<LoginResponse>(loginService.authenticate(request), HttpStatus.OK);
+        return new ResponseEntity<>(loginService.authenticate(request), HttpStatus.OK);
     }
 }

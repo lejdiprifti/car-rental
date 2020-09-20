@@ -78,13 +78,14 @@ public class UserService {
         userRepository.save(entity);
     }
 
-    public void edit(UserModel user) {
+    public void editProfile(UserModel user) {
         UserEntity loggedUser = userConverter.toEntity(getByUsername(jwtTokenUtil.getUsername()));
-        if (user.getPassword() == null) {
-            updateOtherDataExceptPassword(user, loggedUser);
-        } else {
-            updatePasswordAndOtherData(user, loggedUser);
-        }
+        updateOtherDataExceptPassword(user, loggedUser);
+    }
+
+    public void editPassword(UserModel user) {
+        UserEntity loggedUser = userConverter.toEntity(getByUsername(jwtTokenUtil.getUsername()));
+        updatePasswordAndOtherData(user, loggedUser);
     }
 
     private void updateOtherDataExceptPassword(UserModel user, UserEntity loggedUser) {

@@ -24,9 +24,13 @@ constructor(private apiService: ApiService) { }
     return this.apiService.get(this.url+'/'+id);
   }
 
-  edit(user: User):  Observable<void> {
-  return this.apiService.put(this.url, user);
-}
+  editPassword(user: User):  Observable<void> {
+  return this.apiService.put(this.url + '/update/password', user);
+  }
+
+  editProfile(user: User): Observable<void> {
+    return this.apiService.put(this.url + '/update/profile', user);
+  }
   delete(): Observable<void> {
     return this.apiService.delete(this.url);
   }

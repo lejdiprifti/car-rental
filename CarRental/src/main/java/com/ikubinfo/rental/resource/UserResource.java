@@ -20,18 +20,24 @@ public class UserResource {
     public ResponseEntity<UserPage> getAll(@RequestParam("startIndex") int startIndex,
                                            @RequestParam("pageSize") int pageSize,
                                            @RequestParam(name = "name", required = false) String name) {
-        return new ResponseEntity<UserPage>(userService.getAll(startIndex, pageSize, name), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getAll(startIndex, pageSize, name), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserModel> getById(@PathVariable("id") Long id) {
-        return new ResponseEntity<UserModel>(userService.getById(id), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
     }
 
-    @PutMapping(consumes = "application/json")
+    @PutMapping(path = "/update/profile", consumes = "application/json")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void edit(@RequestBody UserModel user) {
-        userService.edit(user);
+    public void editProfile(@RequestBody UserModel user) {
+        userService.editProfile(user);
+    }
+
+    @PutMapping(path = "/update/password", consumes = "application/json")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void editPassword(@RequestBody UserModel user) {
+        userService.editPassword(user);
     }
 
     @DeleteMapping

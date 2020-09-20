@@ -20,6 +20,6 @@ public class StatisticsResource {
 
     @GetMapping
     public ResponseEntity<StatisticsModel> getStatistics() {
-        return new ResponseEntity<StatisticsModel>(statisticsService.getStatistics(), HttpStatus.OK);
+        return new ResponseEntity<>(statisticsService.getStatistics(), HttpStatus.OK);
     }
 }

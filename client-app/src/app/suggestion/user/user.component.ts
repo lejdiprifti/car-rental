@@ -85,7 +85,7 @@ export class UserComponent implements OnInit {
       header: "Save Confirmation",
       icon: "pi pi-info-circle",
       accept: () => {
-        this.userService.edit(this.updateUser).subscribe(
+        this.userService.editPassword(this.updateUser).subscribe(
           res => {
             this.logger.success("Success", "User was updated successfully!");
           },
@@ -109,7 +109,7 @@ export class UserComponent implements OnInit {
       header: "Save Confirmation",
       icon: "pi pi-info-circle",
       accept: () => {
-        this.userService.edit(this.updateUser).subscribe(
+        this.userService.editProfile(this.updateUser).subscribe(
           res => {
             this.router.navigate(["rental/user"]);
             this.logger.success("Success", "Data saved successfully!");
