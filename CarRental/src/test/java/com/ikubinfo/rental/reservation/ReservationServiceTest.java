@@ -125,4 +125,22 @@ public class ReservationServiceTest extends SpringScenarioTest<ReservationGivenS
                 .and()
                 .there_are_exactly_$_reservations_with_end_date_$(1, END_DATE);
     }
+
+    @Test
+    public void unauthorized_user_cannot_cancel_reservation_of_another_user() {
+        given().user_reserves_car()
+                .and()
+                .user_is_logged_in_as_admin();
+        when().unauthorized_user_tries_to_cancel_reservation_of_another_user();
+        then().a_bad_request_exception_with_message_$_is_thrown(BadRequest.UNAUTHORIZED.getErrorMessage());
+    }
+
+    @Test
+    public void unauthorized_user_cannot_update_reservation_of_another_user(){
+        given().user_reserves_car()
+                .and()
+                .user_is_logged_in_as_admin();
+        when().unauthorized_user_tries_to_update_reservation_of_another_user();
+        then().a_bad_request_exception_with_message_$_is_thrown(BadRequest.UNAUTHORIZED.getErrorMessage());
+    }
 }

@@ -1,7 +1,7 @@
 package com.ikubinfo.rental.service;
 
-import com.ikubinfo.rental.exceptions.CarRentalUnauthorizedException;
-import com.ikubinfo.rental.exceptions.messages.Unauthorized;
+import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
+import com.ikubinfo.rental.exceptions.messages.BadRequest;
 import com.ikubinfo.rental.security.JwtTokenUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ public class AuthorizationService {
     public void isUserAuthorized() {
         if (((Integer) jwtTokenUtil.getRole().get("id")).intValue() != 1) {
             LOGGER.debug("User is not an admin and cannot complete the action required.");
-            throw new CarRentalUnauthorizedException(Unauthorized.USER_UNAUTHORIZED.getErrorMessage());
+            throw new CarRentalBadRequestException(BadRequest.UNAUTHORIZED.getErrorMessage());
         }
         LOGGER.debug("User is an admin and authorized to completed the action initiated.");
     }

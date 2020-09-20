@@ -9,6 +9,7 @@ import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.integration.spring.JGivenStage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 
 import java.time.LocalDateTime;
 
@@ -149,7 +150,7 @@ public class ReservationWhenStage extends Stage<ReservationWhenStage> {
         return self();
     }
 
-    public ReservationWhenStage user_tries_to_update_reservation_with_endDate_in_the_middle_of_previous_reservation() {
+    public void user_tries_to_update_reservation_with_endDate_in_the_middle_of_previous_reservation() {
         try {
             savedReservationModel.setStartDate(LocalDateTime.now().plusHours(2));
             savedReservationModel.setEndDate(LocalDateTime.now().plusDays(5));
@@ -157,10 +158,9 @@ public class ReservationWhenStage extends Stage<ReservationWhenStage> {
         } catch (CarRentalBadRequestException exception) {
             carRentalBadRequestException = exception;
         }
-        return self();
     }
 
-    public ReservationWhenStage user_tries_to_update_reservation_with_startDate_and_endDate_in_the_middle_of_previous_reservation() {
+    public void user_tries_to_update_reservation_with_startDate_and_endDate_in_the_middle_of_previous_reservation() {
         try {
             savedReservationModel.setStartDate(LocalDateTime.now().plusDays(3));
             savedReservationModel.setEndDate(LocalDateTime.now().plusDays(6));
@@ -168,10 +168,9 @@ public class ReservationWhenStage extends Stage<ReservationWhenStage> {
         } catch (CarRentalBadRequestException exception) {
             carRentalBadRequestException = exception;
         }
-        return self();
     }
 
-    public ReservationWhenStage user_tries_to_update_reservation_with_previous_reservation_dates_in_the_middle_of_the_new_dates() {
+    public void user_tries_to_update_reservation_with_previous_reservation_dates_in_the_middle_of_the_new_dates() {
         try {
             savedReservationModel.setStartDate(LocalDateTime.now().plusHours(1));
             savedReservationModel.setEndDate(LocalDateTime.now().plusDays(15));
@@ -179,10 +178,9 @@ public class ReservationWhenStage extends Stage<ReservationWhenStage> {
         } catch (CarRentalBadRequestException exception) {
             carRentalBadRequestException = exception;
         }
-        return self();
     }
 
-    public ReservationWhenStage user_tries_to_update_reservation_with_dates_after_the_previous_reservation_dates(LocalDateTime endDate) {
+    public void user_tries_to_update_reservation_with_dates_after_the_previous_reservation_dates(LocalDateTime endDate) {
         try {
             savedReservationModel.setStartDate(LocalDateTime.now().plusDays(13));
             savedReservationModel.setEndDate(endDate);
@@ -190,6 +188,22 @@ public class ReservationWhenStage extends Stage<ReservationWhenStage> {
         } catch (CarRentalBadRequestException exception) {
             carRentalBadRequestException = exception;
         }
-        return self();
+    }
+
+    public void unauthorized_user_tries_to_cancel_reservation_of_another_user() {
+        try {
+            reservationService.cancel(savedReservationModel.getId());
+        } catch (CarRentalBadRequestException exception) {
+            carRentalBadRequestException = exception;
+        }
+    }
+
+
+    public void unauthorized_user_tries_to_update_reservation_of_another_user() {
+        try {
+            reservationService.edit(createReservationModel(), savedReservationModel.getId());
+        } catch (CarRentalBadRequestException exception) {
+            carRentalBadRequestException = exception;
+        }
     }
 }

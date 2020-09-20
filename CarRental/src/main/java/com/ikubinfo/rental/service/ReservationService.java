@@ -5,10 +5,8 @@ import com.ikubinfo.rental.converter.ReservationPageConverter;
 import com.ikubinfo.rental.entity.ReservationEntity;
 import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.exceptions.CarRentalNotFoundException;
-import com.ikubinfo.rental.exceptions.CarRentalUnauthorizedException;
 import com.ikubinfo.rental.exceptions.messages.BadRequest;
 import com.ikubinfo.rental.exceptions.messages.NotFound;
-import com.ikubinfo.rental.exceptions.messages.Unauthorized;
 import com.ikubinfo.rental.model.CarModel;
 import com.ikubinfo.rental.model.Mail;
 import com.ikubinfo.rental.model.ReservationModel;
@@ -167,7 +165,7 @@ public class ReservationService {
     private void checkIfAuthorized(Long userId) {
         String reservationOwnerUsername = userService.getById(userId).getUsername();
         if (!reservationOwnerUsername.equals(jwtTokenUtil.getUsername())) {
-            throw new CarRentalUnauthorizedException(Unauthorized.USER_UNAUTHORIZED.getErrorMessage());
+            throw new CarRentalBadRequestException(BadRequest.UNAUTHORIZED.getErrorMessage());
         }
     }
 

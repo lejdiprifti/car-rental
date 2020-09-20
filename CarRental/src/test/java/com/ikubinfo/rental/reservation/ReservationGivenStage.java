@@ -78,4 +78,9 @@ public class ReservationGivenStage extends Stage<ReservationGivenStage> {
         return self();
     }
 
+    public ReservationGivenStage user_is_logged_in_as_admin() {
+        tokenCreator.createAdminToken();
+        return self();
+    }
+
 }
