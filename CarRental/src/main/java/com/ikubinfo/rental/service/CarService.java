@@ -3,8 +3,6 @@ package com.ikubinfo.rental.service;
 import com.ikubinfo.rental.converter.CarConverter;
 import com.ikubinfo.rental.entity.CarEntity;
 import com.ikubinfo.rental.entity.StatusEnum;
-import com.ikubinfo.rental.exceptions.ActiveReservationsException;
-import com.ikubinfo.rental.exceptions.CarAlreadyExistsException;
 import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.exceptions.CarRentalNotFoundException;
 import com.ikubinfo.rental.exceptions.messages.BadRequest;
@@ -167,7 +165,7 @@ public class CarService {
         carRepository.edit(entity);
     }
 
-    private void saveIfAvailable(String plate) throws CarAlreadyExistsException {
+    private void saveIfAvailable(String plate) {
         try {
             carRepository.getByPlate(plate);
             LOGGER.debug("Another car exists with the same plate.");
@@ -197,7 +195,7 @@ public class CarService {
         }
     }
 
-    private void hasActiveReservations(Long carId) throws ActiveReservationsException {
+    private void hasActiveReservations(Long carId) {
         if (reservationRepository.countActiveReservationsByCar(carId) > 0) {
             throw new CarRentalBadRequestException(BadRequest.CAR_HAS_ACTIVE_RESERVATIONS.getErrorMessage());
         }

@@ -4,8 +4,6 @@ import com.ikubinfo.rental.converter.UserConverter;
 import com.ikubinfo.rental.entity.UserEntity;
 import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.exceptions.CarRentalNotFoundException;
-import com.ikubinfo.rental.exceptions.NonValidDataException;
-import com.ikubinfo.rental.exceptions.UserAlreadyExistsException;
 import com.ikubinfo.rental.exceptions.messages.BadRequest;
 import com.ikubinfo.rental.exceptions.messages.NotFound;
 import com.ikubinfo.rental.model.ReservationModel;
@@ -121,7 +119,7 @@ public class UserService {
         }
     }
 
-    private void checkIfExists(String username) throws UserAlreadyExistsException {
+    private void checkIfExists(String username) {
         try {
             LOGGER.debug("Checking if user with username  {} already exists", username);
             userRepository.getByUsername(username);
@@ -131,7 +129,7 @@ public class UserService {
         }
     }
 
-    private void validateUserData(UserModel model) throws NonValidDataException {
+    private void validateUserData(UserModel model) {
         try {
             if (model.getFirstName().trim().length() == 0) {
                 throw new CarRentalBadRequestException(BadRequest.FIRSTNAME_REQUIRED.getErrorMessage());

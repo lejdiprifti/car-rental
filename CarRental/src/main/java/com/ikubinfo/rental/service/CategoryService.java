@@ -4,7 +4,6 @@ import com.ikubinfo.rental.converter.CategoryConverter;
 import com.ikubinfo.rental.entity.CategoryEntity;
 import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.exceptions.CarRentalNotFoundException;
-import com.ikubinfo.rental.exceptions.CategoryAlreadyExistsException;
 import com.ikubinfo.rental.exceptions.messages.BadRequest;
 import com.ikubinfo.rental.exceptions.messages.NotFound;
 import com.ikubinfo.rental.model.CategoryModel;
@@ -14,10 +13,8 @@ import com.ikubinfo.rental.repository.CategoryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.NoResultException;
 import java.io.IOException;
@@ -75,7 +72,7 @@ public class CategoryService {
         }
     }
 
-    private void checkIfSaveIsAvailable(String name) throws CategoryAlreadyExistsException {
+    private void checkIfSaveIsAvailable(String name) {
         try {
             catRepository.getByName(name);
             throw new CarRentalBadRequestException(BadRequest.CATEGORY_ALREADY_EXISTS.getErrorMessage());
@@ -102,7 +99,7 @@ public class CategoryService {
         }
     }
 
-    private void checkIfUpdateIsAvailable(String name, Long id) throws CategoryAlreadyExistsException {
+    private void checkIfUpdateIsAvailable(String name, Long id) {
         try {
             catRepository.checkIfExistsAnother(name, id);
             throw new CarRentalBadRequestException(BadRequest.CATEGORY_ALREADY_EXISTS.getErrorMessage());
