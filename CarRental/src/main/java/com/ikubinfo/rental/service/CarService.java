@@ -2,7 +2,7 @@ package com.ikubinfo.rental.service;
 
 import com.ikubinfo.rental.converter.CarConverter;
 import com.ikubinfo.rental.entity.CarEntity;
-import com.ikubinfo.rental.entity.StatusEnum;
+import com.ikubinfo.rental.model.enums.StatusEnum;
 import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.exceptions.CarRentalNotFoundException;
 import com.ikubinfo.rental.exceptions.messages.BadRequest;

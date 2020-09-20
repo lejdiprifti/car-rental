@@ -11,15 +11,12 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.ikubinfo.rental.model.enums.StatusEnum;
+import lombok.Data;
 
 @Entity
 @Table(name = "car", schema = "rental")
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 public class CarEntity {
 
     @Id

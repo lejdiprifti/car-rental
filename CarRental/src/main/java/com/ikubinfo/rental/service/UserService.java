@@ -83,7 +83,8 @@ public class UserService {
 
     public void editPassword(UserModel user) {
         UserEntity loggedUser = userConverter.toEntity(getByUsername(jwtTokenUtil.getUsername()));
-        updatePasswordAndOtherData(user, loggedUser);
+        loggedUser.setPassword(passwordEncoder.encode(user.getPassword().trim()));
+        userRepository.edit(loggedUser);
     }
 
     private void updateOtherDataExceptPassword(UserModel user, UserEntity loggedUser) {
@@ -95,12 +96,6 @@ public class UserService {
         entity.setRoleId(2);
         entity.setUsername(loggedUser.getUsername());
         userRepository.edit(entity);
-    }
-
-    private void updatePasswordAndOtherData(UserModel user, UserEntity loggedUser) {
-        loggedUser.setPassword(passwordEncoder.encode(user.getPassword().trim()));
-        updateOtherDataExceptPassword(user, loggedUser);
-        userRepository.edit(loggedUser);
     }
 
     public void delete() {

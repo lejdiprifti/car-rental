@@ -1,4 +1,4 @@
-package com.ikubinfo.rental.entity;
+package com.ikubinfo.rental.model.enums;
 
 public enum StatusEnum {
 	AVAILABLE,

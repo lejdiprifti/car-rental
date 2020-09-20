@@ -1,7 +1,7 @@
 package com.ikubinfo.rental.converter;
 
 import com.ikubinfo.rental.entity.CarEntity;
-import com.ikubinfo.rental.entity.StatusEnum;
+import com.ikubinfo.rental.model.enums.StatusEnum;
 import com.ikubinfo.rental.model.CarModel;
 import com.ikubinfo.rental.model.CategoryModel;
 import org.modelmapper.ModelMapper;

@@ -1,16 +1,12 @@
 package com.ikubinfo.rental.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 public class StatisticsModel {
-	
-	private Long availableCars;
-	private Long rentedCars;
-	private Long activeUsers;
-	private Long newBookings;
+
+    private Long availableCars;
+    private Long rentedCars;
+    private Long activeUsers;
+    private Long newBookings;
 }

@@ -26,7 +26,7 @@ public class UserWhenStage extends Stage<UserWhenStage> {
     public UserWhenStage user_tries_to_update_his_profile_with_new_username_$(String username) {
         UserModel userModel = createUserModel();
         userModel.setUsername(username);
-        userService.edit(userModel);
+        userService.editProfile(userModel);
         return self();
     }
 
@@ -56,7 +56,7 @@ public class UserWhenStage extends Stage<UserWhenStage> {
         UserModel userModel = createUserModel();
         userModel.setId(USER_ID);
         userModel.setPassword(updatedPassword);
-        userService.edit(userModel);
+        userService.editPassword(userModel);
     }
 
     public void user_tries_to_update_his_last_name(String updatedLastName) {
@@ -64,6 +64,6 @@ public class UserWhenStage extends Stage<UserWhenStage> {
         userModel.setPassword(null);
         userModel.setId(USER_ID);
         userModel.setLastName(updatedLastName);
-        userService.edit(userModel);
+        userService.editProfile(userModel);
     }
 }

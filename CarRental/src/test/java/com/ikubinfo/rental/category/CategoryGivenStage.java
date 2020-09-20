@@ -1,7 +1,6 @@
 package com.ikubinfo.rental.category;
 
-import com.ikubinfo.rental.car.CarGivenStage;
-import com.ikubinfo.rental.entity.StatusEnum;
+import com.ikubinfo.rental.model.enums.StatusEnum;
 import com.ikubinfo.rental.model.CarModel;
 import com.ikubinfo.rental.model.CategoryModel;
 import com.ikubinfo.rental.service.CarService;

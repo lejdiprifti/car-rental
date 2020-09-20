@@ -1,15 +1,11 @@
 package com.ikubinfo.rental.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 public class LoginResponse {
-	
-	private String jwt;
-	private UserModel user;
-	
+
+    private String jwt;
+    private UserModel user;
+
 }

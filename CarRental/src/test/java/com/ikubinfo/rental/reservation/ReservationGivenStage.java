@@ -1,6 +1,6 @@
 package com.ikubinfo.rental.reservation;
 
-import com.ikubinfo.rental.entity.StatusEnum;
+import com.ikubinfo.rental.model.enums.StatusEnum;
 import com.ikubinfo.rental.model.CarModel;
 import com.ikubinfo.rental.model.CategoryModel;
 import com.ikubinfo.rental.model.ReservationModel;

@@ -1,16 +1,12 @@
 package com.ikubinfo.rental.model;
 
+import lombok.Data;
+
 import java.util.List;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 public class ReservationPage {
-	
-	private Long totalRecords;
-	private List<ReservationModel> reservationList;
+
+    private Long totalRecords;
+    private List<ReservationModel> reservationList;
 }

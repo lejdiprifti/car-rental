@@ -6,9 +6,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "category", schema = "rental")
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 public class CategoryEntity {
 
 	@Id

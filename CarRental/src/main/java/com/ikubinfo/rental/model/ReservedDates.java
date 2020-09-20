@@ -1,17 +1,13 @@
 package com.ikubinfo.rental.model;
 
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 public class ReservedDates {
-	
-	private LocalDateTime startDate;
-	private LocalDateTime endDate;
-	
+
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+
 }

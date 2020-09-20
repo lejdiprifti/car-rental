@@ -1,7 +1,7 @@
 package com.ikubinfo.rental.repository;
 
 import com.ikubinfo.rental.entity.CarEntity;
-import com.ikubinfo.rental.entity.StatusEnum;
+import com.ikubinfo.rental.model.enums.StatusEnum;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

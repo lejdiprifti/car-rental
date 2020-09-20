@@ -1,6 +1,6 @@
 package com.ikubinfo.rental.car.util;
 
-import com.ikubinfo.rental.entity.StatusEnum;
+import com.ikubinfo.rental.model.enums.StatusEnum;
 import com.ikubinfo.rental.model.CarModel;
 
 public class CarUtils {

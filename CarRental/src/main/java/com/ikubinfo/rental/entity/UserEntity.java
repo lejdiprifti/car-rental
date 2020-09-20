@@ -12,15 +12,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "user", schema = "rental")
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 public class UserEntity {
 
 	@Id
