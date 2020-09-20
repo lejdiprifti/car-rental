@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.ikubinfo.rental.resource.utils.ApiConstants.CLIENT_APP;
+import static com.ikubinfo.rental.resource.utils.ApiConstants.STATISTICS_PATH;
+
 @RestController
-@RequestMapping(path = "/statistics", produces = "application/json")
-@CrossOrigin("http://localhost:4200")
+@RequestMapping(path = STATISTICS_PATH, produces = "application/json")
+@CrossOrigin(CLIENT_APP)
 public class StatisticsResource {
 
     @Autowired

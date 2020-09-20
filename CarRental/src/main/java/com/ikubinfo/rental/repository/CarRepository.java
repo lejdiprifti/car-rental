@@ -165,7 +165,7 @@ public class CarRepository {
 
     public void checkIfExistsAnother(String plate, Long id) throws NoResultException {
         TypedQuery<String> query = em.createQuery(
-                "Select c.plate from CarEntity c where c.plate = ?1 and c.id != ?2 and c.active = ?3", String.class);
+                "Select c.plate from CarEntity c where c.plate = ?1 and c.id <> ?2 and c.active = ?3", String.class);
         query.setParameter(1, plate);
         query.setParameter(2, id);
         query.setParameter(3, true);

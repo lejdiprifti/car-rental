@@ -15,9 +15,12 @@ import javax.websocket.server.PathParam;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.ikubinfo.rental.resource.utils.ApiConstants.CARS_PATH;
+import static com.ikubinfo.rental.resource.utils.ApiConstants.CLIENT_APP;
+
 @RestController
-@RequestMapping(path = "/cars", produces = "application/json")
-@CrossOrigin("http://localhost:4200")
+@RequestMapping(path = CARS_PATH, produces = "application/json")
+@CrossOrigin(CLIENT_APP)
 public class CarResource {
 
     @Autowired

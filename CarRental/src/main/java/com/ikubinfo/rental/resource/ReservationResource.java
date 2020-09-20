@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.ikubinfo.rental.resource.utils.ApiConstants.CLIENT_APP;
+import static com.ikubinfo.rental.resource.utils.ApiConstants.RESERVATION_PATH;
+
 @RestController
-@RequestMapping(path = "/reservations", produces = "application/json")
-@CrossOrigin("http://localhost:4200")
+@RequestMapping(path = RESERVATION_PATH, produces = "application/json")
+@CrossOrigin(CLIENT_APP)
 public class ReservationResource {
 
     @Autowired

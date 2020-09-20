@@ -8,9 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.ikubinfo.rental.resource.utils.ApiConstants.CLIENT_APP;
+import static com.ikubinfo.rental.resource.utils.ApiConstants.USER_PATH;
+
 @RestController
-@RequestMapping(path = "/user", produces = "application/json")
-@CrossOrigin("http://localhost:4200")
+@RequestMapping(path = USER_PATH, produces = "application/json")
+@CrossOrigin(CLIENT_APP)
 public class UserResource {
 
     @Autowired

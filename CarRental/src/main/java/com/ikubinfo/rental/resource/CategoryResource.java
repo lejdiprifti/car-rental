@@ -14,9 +14,11 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.websocket.server.PathParam;
 import java.util.List;
 
+import static com.ikubinfo.rental.resource.utils.ApiConstants.*;
+
 @RestController
-@RequestMapping(path = "/category", produces = "application/json")
-@CrossOrigin("http://localhost:4200")
+@RequestMapping(path = CATEGORY_PATH, produces = "application/json")
+@CrossOrigin(CLIENT_APP)
 public class CategoryResource {
 
     @Autowired
