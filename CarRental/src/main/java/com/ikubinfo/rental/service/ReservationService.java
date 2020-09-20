@@ -5,14 +5,15 @@ import com.ikubinfo.rental.converter.ReservationPageConverter;
 import com.ikubinfo.rental.entity.ReservationEntity;
 import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.exceptions.CarRentalNotFoundException;
+import com.ikubinfo.rental.exceptions.CarRentalUnauthorizedException;
 import com.ikubinfo.rental.exceptions.messages.BadRequest;
 import com.ikubinfo.rental.exceptions.messages.NotFound;
+import com.ikubinfo.rental.exceptions.messages.Unauthorized;
 import com.ikubinfo.rental.model.CarModel;
 import com.ikubinfo.rental.model.Mail;
 import com.ikubinfo.rental.model.ReservationModel;
 import com.ikubinfo.rental.model.ReservationPage;
 import com.ikubinfo.rental.repository.ReservationRepository;
-import com.ikubinfo.rental.repository.UserRepository;
 import com.ikubinfo.rental.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -118,8 +119,9 @@ public class ReservationService {
     }
 
     public void edit(ReservationModel model, Long id) {
-        checkDates(model.getStartDate(), model.getEndDate());
         ReservationEntity entity = reservationConverter.toEntity(getById(id));
+        checkIfAuthorized(entity.getUserId());
+        checkDates(model.getStartDate(), model.getEndDate());
         checkIfUpdateIsAvailable(entity.getCarId(), model.getStartDate(), model.getEndDate(),
                 entity.getId());
         entity.setCreated_at(Calendar.getInstance());
@@ -137,6 +139,7 @@ public class ReservationService {
 
     public void cancel(Long id) {
         ReservationEntity entity = reservationConverter.toEntity(getById(id));
+        checkIfAuthorized(entity.getUserId());
         entity.setActive(false);
         reservationRepository.edit(entity);
     }
@@ -158,6 +161,13 @@ public class ReservationService {
     private void checkDates(LocalDateTime startDate, LocalDateTime endDate) {
         if (startDate.isBefore(LocalDateTime.now()) || endDate.isBefore(startDate)) {
             throw new CarRentalBadRequestException(BadRequest.INVALID_DATES.getErrorMessage());
+        }
+    }
+
+    private void checkIfAuthorized(Long userId) {
+        String reservationOwnerUsername = userService.getById(userId).getUsername();
+        if (!reservationOwnerUsername.equals(jwtTokenUtil.getUsername())) {
+            throw new CarRentalUnauthorizedException(Unauthorized.USER_UNAUTHORIZED.getErrorMessage());
         }
     }
 

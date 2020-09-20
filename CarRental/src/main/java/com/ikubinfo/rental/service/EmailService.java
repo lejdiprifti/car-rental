@@ -63,7 +63,7 @@ public class EmailService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         mail.setFrom("ikubinfo.car.rentals@gmail.com");
         Map<String, Object> content = new HashMap<>();
-        UserModel user = userService.getById(reservation.getUser().getId());
+        UserModel user = userService.getById(reservation.getUserId());
         CarModel car = carService.getById(reservation.getCarId());
         content.put("name", user.getFirstName() + ' ' + user.getLastName());
         content.put("carName", car.getName());

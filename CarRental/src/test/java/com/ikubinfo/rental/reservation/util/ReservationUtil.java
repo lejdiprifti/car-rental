@@ -4,11 +4,14 @@ import com.ikubinfo.rental.model.ReservationModel;
 import com.ikubinfo.rental.model.UserModel;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class ReservationUtil {
 
-    private ReservationUtil() {}
+    public static final LocalDateTime START_DATE = LocalDateTime.now().plusDays(2);
+    public static final LocalDateTime END_DATE = LocalDateTime.now().plusDays(15);
+
+    private ReservationUtil() {
+    }
 
     public static ReservationModel createReservationModel() {
         ReservationModel reservationModel = new ReservationModel();
@@ -16,10 +19,6 @@ public class ReservationUtil {
         reservationModel.setEndDate(LocalDateTime.now().plusDays(10));
         reservationModel.setFee(200);
         reservationModel.setActive(true);
-
-        UserModel userModel = new UserModel();
-        userModel.setId(1L);
-        reservationModel.setUser(userModel);
         return reservationModel;
     }
 }

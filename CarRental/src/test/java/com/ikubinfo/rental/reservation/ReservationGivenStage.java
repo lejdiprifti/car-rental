@@ -13,6 +13,8 @@ import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.integration.spring.JGivenStage;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDateTime;
+
 import static com.ikubinfo.rental.car.util.CarUtils.createCarModelWithStatus;
 import static com.ikubinfo.rental.category.util.CategoryUtil.createCategoryModel;
 import static com.ikubinfo.rental.reservation.util.ReservationUtil.createReservationModel;
@@ -64,6 +66,16 @@ public class ReservationGivenStage extends Stage<ReservationGivenStage> {
 
     private CategoryModel addCategory() {
         return categoryService.save(createCategoryModel(), createMultipartFile());
+    }
+
+    public ReservationGivenStage user_has_made_two_reservations() {
+        user_reserves_car();
+        ReservationModel reservationModel = createReservationModel();
+        reservationModel.setStartDate(LocalDateTime.now().plusDays(11));
+        reservationModel.setEndDate(LocalDateTime.now().plusDays(12));
+        reservationModel.setCarId(savedCarModel.getId());
+        savedReservationModel = reservationService.save(reservationModel);
+        return self();
     }
 
 }

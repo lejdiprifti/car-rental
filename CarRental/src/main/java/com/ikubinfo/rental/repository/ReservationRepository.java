@@ -98,7 +98,7 @@ public class ReservationRepository {
     public Long updateIfAvailable(Long carId, LocalDateTime startDate, LocalDateTime endDate, Long id) {
         TypedQuery<Long> query = em.createQuery(
                 "Select COUNT(r.id) from ReservationEntity r where r.car.id = ?1 and ((r.startDate >= ?2 and r.endDate >= ?3 and r.startDate <= ?3) or (r.startDate >= ?2 and r.endDate <= ?3)"
-                        + "or (r.startDate <= ?2 and r.endDate >= ?2 and r.endDate <= ?3)) and r.active= ?4 and r.id <> ?5",
+                        + "or (r.startDate <= ?2 and r.endDate >= ?2 and r.endDate <= ?3) or (r.startDate <= ?2 and r.endDate >= ?3)) and r.active= ?4 and r.id <> ?5",
                 Long.class);
         query.setParameter(1, carId);
         query.setParameter(2, startDate);

@@ -8,6 +8,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static com.ikubinfo.rental.reservation.util.ReservationUtil.END_DATE;
+import static com.ikubinfo.rental.reservation.util.ReservationUtil.START_DATE;
+
 @CarRentalTest
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ReservationServiceTest extends SpringScenarioTest<ReservationGivenStage, ReservationWhenStage, ReservationThenStage> {
@@ -31,8 +34,8 @@ public class ReservationServiceTest extends SpringScenarioTest<ReservationGivenS
     @Test
     public void user_updates_reservation_successfully() {
         given().user_reserves_car();
-        when().user_tries_to_update_reservation();
-        then().there_are_exactly_$_reservations_with_start_date_$(1, "2020-01-01 01:01");
+        when().user_tries_to_update_reservation_with_startDate(START_DATE);
+        then().there_are_exactly_$_reservations_with_start_date_$(1, START_DATE);
     }
 
     @Test
@@ -45,7 +48,7 @@ public class ReservationServiceTest extends SpringScenarioTest<ReservationGivenS
     }
 
     @Test
-    public void user_cannot_reserve_car_with_startDate_in_the_middle_of_previous_reservation(){
+    public void user_cannot_reserve_car_with_startDate_in_the_middle_of_previous_reservation() {
         given().user_reserves_car();
         when().user_tries_to_reserve_car_with_startDate_in_the_middle_of_previous_reservation();
         then().a_bad_request_exception_with_message_$_is_thrown(BadRequest.CAR_RESERVED.getErrorMessage());
@@ -66,9 +69,60 @@ public class ReservationServiceTest extends SpringScenarioTest<ReservationGivenS
     }
 
     @Test
+    public void user_cannot_reserve_car_with_previous_reservation_dates_in_the_middle_of_the_new_dates() {
+        given().user_reserves_car();
+        when().user_tries_to_reserve_car_with_previous_reservation_dates_in_the_middle_of_the_new_dates();
+        then().a_bad_request_exception_with_message_$_is_thrown(BadRequest.CAR_RESERVED.getErrorMessage());
+    }
+
+    @Test
     public void user_reserves_car_with_startDate_and_endDate_after_the_previous_reservation() {
         given().user_reserves_car();
-        when().user_tries_To_reserve_car_with_startDate_and_endDate_after_the_previous_reservation();
+        when().user_tries_to_reserve_car_with_startDate_and_endDate_after_the_previous_reservation();
         then().there_are_exactly_$_reservations_of_user_$(2, FakeUsers.USER.username);
+    }
+
+    @Test
+    public void user_cannot_update_reservation_with_invalid_dates() {
+        given().user_reserves_car();
+        when().user_tries_to_update_reservation_with_invalid_dates();
+        then().a_bad_request_exception_with_message_$_is_thrown(BadRequest.INVALID_DATES.getErrorMessage());
+    }
+
+    @Test
+    public void user_cannot_update_reservation_with_startDate_in_the_middle_of_previous_reservation() {
+        given().user_has_made_two_reservations();
+        when().user_tries_to_update_reservation_with_startDate_in_the_middle_of_previous_reservation();
+        then().a_bad_request_exception_with_message_$_is_thrown(BadRequest.CAR_RESERVED.getErrorMessage());
+    }
+
+    @Test
+    public void user_cannot_update_reservation_with_endDate_in_the_middle_of_previous_reservation() {
+        given().user_has_made_two_reservations();
+        when().user_tries_to_update_reservation_with_endDate_in_the_middle_of_previous_reservation();
+        then().a_bad_request_exception_with_message_$_is_thrown(BadRequest.CAR_RESERVED.getErrorMessage());
+    }
+
+    @Test
+    public void user_cannot_update_reservation_with_startDate_and_endDate_in_the_middle_of_previous_reservation() {
+        given().user_has_made_two_reservations();
+        when().user_tries_to_update_reservation_with_startDate_and_endDate_in_the_middle_of_previous_reservation();
+        then().a_bad_request_exception_with_message_$_is_thrown(BadRequest.CAR_RESERVED.getErrorMessage());
+    }
+
+    @Test
+    public void user_cannot_update_reservation_with_previous_reservation_dates_in_the_middle_of_the_new_dates() {
+        given().user_has_made_two_reservations();
+        when().user_tries_to_update_reservation_with_previous_reservation_dates_in_the_middle_of_the_new_dates();
+        then().a_bad_request_exception_with_message_$_is_thrown(BadRequest.CAR_RESERVED.getErrorMessage());
+    }
+
+    @Test
+    public void user_updates_reservation_with_dates_after_the_previous_reservation_dates() {
+        given().user_has_made_two_reservations();
+        when().user_tries_to_update_reservation_with_dates_after_the_previous_reservation_dates(END_DATE);
+        then().there_are_exactly_$_reservations_of_user_$(2, FakeUsers.USER.username)
+                .and()
+                .there_are_exactly_$_reservations_with_end_date_$(1, END_DATE);
     }
 }

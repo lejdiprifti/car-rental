@@ -15,6 +15,7 @@ public class ReservationModel {
 	private Long id;
 	private UserModel user;
 	private CarModel car;
+	private Long userId;
 	private Long carId;
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;

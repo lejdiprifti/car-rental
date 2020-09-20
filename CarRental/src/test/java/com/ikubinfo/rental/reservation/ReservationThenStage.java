@@ -31,8 +31,8 @@ public class ReservationThenStage extends Stage<ReservationThenStage> {
     private CarRentalNotFoundException carRentalNotFoundException;
 
     public ReservationThenStage there_are_exactly_$_reservations_of_user_$(int numberOfReservations, String username) {
-        int actualNumberOfReservations = getActiveReservationsByUser(username).size();
-        assertEquals("Number of reservations is", numberOfReservations, actualNumberOfReservations);
+        List<ReservationEntity> reservationEntities = getActiveReservationsByUser(username);
+        assertEquals("Number of reservations is", numberOfReservations, reservationEntities.size());
         return self();
     }
 
@@ -42,15 +42,27 @@ public class ReservationThenStage extends Stage<ReservationThenStage> {
         return query.getResultList();
     }
 
-    public ReservationThenStage there_are_exactly_$_reservations_with_start_date_$(int numberOfReservations, String startDate) {
+    public ReservationThenStage there_are_exactly_$_reservations_with_start_date_$(int numberOfReservations, LocalDateTime startDate) {
         int actualNumberOfReservations = getActiveReservationsByStartDate(startDate).size();
         assertEquals("Number of reservations is", numberOfReservations, actualNumberOfReservations);
         return self();
     }
 
-    private List<ReservationEntity> getActiveReservationsByStartDate(String startDate) {
+    public ReservationThenStage there_are_exactly_$_reservations_with_end_date_$(int numberOfReservations, LocalDateTime endDate) {
+        int actualNumberOfReservations = getActiveReservationsByEndDate(endDate).size();
+        assertEquals("Number of reservations is", numberOfReservations, actualNumberOfReservations);
+        return self();
+    }
+
+    private List<ReservationEntity> getActiveReservationsByStartDate(LocalDateTime startDate) {
         TypedQuery<ReservationEntity> query = entityManager.createQuery("Select r from ReservationEntity r where r.active = true and r.startDate = ?1", ReservationEntity.class);
-        query.setParameter(1, LocalDateTime.parse(startDate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        query.setParameter(1, startDate);
+        return query.getResultList();
+    }
+
+    private List<ReservationEntity> getActiveReservationsByEndDate(LocalDateTime endDate) {
+        TypedQuery<ReservationEntity> query = entityManager.createQuery("Select r from ReservationEntity r where r.active = true and r.endDate = ?1", ReservationEntity.class);
+        query.setParameter(1, endDate);
         return query.getResultList();
     }
 
