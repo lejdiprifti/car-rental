@@ -1,6 +1,5 @@
 package com.ikubinfo.rental;
 
-import com.tngtech.jgiven.annotation.JGivenConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.test.context.ActiveProfiles;
@@ -15,8 +14,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @SpringBootTest
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 @ContextConfiguration(classes = JGivenTestConfiguration.class)
 @Transactional
 public @interface CarRentalTest {
+    @AliasFor(annotation = ActiveProfiles.class, attribute = "profiles")
+    String[] activeProfiles() default {"test"};
 }

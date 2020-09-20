@@ -1,22 +1,18 @@
-package com.ikubinfo.rental.service;
+package com.ikubinfo.rental.service.email;
 
-import com.ikubinfo.rental.entity.CarEntity;
 import com.ikubinfo.rental.entity.ReservationEntity;
-import com.ikubinfo.rental.entity.UserEntity;
 import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.exceptions.messages.BadRequest;
 import com.ikubinfo.rental.model.CarModel;
 import com.ikubinfo.rental.model.Mail;
 import com.ikubinfo.rental.model.UserModel;
-import com.ikubinfo.rental.repository.CarRepository;
-import com.ikubinfo.rental.repository.UserRepository;
-import org.apache.logging.log4j.LogManager;
+import com.ikubinfo.rental.service.CarService;
+import com.ikubinfo.rental.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.InputStreamSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -25,14 +21,16 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.swing.*;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class EmailService {
+@Profile("!test")
+public class ProductionEmailService implements EmailService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductionEmailService.class);
     @Autowired
     private JavaMailSender mailSender;
 
@@ -45,20 +43,14 @@ public class EmailService {
     @Autowired
     private CarService carService;
 
-    public void sendConfirmationMail(Mail mail, CarModel car) {
-        try {
-			LOGGER.debug("TRYING TO SEND MAIL");
-            MimeMessage message = prepareMail(mail, "mailTemplate");
-            MimeMessageHelper messageHelper = new MimeMessageHelper(message, true);
-			final InputStreamSource imageSource = new ByteArrayResource(car.getPhoto());
-			messageHelper.addInline("imageResourceName", imageSource, "image/jpg");
-            mailSender.send(message);
-        } catch (MessagingException e) {
-            throw new CarRentalBadRequestException(BadRequest.EMAIL_SENDING_FAILED.getErrorMessage());
-        }
+    @Override
+    public void sendConfirmationMail(ReservationEntity reservationEntity, double fee, CarModel car) {
+        LOGGER.debug("TRYING TO SEND MAIL");
+        MimeMessage message = prepareMail(setMailProperties(reservationEntity, fee), "mailTemplate");
+        mailSender.send(message);
     }
 
-    public Mail setMailProperties(ReservationEntity reservation, double fee) {
+    private Mail setMailProperties(ReservationEntity reservation, double fee) {
         Mail mail = new Mail();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         mail.setFrom("ikubinfo.car.rentals@gmail.com");
@@ -80,8 +72,13 @@ public class EmailService {
         return mail;
     }
 
+    @Override
+    public void sendCancelMail(ReservationEntity reservationEntity) {
+        MimeMessage message = prepareMail(setCancelMailProperties(reservationEntity), "cancelMail");
+        mailSender.send(message);
+    }
 
-    public Mail setCancelMailProperties(ReservationEntity reservation) {
+    private Mail setCancelMailProperties(ReservationEntity reservation) {
         Mail mail = new Mail();
         mail.setFrom("ikubinfo.car.rentals@gmail.com");
         Map<String, Object> content = new HashMap<>();
@@ -99,11 +96,6 @@ public class EmailService {
         return mail;
     }
 
-    public void sendCancelMail(Mail mail) {
-        MimeMessage message = prepareMail(mail, "cancelMail");
-        mailSender.send(message);
-    }
-
     private MimeMessage prepareMail(Mail mail, String templateName) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
@@ -112,11 +104,11 @@ public class EmailService {
             context.setVariables(mail.getContent());
             String html = springTemplateEngine.process(templateName, context);
             messageHelper.setText(html, true);
-            messageHelper.addAttachment("logo.png", new ClassPathResource("car-rentals.png"), "image/png");
+            messageHelper.addAttachment("logo.png", new ClassPathResource("static/img/car-rentals.png"), "image/png");
             messageHelper.setFrom("ikubinfo.car.rentals@gmail.com");
             messageHelper.setTo(mail.getTo());
             messageHelper.setSubject(mail.getSubject());
-			return message;
+            return message;
         } catch (MessagingException e) {
             throw new CarRentalBadRequestException(BadRequest.EMAIL_SENDING_FAILED.getErrorMessage());
         }

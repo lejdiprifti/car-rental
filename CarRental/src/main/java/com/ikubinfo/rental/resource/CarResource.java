@@ -1,8 +1,10 @@
 package com.ikubinfo.rental.resource;
 
+import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.model.CarModel;
 import com.ikubinfo.rental.model.CarsPage;
 import com.ikubinfo.rental.model.ReservationModel;
+import com.ikubinfo.rental.service.AuthorizationService;
 import com.ikubinfo.rental.service.CarService;
 import com.ikubinfo.rental.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ public class CarResource {
     @Autowired
     private ReservationService reservationService;
 
+    @Autowired
+    private AuthorizationService authorizationService;
+
     @GetMapping
     public ResponseEntity<CarsPage> getAll(@RequestParam("startIndex") int startIndex,
                                            @RequestParam("pageSize") int pageSize,
@@ -37,7 +42,12 @@ public class CarResource {
                                            @RequestParam(name = "endDate", required = false) String endDate,
                                            @RequestParam(name = "brand", required = false) String brand
     ) {
-        return new ResponseEntity<>(carService.getAllCars(startIndex, pageSize, selectedCategoryIds, startDate, endDate, brand), HttpStatus.OK);
+        try {
+            authorizationService.isUserAuthorized();
+            return new ResponseEntity<>(carService.getAllCars(startIndex, pageSize, selectedCategoryIds, startDate, endDate, brand), HttpStatus.OK);
+        } catch (CarRentalBadRequestException exception) {
+            return new ResponseEntity<>(carService.getAllAvailableCars(startIndex, pageSize, selectedCategoryIds, startDate, endDate, brand), HttpStatus.OK);
+        }
     }
 
     @GetMapping("/{id}")

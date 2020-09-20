@@ -2,7 +2,6 @@ package com.ikubinfo.rental.service;
 
 import com.ikubinfo.rental.converter.CarConverter;
 import com.ikubinfo.rental.entity.CarEntity;
-import com.ikubinfo.rental.model.enums.StatusEnum;
 import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.exceptions.CarRentalNotFoundException;
 import com.ikubinfo.rental.exceptions.messages.BadRequest;
@@ -10,6 +9,7 @@ import com.ikubinfo.rental.exceptions.messages.NotFound;
 import com.ikubinfo.rental.model.CarModel;
 import com.ikubinfo.rental.model.CarsPage;
 import com.ikubinfo.rental.model.ReservedDates;
+import com.ikubinfo.rental.model.enums.StatusEnum;
 import com.ikubinfo.rental.repository.CarRepository;
 import com.ikubinfo.rental.repository.ReservationRepository;
 import org.slf4j.Logger;
@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.NoResultException;
 import java.io.IOException;
@@ -50,21 +49,28 @@ public class CarService {
             brand = "";
         }
         CarsPage carPage = new CarsPage();
-        try {
-            authorizationService.isUserAuthorized();
-            carPage.setCarsList(getAll(startIndex, pageSize, selectedCategoryIds, startDate2, endDate2, brand));
-            carPage.setTotalRecords(carRepository.countAllCars(selectedCategoryIds, startDate2, endDate2, brand));
-
-        } catch (ResponseStatusException e) {
-            carPage.setCarsList(
-                    getAllAvailable(startIndex, pageSize, selectedCategoryIds, startDate2, endDate2, brand));
-            carPage.setTotalRecords(carRepository.countAvailableCars(selectedCategoryIds, startDate2, endDate2, brand));
-        }
+        authorizationService.isUserAuthorized();
+        carPage.setCarsList(getAll(startIndex, pageSize, selectedCategoryIds, startDate2, endDate2, brand));
+        carPage.setTotalRecords(carRepository.countAllCars(selectedCategoryIds, startDate2, endDate2, brand));
         return carPage;
     }
 
-    public List<CarModel> getAll(int startIndex, int pageSize, List<Long> selectedCategoryIds, LocalDateTime startDate,
-                                 LocalDateTime endDate, String brand) {
+    public CarsPage getAllAvailableCars(int startIndex, int pageSize, List<Long> selectedCategoryIds, String startDate,
+                                        String endDate, String brand) {
+        LocalDateTime startDate2 = getFilterData(startDate, endDate).get("startDate");
+        LocalDateTime endDate2 = getFilterData(startDate, endDate).get("endDate");
+        if (brand == null) {
+            brand = "";
+        }
+        CarsPage carPage = new CarsPage();
+        carPage.setCarsList(
+                getAllAvailable(startIndex, pageSize, selectedCategoryIds, startDate2, endDate2, brand));
+        carPage.setTotalRecords(carRepository.countAvailableCars(selectedCategoryIds, startDate2, endDate2, brand));
+        return carPage;
+    }
+
+    private List<CarModel> getAll(int startIndex, int pageSize, List<Long> selectedCategoryIds, LocalDateTime startDate,
+                                  LocalDateTime endDate, String brand) {
         List<CarModel> modelList = carConverter.toModelObject(
                 carRepository.getAll(startIndex, pageSize, selectedCategoryIds, startDate, endDate, brand));
         for (CarModel car : modelList) {
@@ -73,8 +79,8 @@ public class CarService {
         return modelList;
     }
 
-    public List<CarModel> getAllAvailable(int startIndex, int pageSize, List<Long> selectedCategoryIds,
-                                          LocalDateTime startDate, LocalDateTime endDate, String brand) {
+    private List<CarModel> getAllAvailable(int startIndex, int pageSize, List<Long> selectedCategoryIds,
+                                           LocalDateTime startDate, LocalDateTime endDate, String brand) {
         List<CarModel> modelList = carConverter.toModelObject(
                 carRepository.getAllAvailable(startIndex, pageSize, selectedCategoryIds, startDate, endDate, brand));
         for (CarModel car : modelList) {

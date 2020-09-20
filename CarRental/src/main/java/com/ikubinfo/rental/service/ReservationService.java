@@ -8,11 +8,11 @@ import com.ikubinfo.rental.exceptions.CarRentalNotFoundException;
 import com.ikubinfo.rental.exceptions.messages.BadRequest;
 import com.ikubinfo.rental.exceptions.messages.NotFound;
 import com.ikubinfo.rental.model.CarModel;
-import com.ikubinfo.rental.model.Mail;
 import com.ikubinfo.rental.model.ReservationModel;
 import com.ikubinfo.rental.model.ReservationPage;
 import com.ikubinfo.rental.repository.ReservationRepository;
 import com.ikubinfo.rental.security.JwtTokenUtil;
+import com.ikubinfo.rental.service.email.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -130,9 +130,8 @@ public class ReservationService {
     }
 
     private void sendNotificationMail(ReservationEntity reservationEntity, double fee) {
-        Mail mail = emailService.setMailProperties(reservationEntity, fee);
         CarModel carModel = carService.getById(reservationEntity.getCarId());
-        emailService.sendConfirmationMail(mail, carModel);
+        emailService.sendConfirmationMail(reservationEntity, fee, carModel);
     }
 
     public void cancel(Long id) {
@@ -181,7 +180,7 @@ public class ReservationService {
         for (ReservationEntity entity : reservationList) {
             entity.setActive(false);
             reservationRepository.edit(entity);
-            emailService.sendCancelMail(emailService.setCancelMailProperties(entity));
+            emailService.sendCancelMail(entity);
         }
         return reservationList.size();
     }
