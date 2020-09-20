@@ -21,5 +21,6 @@ public class UserModel {
 	private String address;
 	private String phone;
 	private RoleModel role;
+	private Long roleId;
 	private boolean active;
 }

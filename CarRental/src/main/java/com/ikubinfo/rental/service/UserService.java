@@ -1,33 +1,32 @@
 package com.ikubinfo.rental.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import javax.persistence.NoResultException;
-
-import org.apache.logging.log4j.LogManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
-import com.ikubinfo.rental.exceptions.NonValidDataException;
-import com.ikubinfo.rental.exceptions.UserAlreadyExistsException;
 import com.ikubinfo.rental.converter.UserConverter;
 import com.ikubinfo.rental.entity.UserEntity;
+import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
+import com.ikubinfo.rental.exceptions.CarRentalNotFoundException;
+import com.ikubinfo.rental.exceptions.NonValidDataException;
+import com.ikubinfo.rental.exceptions.UserAlreadyExistsException;
+import com.ikubinfo.rental.exceptions.messages.BadRequest;
+import com.ikubinfo.rental.exceptions.messages.NotFound;
 import com.ikubinfo.rental.model.ReservationModel;
 import com.ikubinfo.rental.model.UserModel;
 import com.ikubinfo.rental.model.UserPage;
 import com.ikubinfo.rental.repository.UserRepository;
 import com.ikubinfo.rental.security.JwtTokenUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import javax.persistence.NoResultException;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class UserService {
 
-    private static Logger logger = LoggerFactory.getLogger(UserService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -41,15 +40,14 @@ public class UserService {
 
     public UserModel getById(Long id) {
         try {
-            logger.info("Getting user by id.");
+            LOGGER.info("Getting user with id {}", id);
             return userConverter.toModel(userRepository.getById(id));
         } catch (NoResultException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
+            throw new CarRentalNotFoundException(NotFound.USER_NOT_FOUND.getErrorMessage());
         }
     }
 
     public UserPage getAll(int startIndex, int pageSize, String name) {
-        logger.info("Getting all users.");
         if (name == null) {
             name = "";
         }
@@ -63,108 +61,102 @@ public class UserService {
 
     public UserModel getByUsername(String username) {
         try {
-            logger.info("Getting user by username.");
+            LOGGER.info("Getting user with username {}", username);
             return userConverter.toModel(userRepository.getByUsername(username));
         } catch (NoResultException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
+            throw new CarRentalNotFoundException(NotFound.USER_NOT_FOUND.getErrorMessage());
         }
     }
 
     public void register(UserModel user) {
-        try {
-            validateUserData(user);
-            logger.info("Registering new user.");
-            if (user.getUsername().trim().length() > 0) {
-                checkIfExists(user.getUsername());
-                UserEntity entity = userConverter.toEntity(user);
-                entity.setPassword(passwordEncoder.encode(user.getPassword()));
-                entity.setActive(true);
-                entity.setRoleId(2);
-                userRepository.save(entity);
-            } else {
-                throw new NonValidDataException("Username is required.");
-            }
-        } catch (UserAlreadyExistsException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exists.");
-        } catch (NonValidDataException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
+        validateUserData(user);
+        checkIfExists(user.getUsername());
+        UserEntity entity = userConverter.toEntity(user);
+        entity.setPassword(passwordEncoder.encode(user.getPassword()));
+        entity.setActive(true);
+        entity.setRoleId(2);
+        userRepository.save(entity);
     }
 
     public void edit(UserModel user) {
-        try {
-            UserEntity entity;
-            UserEntity loggedUser = userRepository.getByUsername(jwtTokenUtil.getUsername());
-            if (user.getPassword() == null) {
-                validateUserData(user);
-                entity = userConverter.toEntity(user);
-                entity.setPassword(loggedUser.getPassword());
-                entity.setId(loggedUser.getId());
-                entity.setActive(true);
-                entity.setRoleId(2);
-                entity.setUsername(loggedUser.getUsername());
-                userRepository.edit(entity);
-            } else {
-                loggedUser.setPassword(passwordEncoder.encode(user.getPassword().trim()));
-                userRepository.edit(loggedUser);
-            }
-        } catch (NoResultException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
-        } catch (NonValidDataException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        UserEntity loggedUser = userConverter.toEntity(getByUsername(jwtTokenUtil.getUsername()));
+        if (user.getPassword() == null) {
+            updateOtherDataExceptPassword(user, loggedUser);
+        } else {
+            updatePasswordAndOtherData(user, loggedUser);
         }
     }
 
+    private void updateOtherDataExceptPassword(UserModel user, UserEntity loggedUser) {
+        validateUserData(user);
+        UserEntity entity = userConverter.toEntity(user);
+        entity.setPassword(loggedUser.getPassword());
+        entity.setId(loggedUser.getId());
+        entity.setActive(true);
+        entity.setRoleId(2);
+        entity.setUsername(loggedUser.getUsername());
+        userRepository.edit(entity);
+    }
+
+    private void updatePasswordAndOtherData(UserModel user, UserEntity loggedUser) {
+        loggedUser.setPassword(passwordEncoder.encode(user.getPassword().trim()));
+        updateOtherDataExceptPassword(user, loggedUser);
+        userRepository.edit(loggedUser);
+    }
+
     public void delete() {
-        try {
-            logger.info("Deleting user.");
-            UserEntity entity = userRepository.getByUsername(jwtTokenUtil.getUsername());
-            entity.setActive(false);
-            List<ReservationModel> resList = reservationService.getByUsername();
-            for (ReservationModel res : resList) {
-                res.setActive(false);
-                reservationService.cancel(res.getId());
-            }
-            userRepository.edit(entity);
-        } catch (NoResultException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
+        LOGGER.debug("Deleting user with username {}", jwtTokenUtil.getUsername());
+        UserEntity entity = userConverter.toEntity(getByUsername(jwtTokenUtil.getUsername()));
+        entity.setActive(false);
+        cancelAllReservationsOfDeletedUser();
+        userRepository.edit(entity);
+    }
+
+    private void cancelAllReservationsOfDeletedUser() {
+        List<ReservationModel> resList = reservationService.getByUsername();
+        for (ReservationModel res : resList) {
+            res.setActive(false);
+            reservationService.cancel(res.getId());
         }
     }
 
     private void checkIfExists(String username) throws UserAlreadyExistsException {
         try {
-            logger.info("Checking if user already exists.");
+            LOGGER.debug("Checking if user with username  {} already exists", username);
             userRepository.getByUsername(username);
-            throw new UserAlreadyExistsException("User already exists.");
+            throw new CarRentalBadRequestException(BadRequest.USER_ALREADY_EXISTS.getErrorMessage());
         } catch (NoResultException e) {
-            logger.info("User is able to register.");
+            LOGGER.debug("User with username {} is able to register.", username);
         }
     }
 
     private void validateUserData(UserModel model) throws NonValidDataException {
         try {
             if (model.getFirstName().trim().length() == 0) {
-                throw new NonValidDataException("First name is required.");
+                throw new CarRentalBadRequestException(BadRequest.FIRSTNAME_REQUIRED.getErrorMessage());
             }
             if (model.getLastName().trim().length() == 0) {
-                throw new NonValidDataException("Last name is required.");
+                throw new CarRentalBadRequestException(BadRequest.LASTNAME_REQUIRED.getErrorMessage());
+            }
+            if (model.getUsername().trim().length() < 5) {
+                throw new CarRentalBadRequestException(BadRequest.USERNAME_NOT_VALID.getErrorMessage());
             }
             if (model.getBirthdate() == null) {
-                throw new NonValidDataException("Birthdate is required.");
+                throw new CarRentalBadRequestException(BadRequest.BIRTHDATE_REQUIRED.getErrorMessage());
             } else if (!isOver18(model.getBirthdate())) {
-                throw new NonValidDataException("You must be over 18 years old.");
+                throw new CarRentalBadRequestException(BadRequest.MUST_BE_OVER_18.getErrorMessage());
             }
             if (model.getAddress().trim().length() == 0) {
-                throw new NonValidDataException("Address is required.");
+                throw new CarRentalBadRequestException(BadRequest.ADDRESS_REQUIRED.getErrorMessage());
             }
             if (model.getPhone().trim().length() == 0) {
-                throw new NonValidDataException("Phone is required.");
+                throw new CarRentalBadRequestException(BadRequest.PHONE_REQUIRED.getErrorMessage());
             }
             if (model.getEmail().trim().length() == 0) {
-                throw new NonValidDataException("Email is required.");
+                throw new CarRentalBadRequestException(BadRequest.EMAIL_REQUIRED.getErrorMessage());
             }
         } catch (NullPointerException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User data are missing.");
+            throw new CarRentalBadRequestException(BadRequest.USER_DATA_MISSING.getErrorMessage());
         }
     }
 

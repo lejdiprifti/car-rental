@@ -10,7 +10,11 @@ public enum BadRequest {
     DESCRIPTION_REQUIRED("Description is required."), CATEGORY_ALREADY_EXISTS("Category already exists."),
     CATEGORY_CONTAINS_CARS("Category cannot be deleted because it contains cars."), EMAIL_SENDING_FAILED("Email sending failed."),
     CAR_RESERVED("Car is reserved during the specified dates."), INVALID_DATES("EndDate cannot be before StartDate."),
-    UNAUTHORIZED("User is unauthorized to do this action.");
+    UNAUTHORIZED("User is unauthorized to do this action."), USER_ALREADY_EXISTS("User already exists."),
+    EMAIL_REQUIRED("Email is required."), MUST_BE_OVER_18("User must be over 18 years old."),
+    PHONE_REQUIRED("Phone number is required."), ADDRESS_REQUIRED("Address is required."),
+    BIRTHDATE_REQUIRED("Birthdate is required."), FIRSTNAME_REQUIRED("Firstname is required."),
+    LASTNAME_REQUIRED("Lastname is required."), USERNAME_NOT_VALID("Username should be no less than 5 characters.");
 
     private String errorMessage;
 
