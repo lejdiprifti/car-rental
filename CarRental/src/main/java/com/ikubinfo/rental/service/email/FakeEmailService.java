@@ -15,11 +15,11 @@ public class FakeEmailService implements EmailService {
 
     @Override
     public void sendConfirmationMail(ReservationEntity reservationEntity, double fee, CarModel car) {
-        LOGGER.debug("Sent confirmation email!");
+        LOGGER.info("Sent confirmation email!");
     }
 
     @Override
     public void sendCancelMail(ReservationEntity reservationEntity) {
-        LOGGER.debug("Sent cancellation email!");
+        LOGGER.info("Sent cancellation email!");
     }
 }

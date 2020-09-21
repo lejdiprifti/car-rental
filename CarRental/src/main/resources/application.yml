@@ -7,6 +7,9 @@ spring:
       hibernate:
         enable_lazy_load_no_trans: true
         ddl-auto: update
+        jdbc:
+          lob:
+            non_contextual_creation: true
   mail:
     host: smtp.gmail.com
     port: 587
