@@ -21,9 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.NoResultException;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
+
+import static com.ikubinfo.rental.resource.filter.FilterUtils.getFilterData;
 
 @Service
 public class CarService {
@@ -45,9 +45,6 @@ public class CarService {
                                String endDate, String brand) {
         LocalDateTime startDate2 = getFilterData(startDate, endDate).get("startDate");
         LocalDateTime endDate2 = getFilterData(startDate, endDate).get("endDate");
-        if (brand == null) {
-            brand = "";
-        }
         CarsPage carPage = new CarsPage();
         authorizationService.isUserAuthorized();
         carPage.setCarsList(getAll(startIndex, pageSize, selectedCategoryIds, startDate2, endDate2, brand));
@@ -57,11 +54,9 @@ public class CarService {
 
     public CarsPage getAllAvailableCars(int startIndex, int pageSize, List<Long> selectedCategoryIds, String startDate,
                                         String endDate, String brand) {
+        LOGGER.info("Getting all available cars with startIndex {}, pageSize {}, startDate {}, endDate {}, brand {}", startIndex, pageSize, startDate, endDate, brand);
         LocalDateTime startDate2 = getFilterData(startDate, endDate).get("startDate");
         LocalDateTime endDate2 = getFilterData(startDate, endDate).get("endDate");
-        if (brand == null) {
-            brand = "";
-        }
         CarsPage carPage = new CarsPage();
         carPage.setCarsList(
                 getAllAvailable(startIndex, pageSize, selectedCategoryIds, startDate2, endDate2, brand));
@@ -87,26 +82,6 @@ public class CarService {
             car.setReservedDates(getReservedDatesByCar(car.getId()));
         }
         return modelList;
-    }
-
-    public HashMap<String, LocalDateTime> getFilterData(String startDate, String endDate) {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        HashMap<String, LocalDateTime> dataMap = new HashMap<String, LocalDateTime>();
-        LocalDateTime startDate2;
-        LocalDateTime endDate2;
-        if (startDate != null) {
-            startDate2 = LocalDateTime.parse(startDate, dateFormatter);
-        } else {
-            startDate2 = LocalDateTime.parse("1900-01-01 00:00:00", dateFormatter);
-        }
-        dataMap.put("startDate", startDate2);
-        if (endDate != null) {
-            endDate2 = LocalDateTime.parse(endDate, dateFormatter);
-        } else {
-            endDate2 = LocalDateTime.parse("1900-01-01 00:00:00", dateFormatter);
-        }
-        dataMap.put("endDate", endDate2);
-        return dataMap;
     }
 
     public List<ReservedDates> getReservedDatesByCar(Long carId) {
@@ -137,8 +112,6 @@ public class CarService {
             entity.setActive(true);
             CarEntity carEntity = carRepository.save(entity);
             return carConverter.toModel(carEntity);
-        } catch (NoResultException e) {
-            throw new CarRentalNotFoundException(NotFound.CATEGORY_NOT_FOUND.getErrorMessage());
         } catch (IOException e) {
             throw new CarRentalBadRequestException("Something bad happened saving car. Please, try again later.");
         }

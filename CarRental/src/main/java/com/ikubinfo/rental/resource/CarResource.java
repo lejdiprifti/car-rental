@@ -17,8 +17,8 @@ import javax.websocket.server.PathParam;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.ikubinfo.rental.resource.utils.ApiConstants.CARS_PATH;
-import static com.ikubinfo.rental.resource.utils.ApiConstants.CLIENT_APP;
+import static com.ikubinfo.rental.resource.constants.ApiConstants.CARS_PATH;
+import static com.ikubinfo.rental.resource.constants.ApiConstants.CLIENT_APP;
 
 @RestController
 @RequestMapping(path = CARS_PATH, produces = "application/json")
@@ -38,9 +38,9 @@ public class CarResource {
     public ResponseEntity<CarsPage> getAll(@RequestParam("startIndex") int startIndex,
                                            @RequestParam("pageSize") int pageSize,
                                            @RequestParam(name = "selectedCategories", required = false) List<Long> selectedCategoryIds,
-                                           @RequestParam(name = "startDate", required = false) String startDate,
-                                           @RequestParam(name = "endDate", required = false) String endDate,
-                                           @RequestParam(name = "brand", required = false) String brand
+                                           @RequestParam(name = "startDate", required = false, defaultValue = "1900-01-01 00:00:00") String startDate,
+                                           @RequestParam(name = "endDate", required = false, defaultValue = "1900-01-01 00:00:00") String endDate,
+                                           @RequestParam(name = "brand", required = false, defaultValue = "") String brand
     ) {
         try {
             authorizationService.isUserAuthorized();

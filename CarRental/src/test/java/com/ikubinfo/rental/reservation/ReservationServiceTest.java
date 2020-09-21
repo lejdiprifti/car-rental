@@ -143,4 +143,13 @@ public class ReservationServiceTest extends SpringScenarioTest<ReservationGivenS
         when().unauthorized_user_tries_to_update_reservation_of_another_user();
         then().a_bad_request_exception_with_message_$_is_thrown(BadRequest.UNAUTHORIZED.getErrorMessage());
     }
+
+    @Test
+    public void admin_cancels_reservations_by_car_and_date() {
+        given().user_has_made_two_reservations()
+                .and()
+                .user_is_logged_in_as_admin();
+        when().admin_tries_to_cancel_reservations_by_car_and_date();
+        then().there_are_exactly_$_reservations_of_user_$(1, FakeUsers.USER.username);
+    }
 }

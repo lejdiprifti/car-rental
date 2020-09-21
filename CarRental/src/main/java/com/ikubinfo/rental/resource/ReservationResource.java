@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.ikubinfo.rental.resource.utils.ApiConstants.CLIENT_APP;
-import static com.ikubinfo.rental.resource.utils.ApiConstants.RESERVATION_PATH;
+import static com.ikubinfo.rental.resource.constants.ApiConstants.CLIENT_APP;
+import static com.ikubinfo.rental.resource.constants.ApiConstants.RESERVATION_PATH;
 
 @RestController
 @RequestMapping(path = RESERVATION_PATH, produces = "application/json")
@@ -33,9 +33,9 @@ public class ReservationResource {
 
     @GetMapping(path = "/user", params = {"startIndex", "pageSize"})
     public ResponseEntity<ReservationPage> getByUsername(@RequestParam("startIndex") int startIndex,
-                                                         @RequestParam("pageSize") int pageSize, @RequestParam(name = "carName", required = false) String carName,
-                                                         @RequestParam(name = "startDate", required = false) String startDate,
-                                                         @RequestParam(name = "endDate", required = false) String endDate) {
+                                                         @RequestParam("pageSize") int pageSize, @RequestParam(name = "carName", required = false, defaultValue = "") String carName,
+                                                         @RequestParam(name = "startDate", defaultValue = "1900-01-01 00:00:00") String startDate,
+                                                         @RequestParam(name = "endDate", defaultValue = "2900-01-01 00:00:00") String endDate) {
         return new ResponseEntity<>(
                 reservationService.getByUsername(startIndex, pageSize, carName, startDate, endDate), HttpStatus.OK);
     }

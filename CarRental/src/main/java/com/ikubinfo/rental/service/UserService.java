@@ -46,9 +46,6 @@ public class UserService {
     }
 
     public UserPage getAll(int startIndex, int pageSize, String name) {
-        if (name == null) {
-            name = "";
-        }
         List<UserModel> userList = userConverter.toModel(userRepository.getAll(startIndex, pageSize, name));
         Long totalRecords = userRepository.countActiveUsers(name);
         UserPage userPage = new UserPage();

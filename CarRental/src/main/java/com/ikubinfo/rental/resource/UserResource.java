@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.ikubinfo.rental.resource.utils.ApiConstants.CLIENT_APP;
-import static com.ikubinfo.rental.resource.utils.ApiConstants.USER_PATH;
+import static com.ikubinfo.rental.resource.constants.ApiConstants.CLIENT_APP;
+import static com.ikubinfo.rental.resource.constants.ApiConstants.USER_PATH;
 
 @RestController
 @RequestMapping(path = USER_PATH, produces = "application/json")
@@ -22,7 +22,7 @@ public class UserResource {
     @GetMapping
     public ResponseEntity<UserPage> getAll(@RequestParam("startIndex") int startIndex,
                                            @RequestParam("pageSize") int pageSize,
-                                           @RequestParam(name = "name", required = false) String name) {
+                                           @RequestParam(name = "name", defaultValue = "") String name) {
         return new ResponseEntity<>(userService.getAll(startIndex, pageSize, name), HttpStatus.OK);
     }
 

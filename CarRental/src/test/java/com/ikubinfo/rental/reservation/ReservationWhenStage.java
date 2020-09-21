@@ -206,4 +206,8 @@ public class ReservationWhenStage extends Stage<ReservationWhenStage> {
             carRentalBadRequestException = exception;
         }
     }
+
+    public void admin_tries_to_cancel_reservations_by_car_and_date() {
+        reservationService.cancelByCarAndDate(LocalDateTime.now().plusDays(5), savedCarModel.getId());
+    }
 }

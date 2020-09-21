@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.websocket.server.PathParam;
 import java.util.List;
 
-import static com.ikubinfo.rental.resource.utils.ApiConstants.*;
+import static com.ikubinfo.rental.resource.constants.ApiConstants.*;
 
 @RestController
 @RequestMapping(path = CATEGORY_PATH, produces = "application/json")

@@ -45,7 +45,7 @@ public class ProductionEmailService implements EmailService {
 
     @Override
     public void sendConfirmationMail(ReservationEntity reservationEntity, double fee, CarModel car) {
-        LOGGER.debug("TRYING TO SEND MAIL");
+        LOGGER.debug("Sending confirmation mail");
         MimeMessage message = prepareMail(setMailProperties(reservationEntity, fee), "mailTemplate");
         mailSender.send(message);
     }
@@ -74,6 +74,7 @@ public class ProductionEmailService implements EmailService {
 
     @Override
     public void sendCancelMail(ReservationEntity reservationEntity) {
+        LOGGER.debug("Sending cancellation mail");
         MimeMessage message = prepareMail(setCancelMailProperties(reservationEntity), "cancelMail");
         mailSender.send(message);
     }

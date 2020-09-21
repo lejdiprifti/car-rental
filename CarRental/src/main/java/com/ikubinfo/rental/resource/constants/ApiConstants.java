@@ -1,4 +1,4 @@
-package com.ikubinfo.rental.resource.utils;
+package com.ikubinfo.rental.resource.constants;
 
 public class ApiConstants {
 

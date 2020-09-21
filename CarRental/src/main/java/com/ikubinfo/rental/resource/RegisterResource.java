@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import static com.ikubinfo.rental.resource.utils.ApiConstants.*;
+import static com.ikubinfo.rental.resource.constants.ApiConstants.*;
 
 @RestController
 @RequestMapping(path = REGISTER_PATH, produces = "application/json")

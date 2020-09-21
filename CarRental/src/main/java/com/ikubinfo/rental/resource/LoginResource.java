@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.ikubinfo.rental.resource.utils.ApiConstants.*;
+import static com.ikubinfo.rental.resource.constants.ApiConstants.*;
 
 @RestController
 @RequestMapping(path = LOGIN_PATH, produces = "application/json")
