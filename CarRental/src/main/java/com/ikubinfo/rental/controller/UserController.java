@@ -1,4 +1,4 @@
-package com.ikubinfo.rental.resource;
+package com.ikubinfo.rental.controller;
 
 import com.ikubinfo.rental.model.UserModel;
 import com.ikubinfo.rental.model.UserPage;
@@ -8,13 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.ikubinfo.rental.resource.constants.ApiConstants.CLIENT_APP;
-import static com.ikubinfo.rental.resource.constants.ApiConstants.USER_PATH;
+import static com.ikubinfo.rental.controller.constants.ApiConstants.CLIENT_APP;
+import static com.ikubinfo.rental.controller.constants.ApiConstants.USER_PATH;
 
 @RestController
 @RequestMapping(path = USER_PATH, produces = "application/json")
 @CrossOrigin(CLIENT_APP)
-public class UserResource {
+public class UserController {
 
     @Autowired
     private UserService userService;

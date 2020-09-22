@@ -101,7 +101,7 @@ public class CategoryService {
 
     private void checkIfUpdateIsAvailable(String name, Long id) {
         try {
-            catRepository.checkIfExistsAnother(name, id);
+            catRepository.checkIfAnotherCategoryWithSameNameExists(name, id);
             throw new CarRentalBadRequestException(BadRequest.CATEGORY_ALREADY_EXISTS.getErrorMessage());
         } catch (NoResultException e) {
             LOGGER.info("Category is available to be updated.");

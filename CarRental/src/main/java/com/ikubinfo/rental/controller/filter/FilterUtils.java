@@ -1,4 +1,4 @@
-package com.ikubinfo.rental.resource.filter;
+package com.ikubinfo.rental.controller.filter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

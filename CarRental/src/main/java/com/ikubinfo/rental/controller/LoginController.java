@@ -1,4 +1,4 @@
-package com.ikubinfo.rental.resource;
+package com.ikubinfo.rental.controller;
 
 import com.ikubinfo.rental.model.LoginRequest;
 import com.ikubinfo.rental.model.LoginResponse;
@@ -8,12 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.ikubinfo.rental.resource.constants.ApiConstants.*;
+import static com.ikubinfo.rental.controller.constants.ApiConstants.*;
 
 @RestController
 @RequestMapping(path = LOGIN_PATH, produces = "application/json")
 @CrossOrigin(CLIENT_APP)
-public class LoginResource {
+public class LoginController {
 
     @Autowired
     private LoginService loginService;

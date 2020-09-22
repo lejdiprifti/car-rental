@@ -18,12 +18,10 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 
-import static com.ikubinfo.rental.resource.filter.FilterUtils.getFilterData;
+import static com.ikubinfo.rental.controller.filter.FilterUtils.getFilterData;
 
 @Service
 public class ReservationService {
@@ -99,8 +97,7 @@ public class ReservationService {
         ReservationEntity entity = reservationConverter.toEntity(getById(id));
         checkIfAuthorized(entity.getUserId());
         checkDates(model.getStartDate(), model.getEndDate());
-        checkIfUpdateIsAvailable(entity.getCarId(), model.getStartDate(), model.getEndDate(),
-                entity.getId());
+        checkIfUpdateIsAvailable(entity, model.getStartDate(), model.getEndDate());
         entity.setCreated_at(Calendar.getInstance());
         entity.setStartDate(model.getStartDate());
         entity.setEndDate(model.getEndDate());
@@ -120,8 +117,8 @@ public class ReservationService {
         reservationRepository.edit(entity);
     }
 
-    private void checkIfUpdateIsAvailable(Long carId, LocalDateTime startDate, LocalDateTime endDate, Long id) {
-        Long reservations = reservationRepository.updateIfAvailable(carId, startDate, endDate, id);
+    private void checkIfUpdateIsAvailable(ReservationEntity reservationEntity, LocalDateTime startDate, LocalDateTime endDate) {
+        Long reservations = reservationRepository.updateIfAvailable(reservationEntity, startDate, endDate);
         if (reservations > 0) {
             throw new CarRentalBadRequestException(BadRequest.CAR_RESERVED.getErrorMessage());
         }
@@ -148,19 +145,27 @@ public class ReservationService {
     }
 
     public int cancelByCarAndDate(LocalDateTime date, Long carId) {
-        List<ReservationEntity> reservationList;
+        authorizationService.isUserAuthorized();
+        List<ReservationEntity> reservationList = decideToCancelAllOrUntilDate(date, carId);
+        cancelReservationsAndSendCancelMail(reservationList);
+        return reservationList.size();
+    }
 
-        if (date.isAfter(LocalDateTime.now())) {
-            reservationList = reservationRepository.getByCarAndDate(date, carId);
-        } else {
-            reservationList = reservationRepository.getByCar(carId);
-        }
-
-        for (ReservationEntity entity : reservationList) {
+    private void cancelReservationsAndSendCancelMail(List<ReservationEntity> reservationEntityList) {
+        for (ReservationEntity entity : reservationEntityList) {
             entity.setActive(false);
             reservationRepository.edit(entity);
             emailService.sendCancelMail(entity);
         }
-        return reservationList.size();
+    }
+
+    private List<ReservationEntity> decideToCancelAllOrUntilDate(LocalDateTime dateTime, Long carId) {
+        List<ReservationEntity> reservationList;
+        if (dateTime.isAfter(LocalDateTime.now())) {
+            reservationList = reservationRepository.getByCarAndDate(dateTime, carId);
+        } else {
+            reservationList = reservationRepository.getByCar(carId);
+        }
+        return reservationList;
     }
 }

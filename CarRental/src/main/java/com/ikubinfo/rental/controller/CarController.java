@@ -1,4 +1,4 @@
-package com.ikubinfo.rental.resource;
+package com.ikubinfo.rental.controller;
 
 import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.model.CarModel;
@@ -17,13 +17,13 @@ import javax.websocket.server.PathParam;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.ikubinfo.rental.resource.constants.ApiConstants.CARS_PATH;
-import static com.ikubinfo.rental.resource.constants.ApiConstants.CLIENT_APP;
+import static com.ikubinfo.rental.controller.constants.ApiConstants.CARS_PATH;
+import static com.ikubinfo.rental.controller.constants.ApiConstants.CLIENT_APP;
 
 @RestController
 @RequestMapping(path = CARS_PATH, produces = "application/json")
 @CrossOrigin(CLIENT_APP)
-public class CarResource {
+public class CarController {
 
     @Autowired
     private CarService carService;
@@ -74,7 +74,7 @@ public class CarResource {
 
     @PutMapping(path = "/{id}/reservations")
     public ResponseEntity<Integer> cancelReservationsByCar(@RequestBody LocalDateTime date, @PathVariable("id") Long carId) {
-        return new ResponseEntity<Integer>(reservationService.cancelByCarAndDate(date, carId), HttpStatus.OK);
+        return new ResponseEntity<>(reservationService.cancelByCarAndDate(date, carId), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}")

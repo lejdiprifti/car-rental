@@ -1,4 +1,4 @@
-package com.ikubinfo.rental.resource;
+package com.ikubinfo.rental.controller;
 
 import com.ikubinfo.rental.model.CarModel;
 import com.ikubinfo.rental.model.CategoryModel;
@@ -14,12 +14,12 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.websocket.server.PathParam;
 import java.util.List;
 
-import static com.ikubinfo.rental.resource.constants.ApiConstants.*;
+import static com.ikubinfo.rental.controller.constants.ApiConstants.*;
 
 @RestController
 @RequestMapping(path = CATEGORY_PATH, produces = "application/json")
 @CrossOrigin(CLIENT_APP)
-public class CategoryResource {
+public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;

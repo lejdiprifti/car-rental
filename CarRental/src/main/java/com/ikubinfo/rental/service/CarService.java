@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.ikubinfo.rental.resource.filter.FilterUtils.getFilterData;
+import static com.ikubinfo.rental.controller.filter.FilterUtils.getFilterData;
 
 @Service
 public class CarService {

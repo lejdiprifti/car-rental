@@ -1,4 +1,4 @@
-package com.ikubinfo.rental.resource;
+package com.ikubinfo.rental.controller;
 
 import com.ikubinfo.rental.model.ReservationModel;
 import com.ikubinfo.rental.model.ReservationPage;
@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.ikubinfo.rental.resource.constants.ApiConstants.CLIENT_APP;
-import static com.ikubinfo.rental.resource.constants.ApiConstants.RESERVATION_PATH;
+import static com.ikubinfo.rental.controller.constants.ApiConstants.CLIENT_APP;
+import static com.ikubinfo.rental.controller.constants.ApiConstants.RESERVATION_PATH;
 
 @RestController
 @RequestMapping(path = RESERVATION_PATH, produces = "application/json")
 @CrossOrigin(CLIENT_APP)
-public class ReservationResource {
+public class ReservationController {
 
     @Autowired
     private ReservationService reservationService;
