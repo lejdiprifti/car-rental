@@ -1,11 +1,12 @@
-package com.ikubinfo.rental.service;
+package com.ikubinfo.rental.security.service;
 
 import com.ikubinfo.rental.converter.RoleConverter;
-import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
-import com.ikubinfo.rental.model.LoginRequest;
-import com.ikubinfo.rental.model.LoginResponse;
+import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
+import com.ikubinfo.rental.security.model.LoginRequest;
+import com.ikubinfo.rental.security.model.LoginResponse;
 import com.ikubinfo.rental.model.UserModel;
-import com.ikubinfo.rental.security.JwtTokenUtil;
+import com.ikubinfo.rental.security.jwt_configuration.JwtTokenUtil;
+import com.ikubinfo.rental.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,13 +20,10 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 
 @Service
-public class LoginService implements UserDetailsService {
+public class CarRentalUserDetailsService implements UserDetailsService {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
-
-    @Autowired
-    private LoginService loginService;
 
     @Autowired
     private UserService userService;
@@ -38,7 +36,7 @@ public class LoginService implements UserDetailsService {
 
     public LoginResponse authenticate(LoginRequest loginRequest) {
         authenticate(loginRequest.getUsername(), loginRequest.getPassword());
-        UserDetails userDetails = loginService.loadUserByUsername(loginRequest.getUsername());
+        UserDetails userDetails = loadUserByUsername(loginRequest.getUsername());
         UserModel model = userService.getByUsername(loginRequest.getUsername());
         String token = jwtTokenUtil.generateToken(userDetails, roleConverter.toEntity(model.getRole()));
         LoginResponse loginResponse = new LoginResponse();

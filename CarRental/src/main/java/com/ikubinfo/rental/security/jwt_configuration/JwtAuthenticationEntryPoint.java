@@ -1,4 +1,4 @@
-package com.ikubinfo.rental.security;
+package com.ikubinfo.rental.security.jwt_configuration;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

@@ -1,4 +1,4 @@
-package com.ikubinfo.rental.security;
+package com.ikubinfo.rental.security.jwt_configuration;
 
 import com.ikubinfo.rental.entity.RoleEntity;
 import io.jsonwebtoken.Claims;

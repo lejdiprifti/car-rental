@@ -1,6 +1,6 @@
 package com.ikubinfo.rental.car.util;
 
-import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
+import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.model.enums.StatusEnum;
 import com.ikubinfo.rental.model.CarModel;
 import org.apache.commons.io.FileUtils;

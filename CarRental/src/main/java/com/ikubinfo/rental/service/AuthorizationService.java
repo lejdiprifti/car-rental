@@ -1,8 +1,8 @@
 package com.ikubinfo.rental.service;
 
-import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
-import com.ikubinfo.rental.exceptions.messages.BadRequest;
-import com.ikubinfo.rental.security.JwtTokenUtil;
+import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
+import com.ikubinfo.rental.service.exceptions.messages.BadRequest;
+import com.ikubinfo.rental.security.jwt_configuration.JwtTokenUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
-package com.ikubinfo.rental.security;
+package com.ikubinfo.rental.security.jwt_configuration;
 
-import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
-import com.ikubinfo.rental.service.LoginService;
+import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
+import com.ikubinfo.rental.security.service.CarRentalUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +23,7 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
     private static final Logger logger = LoggerFactory.getLogger(JwtRequestFilter.class);
     @Autowired
-    private LoginService loginService;
+    private CarRentalUserDetailsService carRentalUserDetailsService;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
@@ -49,7 +49,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = loginService.loadUserByUsername(username);
+            UserDetails userDetails = carRentalUserDetailsService.loadUserByUsername(username);
 
             if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(

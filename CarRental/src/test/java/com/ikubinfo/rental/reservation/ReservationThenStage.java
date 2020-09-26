@@ -1,9 +1,8 @@
 package com.ikubinfo.rental.reservation;
 
-import com.ikubinfo.rental.category.CategoryThenStage;
 import com.ikubinfo.rental.entity.ReservationEntity;
-import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
-import com.ikubinfo.rental.exceptions.CarRentalNotFoundException;
+import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
+import com.ikubinfo.rental.service.exceptions.CarRentalNotFoundException;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.integration.spring.JGivenStage;
@@ -12,7 +11,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;

@@ -1,4 +1,4 @@
-package com.ikubinfo.rental.exceptions;
+package com.ikubinfo.rental.service.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

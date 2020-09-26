@@ -2,8 +2,7 @@ package com.ikubinfo.rental.user;
 
 import com.ikubinfo.rental.entity.ReservationEntity;
 import com.ikubinfo.rental.entity.UserEntity;
-import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
-import com.ikubinfo.rental.reservation.ReservationThenStage;
+import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.integration.spring.JGivenStage;

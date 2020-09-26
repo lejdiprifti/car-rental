@@ -1,7 +1,7 @@
 package com.ikubinfo.rental.util;
 
 import com.ikubinfo.rental.entity.RoleEntity;
-import com.ikubinfo.rental.security.JwtTokenUtil;
+import com.ikubinfo.rental.security.jwt_configuration.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

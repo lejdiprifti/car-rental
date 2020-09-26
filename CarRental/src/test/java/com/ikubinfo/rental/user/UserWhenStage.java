@@ -1,10 +1,9 @@
 package com.ikubinfo.rental.user;
 
-import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
+import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.model.UserModel;
 import com.ikubinfo.rental.service.UserService;
 import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.integration.spring.JGivenStage;
 import org.springframework.beans.factory.annotation.Autowired;

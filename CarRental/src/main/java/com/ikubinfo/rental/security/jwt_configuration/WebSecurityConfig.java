@@ -1,4 +1,4 @@
-package com.ikubinfo.rental.security;
+package com.ikubinfo.rental.security.jwt_configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    @Qualifier("loginService")
+    @Qualifier("carRentalUserDetailsService")
     @Autowired
     private UserDetailsService jwtUserDetailsService;
     @Autowired

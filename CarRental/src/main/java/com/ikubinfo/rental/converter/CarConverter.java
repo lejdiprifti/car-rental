@@ -11,20 +11,21 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Component
 public class CarConverter {
 
-    private static ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private ModelMapper modelMapper;
 
-    public static CarModel toModel(CarEntity entity) {
+    public CarModel toModel(CarEntity entity) {
         return modelMapper.map(entity, CarModel.class);
     }
 
-    public static CarEntity toEntity(CarModel model) {
+    public CarEntity toEntity(CarModel model) {
         return modelMapper.map(model, CarEntity.class);
     }
 
-    public static List<CarModel> toModel(List<CarEntity> entityList) {
+    public List<CarModel> toModel(List<CarEntity> entityList) {
         List<CarModel> modelList = new ArrayList<>();
         for (CarEntity entity : entityList) {
             modelList.add(toModel(entity));
@@ -32,7 +33,7 @@ public class CarConverter {
         return modelList;
     }
 
-    public static CarModel toModelObject(Object[] object) {
+    public CarModel toModelObject(Object[] object) {
         CarModel model = new CarModel();
         model.setId((Long) object[0]);
         model.setPhoto((byte[]) object[1]);
@@ -51,13 +52,11 @@ public class CarConverter {
         return model;
     }
 
-    public static List<CarModel> toModelObject(List<Object[]> objectList) {
+    public List<CarModel> toModelObject(List<Object[]> objectList) {
         List<CarModel> modelList = new ArrayList<>();
         for (Object[] obj : objectList) {
             modelList.add(toModelObject(obj));
         }
         return modelList;
     }
-
-    private CarConverter() {}
 }

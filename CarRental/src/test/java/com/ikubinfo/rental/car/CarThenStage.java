@@ -2,8 +2,8 @@ package com.ikubinfo.rental.car;
 
 import com.ikubinfo.rental.entity.CarEntity;
 import com.ikubinfo.rental.model.enums.StatusEnum;
-import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
-import com.ikubinfo.rental.exceptions.CarRentalNotFoundException;
+import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
+import com.ikubinfo.rental.service.exceptions.CarRentalNotFoundException;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.integration.spring.JGivenStage;

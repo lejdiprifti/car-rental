@@ -1,8 +1,8 @@
 package com.ikubinfo.rental.service.email;
 
 import com.ikubinfo.rental.entity.ReservationEntity;
-import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
-import com.ikubinfo.rental.exceptions.messages.BadRequest;
+import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
+import com.ikubinfo.rental.service.exceptions.messages.BadRequest;
 import com.ikubinfo.rental.model.CarModel;
 import com.ikubinfo.rental.model.Mail;
 import com.ikubinfo.rental.model.UserModel;

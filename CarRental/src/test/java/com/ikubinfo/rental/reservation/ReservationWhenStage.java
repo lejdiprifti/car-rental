@@ -1,6 +1,6 @@
 package com.ikubinfo.rental.reservation;
 
-import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
+import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.model.CarModel;
 import com.ikubinfo.rental.model.ReservationModel;
 import com.ikubinfo.rental.service.ReservationService;
@@ -9,7 +9,6 @@ import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.integration.spring.JGivenStage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 
 import java.time.LocalDateTime;
 

@@ -1,10 +1,11 @@
 package com.ikubinfo.rental.service;
 
+import com.ikubinfo.rental.converter.CarConverter;
 import com.ikubinfo.rental.entity.CarEntity;
-import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
-import com.ikubinfo.rental.exceptions.CarRentalNotFoundException;
-import com.ikubinfo.rental.exceptions.messages.BadRequest;
-import com.ikubinfo.rental.exceptions.messages.NotFound;
+import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
+import com.ikubinfo.rental.service.exceptions.CarRentalNotFoundException;
+import com.ikubinfo.rental.service.exceptions.messages.BadRequest;
+import com.ikubinfo.rental.service.exceptions.messages.NotFound;
 import com.ikubinfo.rental.model.CarModel;
 import com.ikubinfo.rental.model.ReservedDates;
 import com.ikubinfo.rental.model.enums.StatusEnum;
@@ -22,7 +23,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.ikubinfo.rental.controller.filter.FilterUtils.getFilterData;
-import static com.ikubinfo.rental.converter.CarConverter.*;
 
 @Service
 public class CarService {
@@ -30,6 +30,9 @@ public class CarService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CarService.class);
     @Autowired
     private CarRepository carRepository;
+
+    @Autowired
+    private CarConverter carConverter;
 
     @Autowired
     private AuthorizationService authorizationService;
@@ -65,7 +68,7 @@ public class CarService {
 
     private List<CarModel> getAll(int startIndex, int pageSize, List<Long> selectedCategoryIds, LocalDateTime startDate,
                                   LocalDateTime endDate, String brand) {
-        List<CarModel> modelList = toModelObject(
+        List<CarModel> modelList = carConverter.toModelObject(
                 carRepository.getAll(startIndex, pageSize, selectedCategoryIds, startDate, endDate, brand));
         for (CarModel car : modelList) {
             setReservedDatesToCar(car);
@@ -75,7 +78,7 @@ public class CarService {
 
     private List<CarModel> getAllAvailable(int startIndex, int pageSize, List<Long> selectedCategoryIds,
                                            LocalDateTime startDate, LocalDateTime endDate, String brand) {
-        List<CarModel> modelList = toModelObject(
+        List<CarModel> modelList = carConverter.toModelObject(
                 carRepository.getAllAvailable(startIndex, pageSize, selectedCategoryIds, startDate, endDate, brand));
         for (CarModel car : modelList) {
             setReservedDatesToCar(car);
@@ -91,7 +94,7 @@ public class CarService {
 
     public CarModel getById(Long id) {
         try {
-            CarModel car = toModel(carRepository.getById(id));
+            CarModel car = carConverter.toModel(carRepository.getById(id));
             setReservedDatesToCar(car);
             return car;
         } catch (NoResultException e) {
@@ -100,7 +103,7 @@ public class CarService {
     }
 
     public List<CarModel> getByCategory(Long categoryId) {
-        return toModel(carRepository.getByCategory(categoryId));
+        return carConverter.toModel(carRepository.getByCategory(categoryId));
     }
 
     public CarModel save(CarModel model, MultipartFile photo) {
@@ -112,17 +115,18 @@ public class CarService {
 
     private CarModel executeSaveCar(CarModel model, MultipartFile photo) {
         try {
-            CarEntity entity = toEntity(model);
+            CarEntity entity = carConverter.toEntity(model);
             entity.setPhoto(photo.getBytes());
             entity.setActive(true);
             CarEntity carEntity = carRepository.save(entity);
-            return toModel(carEntity);
+            return carConverter.toModel(carEntity);
         } catch (IOException e) {
             throw new CarRentalBadRequestException("Something bad happened saving car. Please, try again later.");
         }
     }
 
     public void edit(CarModel model, MultipartFile photo, Long id) {
+        LOGGER.info("Updating car with id {}", id);
         authorizationService.isUserAuthorized();
         validateCarData(model, photo);
         checkIfCarExists(id);
@@ -132,7 +136,7 @@ public class CarService {
 
     private void executeUpdateCar(CarModel carModel, MultipartFile photo, Long carId) {
         try {
-            CarEntity entity = toEntity(carModel);
+            CarEntity entity = carConverter.toEntity(carModel);
             if (photo != null) {
                 entity.setPhoto(photo.getBytes());
             } else {
@@ -146,13 +150,14 @@ public class CarService {
     }
 
     public void delete(Long id) {
+        LOGGER.info("Executing deletion of car with id {}", id);
         authorizationService.isUserAuthorized();
         hasActiveReservations(id);
         executeDeleteCar(id);
     }
 
     private void executeDeleteCar(Long carId) {
-        CarEntity entity = toEntity(getById(carId));
+        CarEntity entity = carConverter.toEntity(getById(carId));
         entity.setActive(false);
         carRepository.edit(entity);
     }
@@ -195,6 +200,7 @@ public class CarService {
 
     private void validateCarData(CarModel model, MultipartFile file) {
         try {
+            LOGGER.info("Validating data of car with plate {}", model.getPlate());
             categoryService.checkIfCategoryExists(model.getCategoryId());
             if (model.getName().trim().equals("")) {
                 throw new CarRentalBadRequestException(BadRequest.NAME_REQUIRED.getErrorMessage());

@@ -1,7 +1,7 @@
 package com.ikubinfo.rental.reservation;
 
 import com.ikubinfo.rental.CarRentalTest;
-import com.ikubinfo.rental.exceptions.messages.BadRequest;
+import com.ikubinfo.rental.service.exceptions.messages.BadRequest;
 import com.ikubinfo.rental.util.FakeUsers;
 import com.tngtech.jgiven.integration.spring.SpringScenarioTest;
 import org.junit.Test;

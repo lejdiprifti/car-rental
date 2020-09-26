@@ -1,5 +1,6 @@
-package com.ikubinfo.rental.model;
+package com.ikubinfo.rental.security.model;
 
+import com.ikubinfo.rental.model.UserModel;
 import lombok.Data;
 
 @Data

@@ -1,4 +1,4 @@
-package com.ikubinfo.rental.exceptions.messages;
+package com.ikubinfo.rental.service.exceptions.messages;
 
 public enum BadRequest {
 
