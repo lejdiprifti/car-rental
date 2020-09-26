@@ -2,6 +2,7 @@ package com.ikubinfo.rental.reservation;
 
 import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.service.car.dto.CarModel;
+import com.ikubinfo.rental.service.reservation.ReservationService;
 import com.ikubinfo.rental.service.reservation.dto.ReservationModel;
 import com.ikubinfo.rental.service.reservation.ReservationServiceImpl;
 import com.tngtech.jgiven.Stage;
@@ -18,7 +19,7 @@ import static com.ikubinfo.rental.reservation.util.ReservationUtil.createReserva
 public class ReservationWhenStage extends Stage<ReservationWhenStage> {
 
     @Autowired
-    private ReservationServiceImpl reservationService;
+    private ReservationService reservationService;
 
     @ExpectedScenarioState
     private CarModel savedCarModel;

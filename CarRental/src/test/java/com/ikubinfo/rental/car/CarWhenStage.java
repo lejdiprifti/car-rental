@@ -1,12 +1,12 @@
 package com.ikubinfo.rental.car;
 
+import com.ikubinfo.rental.service.car.CarService;
+import com.ikubinfo.rental.service.car.dto.CarModel;
 import com.ikubinfo.rental.service.car.status.StatusEnum;
+import com.ikubinfo.rental.service.category.CategoryService;
+import com.ikubinfo.rental.service.category.dto.CategoryModel;
 import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.service.exceptions.CarRentalNotFoundException;
-import com.ikubinfo.rental.service.car.dto.CarModel;
-import com.ikubinfo.rental.service.category.dto.CategoryModel;
-import com.ikubinfo.rental.service.car.CarServiceImpl;
-import com.ikubinfo.rental.service.category.CategoryServiceImpl;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
@@ -21,10 +21,10 @@ import static com.ikubinfo.rental.util.CommonUtils.createMultipartFile;
 public class CarWhenStage extends Stage<CarWhenStage> {
 
     @Autowired
-    private CarServiceImpl carService;
+    private CarService carService;
 
     @Autowired
-    private CategoryServiceImpl categoryService;
+    private CategoryService categoryService;
 
     @ExpectedScenarioState
     private CarModel savedCarModel;

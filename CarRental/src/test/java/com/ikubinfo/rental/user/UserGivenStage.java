@@ -1,8 +1,11 @@
 package com.ikubinfo.rental.user;
 
+import com.ikubinfo.rental.service.car.CarService;
 import com.ikubinfo.rental.service.car.status.StatusEnum;
 import com.ikubinfo.rental.service.car.dto.CarModel;
+import com.ikubinfo.rental.service.category.CategoryService;
 import com.ikubinfo.rental.service.category.dto.CategoryModel;
+import com.ikubinfo.rental.service.reservation.ReservationService;
 import com.ikubinfo.rental.service.reservation.dto.ReservationModel;
 import com.ikubinfo.rental.service.car.CarServiceImpl;
 import com.ikubinfo.rental.service.category.CategoryServiceImpl;
@@ -25,16 +28,16 @@ public class UserGivenStage extends Stage<UserGivenStage> {
     private TokenCreator tokenCreator;
 
     @Autowired
-    private CarServiceImpl carService;
+    private CarService carService;
 
     @Autowired
-    private CategoryServiceImpl categoryService;
+    private CategoryService categoryService;
 
     @ProvidedScenarioState
     private CarModel savedCarModel;
 
     @Autowired
-    private ReservationServiceImpl reservationService;
+    private ReservationService reservationService;
 
     public UserGivenStage user_is_logged_in_as_user() {
         tokenCreator.createUserToken();

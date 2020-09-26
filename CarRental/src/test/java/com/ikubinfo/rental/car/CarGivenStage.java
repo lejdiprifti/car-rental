@@ -1,12 +1,12 @@
 package com.ikubinfo.rental.car;
 
-import com.ikubinfo.rental.service.car.status.StatusEnum;
+import com.ikubinfo.rental.service.car.CarService;
 import com.ikubinfo.rental.service.car.dto.CarModel;
+import com.ikubinfo.rental.service.car.status.StatusEnum;
+import com.ikubinfo.rental.service.category.CategoryService;
 import com.ikubinfo.rental.service.category.dto.CategoryModel;
+import com.ikubinfo.rental.service.reservation.ReservationService;
 import com.ikubinfo.rental.service.reservation.dto.ReservationModel;
-import com.ikubinfo.rental.service.car.CarServiceImpl;
-import com.ikubinfo.rental.service.category.CategoryServiceImpl;
-import com.ikubinfo.rental.service.reservation.ReservationServiceImpl;
 import com.ikubinfo.rental.util.TokenCreator;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
@@ -25,13 +25,13 @@ public class CarGivenStage extends Stage<CarGivenStage> {
     private TokenCreator tokenCreator;
 
     @Autowired
-    private CarServiceImpl carService;
+    private CarService carService;
 
     @Autowired
-    private CategoryServiceImpl categoryService;
+    private CategoryService categoryService;
 
     @Autowired
-    private ReservationServiceImpl reservationService;
+    private ReservationService reservationService;
 
     @ProvidedScenarioState
     private CarModel savedCarModel;

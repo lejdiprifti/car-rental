@@ -1,5 +1,6 @@
 package com.ikubinfo.rental.category;
 
+import com.ikubinfo.rental.service.category.CategoryService;
 import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.service.exceptions.CarRentalNotFoundException;
 import com.ikubinfo.rental.service.category.dto.CategoryModel;
@@ -17,7 +18,7 @@ import static com.ikubinfo.rental.util.CommonUtils.createMultipartFile;
 public class CategoryWhenStage extends Stage<CategoryWhenStage> {
 
     @Autowired
-    private CategoryServiceImpl categoryService;
+    private CategoryService categoryService;
 
     @ScenarioState
     private CategoryModel savedCategoryModel;
