@@ -1,10 +1,12 @@
 package com.ikubinfo.rental.controller;
 
-import com.ikubinfo.rental.model.CarModel;
-import com.ikubinfo.rental.model.CategoryModel;
-import com.ikubinfo.rental.model.page.CategoryPage;
-import com.ikubinfo.rental.service.CarService;
-import com.ikubinfo.rental.service.CategoryService;
+import com.ikubinfo.rental.service.car.CarService;
+import com.ikubinfo.rental.service.car.dto.CarModel;
+import com.ikubinfo.rental.service.category.CategoryService;
+import com.ikubinfo.rental.service.category.dto.CategoryModel;
+import com.ikubinfo.rental.service.category.dto.CategoryPage;
+import com.ikubinfo.rental.service.car.CarServiceImpl;
+import com.ikubinfo.rental.service.category.CategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,8 @@
 package com.ikubinfo.rental.controller;
 
-import com.ikubinfo.rental.model.StatisticsModel;
-import com.ikubinfo.rental.service.StatisticsService;
+import com.ikubinfo.rental.service.statistics.StatisticsService;
+import com.ikubinfo.rental.service.statistics.dto.StatisticsModel;
+import com.ikubinfo.rental.service.statistics.StatisticsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

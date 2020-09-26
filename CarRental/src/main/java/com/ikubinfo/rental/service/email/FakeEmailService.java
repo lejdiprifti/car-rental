@@ -1,7 +1,6 @@
 package com.ikubinfo.rental.service.email;
 
-import com.ikubinfo.rental.entity.ReservationEntity;
-import com.ikubinfo.rental.model.CarModel;
+import com.ikubinfo.rental.service.reservation.dto.ReservationEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;

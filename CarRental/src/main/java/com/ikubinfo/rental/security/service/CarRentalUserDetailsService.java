@@ -1,12 +1,13 @@
 package com.ikubinfo.rental.security.service;
 
-import com.ikubinfo.rental.converter.RoleConverter;
+import com.ikubinfo.rental.service.role.converter.RoleConverter;
 import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.security.model.LoginRequest;
 import com.ikubinfo.rental.security.model.LoginResponse;
-import com.ikubinfo.rental.model.UserModel;
+import com.ikubinfo.rental.service.user.UserService;
+import com.ikubinfo.rental.service.user.dto.UserModel;
 import com.ikubinfo.rental.security.jwt_configuration.JwtTokenUtil;
-import com.ikubinfo.rental.service.UserService;
+import com.ikubinfo.rental.service.user.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;

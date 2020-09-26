@@ -1,8 +1,8 @@
 package com.ikubinfo.rental.controller;
 
-import com.ikubinfo.rental.model.ReservationModel;
-import com.ikubinfo.rental.model.page.ReservationPage;
-import com.ikubinfo.rental.service.ReservationService;
+import com.ikubinfo.rental.service.reservation.ReservationService;
+import com.ikubinfo.rental.service.reservation.dto.ReservationModel;
+import com.ikubinfo.rental.service.reservation.dto.ReservationPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

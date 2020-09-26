@@ -1,7 +1,8 @@
 package com.ikubinfo.rental.controller;
 
-import com.ikubinfo.rental.model.UserModel;
-import com.ikubinfo.rental.service.UserService;
+import com.ikubinfo.rental.service.user.UserService;
+import com.ikubinfo.rental.service.user.dto.UserModel;
+import com.ikubinfo.rental.service.user.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

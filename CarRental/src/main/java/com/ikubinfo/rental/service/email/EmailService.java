@@ -1,7 +1,6 @@
 package com.ikubinfo.rental.service.email;
 
-import com.ikubinfo.rental.entity.ReservationEntity;
-import com.ikubinfo.rental.model.CarModel;
+import com.ikubinfo.rental.service.reservation.dto.ReservationEntity;
 
 public interface EmailService {
 

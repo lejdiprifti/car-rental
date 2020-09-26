@@ -2,7 +2,7 @@ package com.ikubinfo.rental.car;
 
 
 import com.ikubinfo.rental.CarRentalTest;
-import com.ikubinfo.rental.model.enums.StatusEnum;
+import com.ikubinfo.rental.service.car.status.StatusEnum;
 import com.ikubinfo.rental.service.exceptions.messages.BadRequest;
 import com.ikubinfo.rental.service.exceptions.messages.NotFound;
 import com.tngtech.jgiven.integration.spring.SpringScenarioTest;

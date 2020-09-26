@@ -1,7 +1,7 @@
 package com.ikubinfo.rental.user;
 
-import com.ikubinfo.rental.entity.ReservationEntity;
-import com.ikubinfo.rental.entity.UserEntity;
+import com.ikubinfo.rental.service.reservation.dto.ReservationEntity;
+import com.ikubinfo.rental.service.user.dto.UserEntity;
 import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;

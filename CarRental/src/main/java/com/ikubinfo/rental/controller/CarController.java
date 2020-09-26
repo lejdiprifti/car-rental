@@ -1,12 +1,15 @@
 package com.ikubinfo.rental.controller;
 
+import com.ikubinfo.rental.service.authorization.AuthorizationService;
+import com.ikubinfo.rental.service.car.CarService;
 import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
-import com.ikubinfo.rental.model.CarModel;
-import com.ikubinfo.rental.model.page.CarsPage;
-import com.ikubinfo.rental.model.ReservationModel;
-import com.ikubinfo.rental.service.AuthorizationService;
-import com.ikubinfo.rental.service.CarService;
-import com.ikubinfo.rental.service.ReservationService;
+import com.ikubinfo.rental.service.car.dto.CarModel;
+import com.ikubinfo.rental.service.car.dto.CarsPage;
+import com.ikubinfo.rental.service.reservation.ReservationService;
+import com.ikubinfo.rental.service.reservation.dto.ReservationModel;
+import com.ikubinfo.rental.service.authorization.AuthorizationServiceImpl;
+import com.ikubinfo.rental.service.car.CarServiceImpl;
+import com.ikubinfo.rental.service.reservation.ReservationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
