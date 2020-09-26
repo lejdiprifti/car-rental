@@ -1,17 +1,17 @@
 package com.ikubinfo.rental.service.car;
 
-import com.ikubinfo.rental.database.CarRepositoryImpl;
-import com.ikubinfo.rental.service.authorization.AuthorizationServiceImpl;
+import com.ikubinfo.rental.service.authorization.AuthorizationService;
 import com.ikubinfo.rental.service.car.converter.CarConverter;
 import com.ikubinfo.rental.service.car.dto.CarEntity;
 import com.ikubinfo.rental.service.car.dto.CarModel;
 import com.ikubinfo.rental.service.car.dto.CarsPage;
-import com.ikubinfo.rental.service.category.CategoryServiceImpl;
+import com.ikubinfo.rental.service.car.repository.CarRepository;
+import com.ikubinfo.rental.service.category.CategoryService;
 import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.service.exceptions.CarRentalNotFoundException;
 import com.ikubinfo.rental.service.exceptions.messages.BadRequest;
 import com.ikubinfo.rental.service.exceptions.messages.NotFound;
-import com.ikubinfo.rental.service.reservation.ReservationServiceImpl;
+import com.ikubinfo.rental.service.reservation.ReservationService;
 import com.ikubinfo.rental.service.reservation.dto.ReservedDates;
 import com.ikubinfo.rental.service.car.status.StatusEnum;
 import org.slf4j.Logger;
@@ -32,19 +32,19 @@ public class CarServiceImpl implements CarService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CarServiceImpl.class);
     @Autowired
-    private CarRepositoryImpl carRepository;
+    private CarRepository carRepository;
 
     @Autowired
     private CarConverter carConverter;
 
     @Autowired
-    private AuthorizationServiceImpl authorizationService;
+    private AuthorizationService authorizationService;
 
     @Autowired
-    private CategoryServiceImpl categoryService;
+    private CategoryService categoryService;
 
     @Autowired
-    private ReservationServiceImpl reservationService;
+    private ReservationService reservationService;
 
     @Override
     public CarsPage getAllCars(int startIndex, int pageSize, List<Long> selectedCategoryIds, String startDate,

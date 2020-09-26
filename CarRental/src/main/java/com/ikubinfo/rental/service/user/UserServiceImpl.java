@@ -1,18 +1,16 @@
 package com.ikubinfo.rental.service.user;
 
-import com.ikubinfo.rental.service.reservation.ReservationService;
-import com.ikubinfo.rental.service.user.converter.UserConverter;
-import com.ikubinfo.rental.service.user.dto.UserEntity;
+import com.ikubinfo.rental.service.authorization.AuthorizationService;
 import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.service.exceptions.CarRentalNotFoundException;
 import com.ikubinfo.rental.service.exceptions.messages.BadRequest;
 import com.ikubinfo.rental.service.exceptions.messages.NotFound;
+import com.ikubinfo.rental.service.reservation.ReservationService;
 import com.ikubinfo.rental.service.reservation.dto.ReservationModel;
+import com.ikubinfo.rental.service.user.converter.UserConverter;
+import com.ikubinfo.rental.service.user.dto.UserEntity;
 import com.ikubinfo.rental.service.user.dto.UserModel;
 import com.ikubinfo.rental.service.user.dto.UserPage;
-import com.ikubinfo.rental.database.UserRepositoryImpl;
-import com.ikubinfo.rental.security.jwt_configuration.JwtTokenUtil;
-import com.ikubinfo.rental.service.reservation.ReservationServiceImpl;
 import com.ikubinfo.rental.service.user.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +37,7 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private AuthorizationService authorizationService;
 
     @Autowired
     private ReservationService reservationService;
@@ -87,13 +85,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void editProfile(UserModel user) {
-        UserEntity loggedUser = userConverter.toEntity(getByUsername(jwtTokenUtil.getUsername()));
+        UserEntity loggedUser = userConverter.toEntity(getByUsername(authorizationService.getCurrentLoggedUserUsername()));
         updateOtherDataExceptPassword(user, loggedUser);
     }
 
     @Override
     public void editPassword(UserModel user) {
-        UserEntity loggedUser = userConverter.toEntity(getByUsername(jwtTokenUtil.getUsername()));
+        UserEntity loggedUser = userConverter.toEntity(getByUsername(authorizationService.getCurrentLoggedUserUsername()));
         loggedUser.setPassword(passwordEncoder.encode(user.getPassword().trim()));
         userRepository.edit(loggedUser);
     }
@@ -111,8 +109,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete() {
-        LOGGER.debug("Deleting user with username {}", jwtTokenUtil.getUsername());
-        UserEntity entity = userConverter.toEntity(getByUsername(jwtTokenUtil.getUsername()));
+        LOGGER.debug("Deleting user with username {}", authorizationService.getCurrentLoggedUserUsername());
+        UserEntity entity = userConverter.toEntity(getByUsername(authorizationService.getCurrentLoggedUserUsername()));
         entity.setActive(false);
         cancelAllReservationsOfDeletedUser();
         userRepository.edit(entity);

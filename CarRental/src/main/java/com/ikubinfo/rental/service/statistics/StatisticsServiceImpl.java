@@ -3,17 +3,12 @@ package com.ikubinfo.rental.service.statistics;
 import java.util.Calendar;
 
 import com.ikubinfo.rental.service.authorization.AuthorizationService;
-import com.ikubinfo.rental.service.authorization.AuthorizationServiceImpl;
 import com.ikubinfo.rental.service.car.repository.CarRepository;
 import com.ikubinfo.rental.service.reservation.repository.ReservationRepository;
 import com.ikubinfo.rental.service.statistics.dto.StatisticsModel;
 import com.ikubinfo.rental.service.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.ikubinfo.rental.database.CarRepositoryImpl;
-import com.ikubinfo.rental.database.ReservationRepositoryImpl;
-import com.ikubinfo.rental.database.UserRepositoryImpl;
 
 @Service
 public class StatisticsServiceImpl implements StatisticsService {

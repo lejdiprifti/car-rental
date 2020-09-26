@@ -1,4 +1,4 @@
-package com.ikubinfo.rental.security.model;
+package com.ikubinfo.rental.security.dto;
 
 import lombok.Data;
 

@@ -1,7 +1,7 @@
 package com.ikubinfo.rental.security.api;
 
-import com.ikubinfo.rental.security.model.LoginRequest;
-import com.ikubinfo.rental.security.model.LoginResponse;
+import com.ikubinfo.rental.security.dto.LoginRequest;
+import com.ikubinfo.rental.security.dto.LoginResponse;
 import com.ikubinfo.rental.security.service.CarRentalUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

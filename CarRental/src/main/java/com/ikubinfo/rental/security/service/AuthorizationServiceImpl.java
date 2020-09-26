@@ -1,8 +1,9 @@
-package com.ikubinfo.rental.service.authorization;
+package com.ikubinfo.rental.security.service;
 
+import com.ikubinfo.rental.security.jwt_configuration.JwtTokenUtil;
+import com.ikubinfo.rental.service.authorization.AuthorizationService;
 import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.service.exceptions.messages.BadRequest;
-import com.ikubinfo.rental.security.jwt_configuration.JwtTokenUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +24,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
             throw new CarRentalBadRequestException(BadRequest.UNAUTHORIZED.getErrorMessage());
         }
         LOGGER.debug("User is an admin and authorized to completed the action initiated.");
+    }
+
+    public String getCurrentLoggedUserUsername() {
+        return jwtTokenUtil.getUsername();
     }
 }

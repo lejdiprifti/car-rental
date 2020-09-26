@@ -1,4 +1,4 @@
-package com.ikubinfo.rental.security.model;
+package com.ikubinfo.rental.security.dto;
 
 import com.ikubinfo.rental.service.user.dto.UserModel;
 import lombok.Data;
