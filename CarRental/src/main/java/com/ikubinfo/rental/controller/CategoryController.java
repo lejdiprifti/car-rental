@@ -2,7 +2,7 @@ package com.ikubinfo.rental.controller;
 
 import com.ikubinfo.rental.model.CarModel;
 import com.ikubinfo.rental.model.CategoryModel;
-import com.ikubinfo.rental.model.CategoryPage;
+import com.ikubinfo.rental.model.page.CategoryPage;
 import com.ikubinfo.rental.service.CarService;
 import com.ikubinfo.rental.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;

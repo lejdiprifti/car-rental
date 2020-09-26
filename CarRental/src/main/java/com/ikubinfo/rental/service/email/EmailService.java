@@ -5,6 +5,6 @@ import com.ikubinfo.rental.model.CarModel;
 
 public interface EmailService {
 
-    void sendConfirmationMail(ReservationEntity reservationEntity, double fee, CarModel car);
+    void sendConfirmationMail(ReservationEntity reservationEntity, double fee);
     void sendCancelMail(ReservationEntity reservationEntity);
 }

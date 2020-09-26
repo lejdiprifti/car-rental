@@ -1,7 +1,11 @@
 package com.ikubinfo.rental.service;
 
-import java.util.ArrayList;
-
+import com.ikubinfo.rental.converter.RoleConverter;
+import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
+import com.ikubinfo.rental.model.LoginRequest;
+import com.ikubinfo.rental.model.LoginResponse;
+import com.ikubinfo.rental.model.UserModel;
+import com.ikubinfo.rental.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -10,57 +14,52 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.ikubinfo.rental.converter.RoleConverter;
-import com.ikubinfo.rental.model.LoginRequest;
-import com.ikubinfo.rental.model.LoginResponse;
-import com.ikubinfo.rental.model.UserModel;
-import com.ikubinfo.rental.security.JwtTokenUtil;
+import java.util.ArrayList;
 
 @Service
 public class LoginService implements UserDetailsService {
-	
-	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
-	
-	@Autowired
-	private LoginService loginService;
-	
-	@Autowired
-	private UserService userService;
-	
-	@Autowired
-	private AuthenticationManager authenticationManager;
-	
-	@Autowired
-	private RoleConverter roleConverter;
 
-	public LoginResponse authenticate(LoginRequest loginRequest) {
-		authenticate(loginRequest.getUsername(), loginRequest.getPassword());
-		final UserDetails userDetails = loginService.loadUserByUsername(loginRequest.getUsername());
-		final UserModel model = userService.getByUsername(loginRequest.getUsername());
-		final String token = jwtTokenUtil.generateToken(userDetails,roleConverter.toEntity(model.getRole()));
-		LoginResponse loginResponse = new LoginResponse();
-		loginResponse.setJwt(token);
-		loginResponse.setUser(model);
-		return loginResponse;
-	}
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
-	private void authenticate(String username, String password) {
-		try {
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-		} catch (DisabledException e) {
-			throw new RuntimeException("USER_DISABLED", e);
-		} catch (BadCredentialsException e) {
-			throw new RuntimeException("INVALID_CREDENTIALS", e);
-		}
-	}
-	
+    @Autowired
+    private LoginService loginService;
 
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserModel model = userService.getByUsername(username);
-		return new User(model.getUsername(),model.getPassword(), new ArrayList<>());
-	}
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private RoleConverter roleConverter;
+
+    public LoginResponse authenticate(LoginRequest loginRequest) {
+        authenticate(loginRequest.getUsername(), loginRequest.getPassword());
+        UserDetails userDetails = loginService.loadUserByUsername(loginRequest.getUsername());
+        UserModel model = userService.getByUsername(loginRequest.getUsername());
+        String token = jwtTokenUtil.generateToken(userDetails, roleConverter.toEntity(model.getRole()));
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setJwt(token);
+        loginResponse.setUser(model);
+        return loginResponse;
+    }
+
+    private void authenticate(String username, String password) {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        } catch (DisabledException e) {
+            throw new CarRentalBadRequestException("User is disabled");
+        } catch (BadCredentialsException e) {
+            throw new CarRentalBadRequestException("Invalid Credentials");
+        }
+    }
+
+
+    public UserDetails loadUserByUsername(String username) {
+        UserModel model = userService.getByUsername(username);
+        return new User(model.getUsername(), model.getPassword(), new ArrayList<>());
+    }
 }

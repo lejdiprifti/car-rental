@@ -1,7 +1,7 @@
 package com.ikubinfo.rental.controller;
 
 import com.ikubinfo.rental.model.ReservationModel;
-import com.ikubinfo.rental.model.ReservationPage;
+import com.ikubinfo.rental.model.page.ReservationPage;
 import com.ikubinfo.rental.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

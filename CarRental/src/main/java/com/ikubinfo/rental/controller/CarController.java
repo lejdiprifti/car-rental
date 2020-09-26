@@ -2,7 +2,7 @@ package com.ikubinfo.rental.controller;
 
 import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.model.CarModel;
-import com.ikubinfo.rental.model.CarsPage;
+import com.ikubinfo.rental.model.page.CarsPage;
 import com.ikubinfo.rental.model.ReservationModel;
 import com.ikubinfo.rental.service.AuthorizationService;
 import com.ikubinfo.rental.service.CarService;

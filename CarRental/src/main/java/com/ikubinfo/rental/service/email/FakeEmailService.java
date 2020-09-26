@@ -14,12 +14,14 @@ public class FakeEmailService implements EmailService {
     private static final Logger LOGGER = LoggerFactory.getLogger(FakeEmailService.class);
 
     @Override
-    public void sendConfirmationMail(ReservationEntity reservationEntity, double fee, CarModel car) {
-        LOGGER.info("Sent confirmation email!");
+    public void sendConfirmationMail(ReservationEntity reservationEntity, double fee) {
+        LOGGER.info("Sent confirmation email with reservationId {}, reservationFee {} and carId {}",
+                reservationEntity.getId(), fee, reservationEntity.getCarId());
     }
 
     @Override
     public void sendCancelMail(ReservationEntity reservationEntity) {
-        LOGGER.info("Sent cancellation email!");
+        LOGGER.info("Sent cancellation email for reservationId {}",
+                reservationEntity.getId());
     }
 }

@@ -21,7 +21,6 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.swing.*;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +30,7 @@ import java.util.Map;
 public class ProductionEmailService implements EmailService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductionEmailService.class);
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
     @Autowired
     private JavaMailSender mailSender;
 
@@ -44,15 +44,14 @@ public class ProductionEmailService implements EmailService {
     private CarService carService;
 
     @Override
-    public void sendConfirmationMail(ReservationEntity reservationEntity, double fee, CarModel car) {
-        LOGGER.debug("Sending confirmation mail");
+    public void sendConfirmationMail(ReservationEntity reservationEntity, double fee) {
+        LOGGER.info("Sending confirmation mail");
         MimeMessage message = prepareMail(setMailProperties(reservationEntity, fee), "mailTemplate");
         mailSender.send(message);
     }
 
     private Mail setMailProperties(ReservationEntity reservation, double fee) {
         Mail mail = new Mail();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         mail.setFrom("ikubinfo.car.rentals@gmail.com");
         Map<String, Object> content = new HashMap<>();
         UserModel user = userService.getById(reservation.getUserId());
@@ -62,8 +61,8 @@ public class ProductionEmailService implements EmailService {
         content.put("carBrand", car.getType());
         content.put("carPlate", car.getPlate());
         content.put("price", fee);
-        content.put("startDate", reservation.getStartDate().format(formatter));
-        content.put("endDate", reservation.getEndDate().format(formatter));
+        content.put("startDate", reservation.getStartDate().format(DATE_TIME_FORMATTER));
+        content.put("endDate", reservation.getEndDate().format(DATE_TIME_FORMATTER));
         content.put("signature", "Car Rentals Albania");
         content.put("location", "Papa Gjon Pali 3rd St. , Tirana, Albania");
         mail.setContent(content);
@@ -74,7 +73,7 @@ public class ProductionEmailService implements EmailService {
 
     @Override
     public void sendCancelMail(ReservationEntity reservationEntity) {
-        LOGGER.debug("Sending cancellation mail");
+        LOGGER.info("Sending cancellation mail");
         MimeMessage message = prepareMail(setCancelMailProperties(reservationEntity), "cancelMail");
         mailSender.send(message);
     }
@@ -83,12 +82,11 @@ public class ProductionEmailService implements EmailService {
         Mail mail = new Mail();
         mail.setFrom("ikubinfo.car.rentals@gmail.com");
         Map<String, Object> content = new HashMap<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         content.put("name", reservation.getUser().getFirstName() + " " + reservation.getUser().getLastName());
         content.put("carPlate", reservation.getCar().getPlate());
         content.put("carName", reservation.getCar().getName());
-        content.put("startDate", reservation.getStartDate().format(formatter));
-        content.put("endDate", reservation.getEndDate().format(formatter));
+        content.put("startDate", reservation.getStartDate().format(DATE_TIME_FORMATTER));
+        content.put("endDate", reservation.getEndDate().format(DATE_TIME_FORMATTER));
         content.put("signature", "Car Rentals Albania");
         content.put("location", "Papa Gjon Pali 3rd St. , Tirana, Albania");
         mail.setContent(content);

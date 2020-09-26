@@ -1,6 +1,7 @@
 package com.ikubinfo.rental.repository;
 
 import com.ikubinfo.rental.entity.ReservationEntity;
+import com.ikubinfo.rental.model.ReservationModel;
 import com.ikubinfo.rental.model.ReservedDates;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,14 +84,14 @@ public class ReservationRepository {
         return query.getResultList();
     }
 
-    public Long checkIfAvailable(Long carId, LocalDateTime startDate, LocalDateTime endDate) {
+    public Long checkIfAvailable(ReservationModel reservationModel) {
         TypedQuery<Long> query = em.createQuery(
                 "Select COUNT(r.id) from ReservationEntity r where r.car.id = ?1 and ((r.startDate >= ?2 and r.endDate >= ?3 and r.startDate <= ?3) or (r.startDate >= ?2 and r.endDate <= ?3)"
                         + "or (r.startDate <= ?2 and r.endDate >= ?3) or (r.startDate <= ?2 and r.endDate >= ?2 and r.endDate <= ?3)) and r.active= ?4",
                 Long.class);
-        query.setParameter(1, carId);
-        query.setParameter(2, startDate);
-        query.setParameter(3, endDate);
+        query.setParameter(1, reservationModel.getCarId());
+        query.setParameter(2, reservationModel.getStartDate());
+        query.setParameter(3, reservationModel.getEndDate());
         query.setParameter(4, true);
         return query.getSingleResult();
     }
@@ -116,15 +117,7 @@ public class ReservationRepository {
         return query.getSingleResult();
     }
 
-    public Long countActiveReservationsByCar(Long carId) {
-        TypedQuery<Long> query = em.createQuery(
-                "Select COUNT(r.id) from ReservationEntity r where r.car.id = ?1 and r.active =?2 and (r.startDate > ?3 or r.endDate > ?3)",
-                Long.class);
-        query.setParameter(1, carId);
-        query.setParameter(2, true);
-        query.setParameter(3, LocalDateTime.now());
-        return query.getSingleResult();
-    }
+
 
     @Transactional
     public List<ReservationEntity> getByCarAndDate(LocalDateTime date, Long carId) {

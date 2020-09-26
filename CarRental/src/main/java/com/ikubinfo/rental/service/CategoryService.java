@@ -7,8 +7,7 @@ import com.ikubinfo.rental.exceptions.CarRentalNotFoundException;
 import com.ikubinfo.rental.exceptions.messages.BadRequest;
 import com.ikubinfo.rental.exceptions.messages.NotFound;
 import com.ikubinfo.rental.model.CategoryModel;
-import com.ikubinfo.rental.model.CategoryPage;
-import com.ikubinfo.rental.repository.CarRepository;
+import com.ikubinfo.rental.model.page.CategoryPage;
 import com.ikubinfo.rental.repository.CategoryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,31 +24,30 @@ public class CategoryService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoryService.class);
     @Autowired
-    private CategoryRepository catRepository;
+    private CategoryRepository categoryRepository;
     @Autowired
-    private CategoryConverter catConverter;
+    private CategoryConverter categoryConverter;
     @Autowired
     private AuthorizationService authorizationService;
     @Autowired
-    private CarRepository carRepository;
+    private CarService carService;
 
     public CategoryPage getAll(int startIndex, int pageSize) {
-        LOGGER.debug("Getting all the categories.");
+        LOGGER.info("Getting all the categories from startIndex {} with pageSize {}", startIndex, pageSize);
         CategoryPage categoryPage = new CategoryPage();
-        categoryPage.setTotalRecords(catRepository.countCategories());
-        categoryPage.setCategoryList(catConverter.toModel(catRepository.getAll(startIndex, pageSize)));
+        categoryPage.setTotalRecords(categoryRepository.countCategories());
+        categoryPage.setCategoryList(categoryConverter.toModel(categoryRepository.getAll(startIndex, pageSize)));
         return categoryPage;
     }
 
     public List<CategoryModel> getAll() {
-        LOGGER.debug("Getting all the categories.");
-        return catConverter.toModel(catRepository.getAll());
-
+        LOGGER.info("Getting all the categories.");
+        return categoryConverter.toModel(categoryRepository.getAll());
     }
 
     public CategoryModel getById(Long id) {
         try {
-            return catConverter.toModel(catRepository.getById(id));
+            return categoryConverter.toModel(categoryRepository.getById(id));
         } catch (NoResultException e) {
             throw new CarRentalNotFoundException(NotFound.CATEGORY_NOT_FOUND.getErrorMessage());
         }
@@ -57,16 +55,20 @@ public class CategoryService {
 
     public CategoryModel save(CategoryModel model, MultipartFile file) {
         authorizationService.isUserAuthorized();
+        validateCategoryData(model, file);
+        checkIfSaveIsAvailable(model.getName());
+        CategoryEntity categoryEntity = executeSaveCategory(model, file);
+        return categoryConverter.toModel(categoryEntity);
+    }
+
+    private CategoryEntity executeSaveCategory(CategoryModel model, MultipartFile file) {
         try {
-            validateCategoryData(model, file);
-            checkIfSaveIsAvailable(model.getName());
-            CategoryEntity entity = catConverter.toEntity(model);
+            CategoryEntity entity = categoryConverter.toEntity(model);
             if (file != null) {
                 entity.setPhoto(file.getBytes());
             }
             entity.setActive(true);
-            CategoryEntity categoryEntity = catRepository.save(entity);
-            return catConverter.toModel(categoryEntity);
+            return categoryRepository.save(entity);
         } catch (IOException e) {
             throw new CarRentalBadRequestException(e.getMessage());
         }
@@ -74,7 +76,7 @@ public class CategoryService {
 
     private void checkIfSaveIsAvailable(String name) {
         try {
-            catRepository.getByName(name);
+            categoryRepository.getByName(name);
             throw new CarRentalBadRequestException(BadRequest.CATEGORY_ALREADY_EXISTS.getErrorMessage());
         } catch (NoResultException e) {
             LOGGER.debug("Category is available to be added.");
@@ -82,18 +84,18 @@ public class CategoryService {
     }
 
     public void edit(CategoryModel model, MultipartFile file, Long id) {
-        authorizationService.isUserAuthorized();
         try {
+            authorizationService.isUserAuthorized();
             validateCategoryData(model, file);
             checkIfCategoryExists(id);
             checkIfUpdateIsAvailable(model.getName(), id);
-            CategoryEntity entity = catRepository.getById(id);
+            CategoryEntity entity = categoryRepository.getById(id);
             entity.setDescription(model.getDescription());
             entity.setName(model.getName());
             if (file != null) {
                 entity.setPhoto(file.getBytes());
             }
-            catRepository.edit(entity);
+            categoryRepository.edit(entity);
         } catch (IOException e) {
             throw new CarRentalBadRequestException(e.getMessage());
         }
@@ -101,34 +103,39 @@ public class CategoryService {
 
     private void checkIfUpdateIsAvailable(String name, Long id) {
         try {
-            catRepository.checkIfAnotherCategoryWithSameNameExists(name, id);
+            categoryRepository.checkIfAnotherCategoryWithSameNameExists(name, id);
             throw new CarRentalBadRequestException(BadRequest.CATEGORY_ALREADY_EXISTS.getErrorMessage());
         } catch (NoResultException e) {
             LOGGER.info("Category is available to be updated.");
         }
     }
 
-    public void delete(Long id) {
+    public void delete(Long categoryId) {
         authorizationService.isUserAuthorized();
-        checkIfCategoryExists(id);
-        checkIfCategoryCanBeDeleted(id);
-        CategoryEntity entity = catRepository.getById(id);
+        checkIfCategoryExists(categoryId);
+        checkIfCategoryCanBeDeleted(categoryId);
+        executeDeleteCategory(categoryId);
+    }
+
+    private void executeDeleteCategory(Long categoryId) {
+        CategoryEntity entity = categoryRepository.getById(categoryId);
         entity.setActive(false);
-        catRepository.edit(entity);
+        categoryRepository.edit(entity);
     }
 
     private void checkIfCategoryCanBeDeleted(Long categoryId) {
-        if (carRepository.getByCategory(categoryId).size() != 0) {
+        if (carService.getByCategory(categoryId).size() != 0) {
             throw new CarRentalBadRequestException(BadRequest.CATEGORY_CONTAINS_CARS.getErrorMessage());
         }
     }
 
     public void checkIfCategoryExists(Long categoryId) {
-        LOGGER.debug("Checking if category with id {} exists", categoryId);
         try {
-            catRepository.getById(categoryId);
+            LOGGER.info("Checking if category with id {} exists", categoryId);
+            categoryRepository.getById(categoryId);
+            LOGGER.info("Category with id {} exists.", categoryId);
         } catch (NoResultException e) {
-            LOGGER.debug("Category with id {} does not exists.", categoryId);
+            LOGGER.info("Category with id {} does not exists.", categoryId);
             throw new CarRentalNotFoundException(NotFound.CATEGORY_NOT_FOUND.getErrorMessage());
         }
     }

@@ -49,16 +49,15 @@ public class CategoryWhenStage extends Stage<CategoryWhenStage> {
         return self();
     }
 
-    public CategoryWhenStage admin_tries_to_delete_category() {
+    public void admin_tries_to_delete_category() {
         try {
             categoryService.delete(savedCategoryModel.getId());
         } catch (CarRentalBadRequestException exception) {
             carRentalBadRequestException = exception;
         }
-        return self();
     }
 
-    public CategoryWhenStage admin_tries_to_add_new_category_with_missing_data() {
+    public void admin_tries_to_add_new_category_with_missing_data() {
         try {
             CategoryModel categoryModel = createCategoryModel();
             categoryModel.setDescription(null);
@@ -66,7 +65,6 @@ public class CategoryWhenStage extends Stage<CategoryWhenStage> {
         } catch (CarRentalBadRequestException exception) {
             carRentalBadRequestException = exception;
         }
-        return self();
     }
 
     public CategoryWhenStage admin_tries_to_update_category_with_id_$(Long categoryId) {

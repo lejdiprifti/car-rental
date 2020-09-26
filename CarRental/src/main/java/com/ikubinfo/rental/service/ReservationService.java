@@ -7,9 +7,9 @@ import com.ikubinfo.rental.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.exceptions.CarRentalNotFoundException;
 import com.ikubinfo.rental.exceptions.messages.BadRequest;
 import com.ikubinfo.rental.exceptions.messages.NotFound;
-import com.ikubinfo.rental.model.CarModel;
 import com.ikubinfo.rental.model.ReservationModel;
-import com.ikubinfo.rental.model.ReservationPage;
+import com.ikubinfo.rental.model.ReservedDates;
+import com.ikubinfo.rental.model.page.ReservationPage;
 import com.ikubinfo.rental.repository.ReservationRepository;
 import com.ikubinfo.rental.security.JwtTokenUtil;
 import com.ikubinfo.rental.service.email.EmailService;
@@ -33,9 +33,6 @@ public class ReservationService {
 
     @Autowired
     private AuthorizationService authorizationService;
-
-    @Autowired
-    private CarService carService;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -82,62 +79,64 @@ public class ReservationService {
     }
 
     public ReservationModel save(ReservationModel model) {
-        checkDates(model.getStartDate(), model.getEndDate());
-        checkIfReservationIsAvailable(model.getCarId(), model.getStartDate(), model.getEndDate());
+        checkDates(model);
+        checkIfReservationIsAvailable(model);
         ReservationEntity entity = reservationConverter.toEntity(model);
         entity.setCreated_at(Calendar.getInstance());
         entity.setActive(true);
         entity.setUserId(userService.getByUsername(jwtTokenUtil.getUsername()).getId());
         ReservationEntity reservationEntity = reservationRepository.save(entity);
-        sendNotificationMail(reservationEntity, model.getFee());
+        emailService.sendConfirmationMail(reservationEntity, model.getFee());
         return reservationConverter.toModel(reservationEntity);
     }
 
-    public void edit(ReservationModel model, Long id) {
-        ReservationEntity entity = reservationConverter.toEntity(getById(id));
-        checkIfAuthorized(entity.getUserId());
-        checkDates(model.getStartDate(), model.getEndDate());
-        checkIfUpdateIsAvailable(entity, model.getStartDate(), model.getEndDate());
-        entity.setCreated_at(Calendar.getInstance());
-        entity.setStartDate(model.getStartDate());
-        entity.setEndDate(model.getEndDate());
-        reservationRepository.edit(entity);
-        sendNotificationMail(entity, model.getFee());
-    }
-
-    private void sendNotificationMail(ReservationEntity reservationEntity, double fee) {
-        CarModel carModel = carService.getById(reservationEntity.getCarId());
-        emailService.sendConfirmationMail(reservationEntity, fee, carModel);
+    public void edit(ReservationModel toUpdateModel, Long id) {
+        ReservationEntity savedReservationEntity = reservationConverter.toEntity(getById(id));
+        checkIfAuthorizedToEditReservation(savedReservationEntity.getUserId());
+        checkDates(toUpdateModel);
+        checkIfUpdateIsAvailable(savedReservationEntity, toUpdateModel);
+        savedReservationEntity.setCreated_at(Calendar.getInstance());
+        savedReservationEntity.setStartDate(toUpdateModel.getStartDate());
+        savedReservationEntity.setEndDate(toUpdateModel.getEndDate());
+        reservationRepository.edit(savedReservationEntity);
+        emailService.sendConfirmationMail(savedReservationEntity, toUpdateModel.getFee());
     }
 
     public void cancel(Long id) {
         ReservationEntity entity = reservationConverter.toEntity(getById(id));
-        checkIfAuthorized(entity.getUserId());
+        checkIfAuthorizedToEditReservation(entity.getUserId());
+        executeCancellationOfReservation(entity);
+    }
+
+    private void executeCancellationOfReservation(ReservationEntity entity) {
         entity.setActive(false);
         reservationRepository.edit(entity);
     }
 
-    private void checkIfUpdateIsAvailable(ReservationEntity reservationEntity, LocalDateTime startDate, LocalDateTime endDate) {
-        Long reservations = reservationRepository.updateIfAvailable(reservationEntity, startDate, endDate);
+    private void checkIfUpdateIsAvailable(ReservationEntity savedReservationEntity, ReservationModel toUpdateModel) {
+        Long reservations = reservationRepository.updateIfAvailable(savedReservationEntity,
+                toUpdateModel.getStartDate(), toUpdateModel.getEndDate());
         if (reservations > 0) {
             throw new CarRentalBadRequestException(BadRequest.CAR_RESERVED.getErrorMessage());
         }
     }
 
-    private void checkIfReservationIsAvailable(Long carId, LocalDateTime startDate, LocalDateTime endDate) {
-        Long reservations = reservationRepository.checkIfAvailable(carId, startDate, endDate);
+    private void checkIfReservationIsAvailable(ReservationModel model) {
+        Long reservations = reservationRepository.checkIfAvailable(model);
         if (reservations > 0) {
             throw new CarRentalBadRequestException(BadRequest.CAR_RESERVED.getErrorMessage());
         }
     }
 
-    private void checkDates(LocalDateTime startDate, LocalDateTime endDate) {
+    private void checkDates(ReservationModel reservationModel) {
+        LocalDateTime startDate = reservationModel.getStartDate();
+        LocalDateTime endDate = reservationModel.getEndDate();
         if (startDate.isBefore(LocalDateTime.now()) || endDate.isBefore(startDate)) {
             throw new CarRentalBadRequestException(BadRequest.INVALID_DATES.getErrorMessage());
         }
     }
 
-    private void checkIfAuthorized(Long userId) {
+    private void checkIfAuthorizedToEditReservation(Long userId) {
         String reservationOwnerUsername = userService.getById(userId).getUsername();
         if (!reservationOwnerUsername.equals(jwtTokenUtil.getUsername())) {
             throw new CarRentalBadRequestException(BadRequest.UNAUTHORIZED.getErrorMessage());
@@ -167,5 +166,9 @@ public class ReservationService {
             reservationList = reservationRepository.getByCar(carId);
         }
         return reservationList;
+    }
+
+    public List<ReservedDates> getReservedDatesByCar(Long carId) {
+        return reservationRepository.getReservedDatesByCar(carId);
     }
 }

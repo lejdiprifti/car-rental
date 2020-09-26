@@ -50,15 +50,16 @@ public class CategoryThenStage extends Stage<CategoryThenStage> {
         return query.getResultList();
     }
 
-    public CategoryThenStage a_bad_request_exception_with_message_$_is_thrown(String errorMessage) {
+    public void a_bad_request_exception_with_message_$_is_thrown(String errorMessage) {
         assertNotNull("CarRentalBadRequestException is not null", carRentalBadRequestException);
-        assertEquals("Error message of CarRentalBadRequestException is", errorMessage, carRentalBadRequestException.getMessage());
-        return self();
+        assertEquals("Error message of CarRentalBadRequestException is", errorMessage,
+                carRentalBadRequestException.getMessage());
     }
 
     public CategoryThenStage a_not_found_exception_with_message_$_is_thrown(String errorMessage) {
         assertNotNull("CarRentalNotFoundException is not null", carRentalNotFoundException);
-        assertEquals("Error message of CarRentalNotFoundException is", errorMessage, carRentalNotFoundException.getMessage());
+        assertEquals("Error message of CarRentalNotFoundException is", errorMessage,
+                carRentalNotFoundException.getMessage());
         return self();
     }
 }

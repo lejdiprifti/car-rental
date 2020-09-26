@@ -8,7 +8,7 @@ import com.ikubinfo.rental.exceptions.messages.BadRequest;
 import com.ikubinfo.rental.exceptions.messages.NotFound;
 import com.ikubinfo.rental.model.ReservationModel;
 import com.ikubinfo.rental.model.UserModel;
-import com.ikubinfo.rental.model.UserPage;
+import com.ikubinfo.rental.model.page.UserPage;
 import com.ikubinfo.rental.repository.UserRepository;
 import com.ikubinfo.rental.security.JwtTokenUtil;
 import org.slf4j.Logger;
@@ -25,14 +25,19 @@ import java.util.List;
 public class UserService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private UserConverter userConverter;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+
     @Autowired
     private ReservationService reservationService;
 

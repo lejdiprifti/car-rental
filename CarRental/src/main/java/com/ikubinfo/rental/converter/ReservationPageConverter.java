@@ -1,7 +1,7 @@
 package com.ikubinfo.rental.converter;
 
 import com.ikubinfo.rental.model.ReservationModel;
-import com.ikubinfo.rental.model.ReservationPage;
+import com.ikubinfo.rental.model.page.ReservationPage;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 

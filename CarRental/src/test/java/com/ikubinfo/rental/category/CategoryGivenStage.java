@@ -56,9 +56,13 @@ public class CategoryGivenStage extends Stage<CategoryGivenStage> {
 
     public CategoryGivenStage category_has_cars() {
         admin_adds_new_category();
-        CarModel carModel = createCarModelWithStatus(StatusEnum.AVAILABLE);
-        carModel.setCategoryId(savedCategoryModel.getId());
-        carService.save(carModel, createMultipartFile());
+        addCarToCategory(savedCategoryModel);
         return self();
+    }
+
+    private void addCarToCategory(CategoryModel categoryModel) {
+        CarModel carModel = createCarModelWithStatus(StatusEnum.AVAILABLE);
+        carModel.setCategoryId(categoryModel.getId());
+        carService.save(carModel, createMultipartFile());
     }
 }

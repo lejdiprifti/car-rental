@@ -1,5 +1,6 @@
-package com.ikubinfo.rental.model;
+package com.ikubinfo.rental.model.page;
 
+import com.ikubinfo.rental.model.UserModel;
 import lombok.Data;
 
 import java.util.List;
