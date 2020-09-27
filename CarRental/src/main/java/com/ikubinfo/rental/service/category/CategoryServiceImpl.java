@@ -4,6 +4,7 @@ import com.ikubinfo.rental.service.authorization.AuthorizationService;
 import com.ikubinfo.rental.service.car.CarService;
 import com.ikubinfo.rental.service.category.converter.CategoryConverter;
 import com.ikubinfo.rental.service.category.dto.CategoryEntity;
+import com.ikubinfo.rental.service.category.dto.CategoryFilter;
 import com.ikubinfo.rental.service.category.dto.CategoryModel;
 import com.ikubinfo.rental.service.category.dto.CategoryPage;
 import com.ikubinfo.rental.service.category.repository.CategoryRepository;
@@ -36,11 +37,11 @@ public class CategoryServiceImpl implements CategoryService {
     private CarService carService;
 
     @Override
-    public CategoryPage getAll(int startIndex, int pageSize) {
-        LOGGER.info("Getting all the categories from startIndex {} with pageSize {}", startIndex, pageSize);
+    public CategoryPage getAll(CategoryFilter categoryFilter) {
+        LOGGER.info("Getting all the categories from startIndex {} with pageSize {}", categoryFilter.getStartIndex(), categoryFilter.getPageSize());
         CategoryPage categoryPage = new CategoryPage();
         categoryPage.setTotalRecords(categoryRepository.countCategories());
-        categoryPage.setCategoryList(categoryConverter.toModel(categoryRepository.getAll(startIndex, pageSize)));
+        categoryPage.setCategoryList(categoryConverter.toModel(categoryRepository.getAll(categoryFilter)));
         return categoryPage;
     }
 

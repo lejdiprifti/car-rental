@@ -1,0 +1,1514 @@
+{
+  "className": "com.ikubinfo.rental.reservation.ReservationServiceTest",
+  "name": "Reservation Service",
+  "scenarios": [
+    {
+      "className": "com.ikubinfo.rental.reservation.ReservationServiceTest",
+      "testMethodName": "user_cannot_update_reservation_with_startDate_and_endDate_in_the_middle_of_previous_reservation",
+      "description": "user cannot update reservation with startDate and endDate in the middle of previous reservation",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user has made two reservations",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user has made two reservations"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 182133700
+            },
+            {
+              "name": "user tries to update reservation with startDate and endDate in the middle of previous reservation",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user tries to update reservation with startDate and endDate in the middle of previous reservation"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 36610400
+            },
+            {
+              "name": "a bad request exception with message $ is thrown",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a bad request exception with message"
+                },
+                {
+                  "value": "Car is reserved during the specified dates.",
+                  "argumentInfo": {
+                    "argumentName": "errorMessage",
+                    "formattedValue": "Car is reserved during the specified dates."
+                  }
+                },
+                {
+                  "value": "is thrown"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 1821400
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 241070300
+        }
+      ],
+      "durationInNanos": 241070300,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.reservation.ReservationServiceTest",
+      "testMethodName": "admin_cancels_reservations_by_car_and_date",
+      "description": "admin cancels reservations by car and date",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user has made two reservations",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user has made two reservations"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 72921400
+            },
+            {
+              "name": "user is logged in as admin",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user is logged in as admin"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 5726200
+            },
+            {
+              "name": "admin tries to cancel reservations by car and date",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "admin tries to cancel reservations by car and date"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 9688700
+            },
+            {
+              "name": "there are exactly $ reservations of user $",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "there are exactly"
+                },
+                {
+                  "value": "1",
+                  "argumentInfo": {
+                    "argumentName": "numberOfReservations",
+                    "formattedValue": "1"
+                  }
+                },
+                {
+                  "value": "reservations of user"
+                },
+                {
+                  "value": "usertester",
+                  "argumentInfo": {
+                    "argumentName": "username",
+                    "formattedValue": "usertester"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 13665400
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 225290500
+        }
+      ],
+      "durationInNanos": 225290500,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.reservation.ReservationServiceTest",
+      "testMethodName": "user_cannot_update_reservation_with_endDate_in_the_middle_of_previous_reservation",
+      "description": "user cannot update reservation with endDate in the middle of previous reservation",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user has made two reservations",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user has made two reservations"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 93640800
+            },
+            {
+              "name": "user tries to update reservation with endDate in the middle of previous reservation",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user tries to update reservation with endDate in the middle of previous reservation"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 21721200
+            },
+            {
+              "name": "a bad request exception with message $ is thrown",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a bad request exception with message"
+                },
+                {
+                  "value": "Car is reserved during the specified dates.",
+                  "argumentInfo": {
+                    "argumentName": "errorMessage",
+                    "formattedValue": "Car is reserved during the specified dates."
+                  }
+                },
+                {
+                  "value": "is thrown"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 4676500
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 132639400
+        }
+      ],
+      "durationInNanos": 132639400,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.reservation.ReservationServiceTest",
+      "testMethodName": "user_cannot_update_reservation_with_previous_reservation_dates_in_the_middle_of_the_new_dates",
+      "description": "user cannot update reservation with previous reservation dates in the middle of the new dates",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user has made two reservations",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user has made two reservations"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 72906300
+            },
+            {
+              "name": "user tries to update reservation with previous reservation dates in the middle of the new dates",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user tries to update reservation with previous reservation dates in the middle of the new dates"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 23934900
+            },
+            {
+              "name": "a bad request exception with message $ is thrown",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a bad request exception with message"
+                },
+                {
+                  "value": "Car is reserved during the specified dates.",
+                  "argumentInfo": {
+                    "argumentName": "errorMessage",
+                    "formattedValue": "Car is reserved during the specified dates."
+                  }
+                },
+                {
+                  "value": "is thrown"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 4328800
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 116254500
+        }
+      ],
+      "durationInNanos": 116254500,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.reservation.ReservationServiceTest",
+      "testMethodName": "user_cannot_reserve_car_with_startDate_and_endDate_in_the_middle_of_previous_reservation",
+      "description": "user cannot reserve car with startDate and endDate in the middle of previous reservation",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user reserves car",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user reserves car"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 67965900
+            },
+            {
+              "name": "user tries to reserve car with startDate and endDate in the middle of previous reservation",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user tries to reserve car with startDate and endDate in the middle of previous reservation"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 7401800
+            },
+            {
+              "name": "a bad request exception with message $ is thrown",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a bad request exception with message"
+                },
+                {
+                  "value": "Car is reserved during the specified dates.",
+                  "argumentInfo": {
+                    "argumentName": "errorMessage",
+                    "formattedValue": "Car is reserved during the specified dates."
+                  }
+                },
+                {
+                  "value": "is thrown"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 3120600
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 90244000
+        }
+      ],
+      "durationInNanos": 90244000,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.reservation.ReservationServiceTest",
+      "testMethodName": "user_reserves_car_successfully",
+      "description": "user reserves car successfully",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "admin adds an available car",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "admin adds an available car"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 46100
+            },
+            {
+              "name": "user is logged in as user",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user is logged in as user"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 43425900
+            },
+            {
+              "name": "user tries to reserve car",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user tries to reserve car"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 22241300
+            },
+            {
+              "name": "there are exactly $ reservations of user $",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "there are exactly"
+                },
+                {
+                  "value": "1",
+                  "argumentInfo": {
+                    "argumentName": "numberOfReservations",
+                    "formattedValue": "1"
+                  }
+                },
+                {
+                  "value": "reservations of user"
+                },
+                {
+                  "value": "usertester",
+                  "argumentInfo": {
+                    "argumentName": "username",
+                    "formattedValue": "usertester"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 11498400
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 207078700
+        }
+      ],
+      "durationInNanos": 207078700,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.reservation.ReservationServiceTest",
+      "testMethodName": "unauthorized_user_cannot_cancel_reservation_of_another_user",
+      "description": "unauthorized user cannot cancel reservation of another user",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user reserves car",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user reserves car"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 43500
+            },
+            {
+              "name": "user is logged in as admin",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user is logged in as admin"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 9060600
+            },
+            {
+              "name": "unauthorized user tries to cancel reservation of another user",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "unauthorized user tries to cancel reservation of another user"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 91728000
+            },
+            {
+              "name": "a bad request exception with message $ is thrown",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a bad request exception with message"
+                },
+                {
+                  "value": "User is unauthorized to do this action.",
+                  "argumentInfo": {
+                    "argumentName": "errorMessage",
+                    "formattedValue": "User is unauthorized to do this action."
+                  }
+                },
+                {
+                  "value": "is thrown"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 43874200
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 482886200
+        }
+      ],
+      "durationInNanos": 482886200,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.reservation.ReservationServiceTest",
+      "testMethodName": "user_cannot_reserve_car_with_invalid_dates",
+      "description": "user cannot reserve car with invalid dates",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "admin adds an available car",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "admin adds an available car"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 51900
+            },
+            {
+              "name": "user is logged in as user",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user is logged in as user"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 27344700
+            },
+            {
+              "name": "user tries to reserve car with invalid dates",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user tries to reserve car with invalid dates"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 1160800
+            },
+            {
+              "name": "a bad request exception with message $ is thrown",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a bad request exception with message"
+                },
+                {
+                  "value": "EndDate cannot be before StartDate.",
+                  "argumentInfo": {
+                    "argumentName": "errorMessage",
+                    "formattedValue": "EndDate cannot be before StartDate."
+                  }
+                },
+                {
+                  "value": "is thrown"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 5409200
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 144769500
+        }
+      ],
+      "durationInNanos": 144769500,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.reservation.ReservationServiceTest",
+      "testMethodName": "user_reserves_car_with_startDate_and_endDate_after_the_previous_reservation",
+      "description": "user reserves car with startDate and endDate after the previous reservation",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user reserves car",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user reserves car"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 116443400
+            },
+            {
+              "name": "user tries to reserve car with startDate and endDate after the previous reservation",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user tries to reserve car with startDate and endDate after the previous reservation"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 16703400
+            },
+            {
+              "name": "there are exactly $ reservations of user $",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "there are exactly"
+                },
+                {
+                  "value": "2",
+                  "argumentInfo": {
+                    "argumentName": "numberOfReservations",
+                    "formattedValue": "2"
+                  }
+                },
+                {
+                  "value": "reservations of user"
+                },
+                {
+                  "value": "usertester",
+                  "argumentInfo": {
+                    "argumentName": "username",
+                    "formattedValue": "usertester"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 62371700
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 261668500
+        }
+      ],
+      "durationInNanos": 261668500,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.reservation.ReservationServiceTest",
+      "testMethodName": "unauthorized_user_cannot_update_reservation_of_another_user",
+      "description": "unauthorized user cannot update reservation of another user",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user reserves car",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user reserves car"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 48500
+            },
+            {
+              "name": "user is logged in as admin",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user is logged in as admin"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 5728200
+            },
+            {
+              "name": "unauthorized user tries to update reservation of another user",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "unauthorized user tries to update reservation of another user"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 45145100
+            },
+            {
+              "name": "a bad request exception with message $ is thrown",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a bad request exception with message"
+                },
+                {
+                  "value": "User is unauthorized to do this action.",
+                  "argumentInfo": {
+                    "argumentName": "errorMessage",
+                    "formattedValue": "User is unauthorized to do this action."
+                  }
+                },
+                {
+                  "value": "is thrown"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 16139400
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 208461200
+        }
+      ],
+      "durationInNanos": 208461200,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.reservation.ReservationServiceTest",
+      "testMethodName": "user_cannot_reserve_car_with_startDate_in_the_middle_of_previous_reservation",
+      "description": "user cannot reserve car with startDate in the middle of previous reservation",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user reserves car",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user reserves car"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 85809100
+            },
+            {
+              "name": "user tries to reserve car with startDate in the middle of previous reservation",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user tries to reserve car with startDate in the middle of previous reservation"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 18246100
+            },
+            {
+              "name": "a bad request exception with message $ is thrown",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a bad request exception with message"
+                },
+                {
+                  "value": "Car is reserved during the specified dates.",
+                  "argumentInfo": {
+                    "argumentName": "errorMessage",
+                    "formattedValue": "Car is reserved during the specified dates."
+                  }
+                },
+                {
+                  "value": "is thrown"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 13839700
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 197562100
+        }
+      ],
+      "durationInNanos": 197562100,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.reservation.ReservationServiceTest",
+      "testMethodName": "user_cannot_update_reservation_with_invalid_dates",
+      "description": "user cannot update reservation with invalid dates",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user reserves car",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user reserves car"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 284085400
+            },
+            {
+              "name": "user tries to update reservation with invalid dates",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user tries to update reservation with invalid dates"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 10141300
+            },
+            {
+              "name": "a bad request exception with message $ is thrown",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a bad request exception with message"
+                },
+                {
+                  "value": "EndDate cannot be before StartDate.",
+                  "argumentInfo": {
+                    "argumentName": "errorMessage",
+                    "formattedValue": "EndDate cannot be before StartDate."
+                  }
+                },
+                {
+                  "value": "is thrown"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 3258600
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 320118900
+        }
+      ],
+      "durationInNanos": 320118900,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.reservation.ReservationServiceTest",
+      "testMethodName": "user_updates_reservation_with_dates_after_the_previous_reservation_dates",
+      "description": "user updates reservation with dates after the previous reservation dates",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user has made two reservations",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user has made two reservations"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 304055300
+            },
+            {
+              "name": "user tries to update reservation with dates after the previous reservation dates",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user tries to update reservation with dates after the previous reservation dates"
+                },
+                {
+                  "value": "2020-10-11T12:34:35.856146600",
+                  "argumentInfo": {
+                    "argumentName": "endDate",
+                    "formattedValue": "2020-10-11T12:34:35.856146600"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 13549000
+            },
+            {
+              "name": "there are exactly $ reservations of user $",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "there are exactly"
+                },
+                {
+                  "value": "2",
+                  "argumentInfo": {
+                    "argumentName": "numberOfReservations",
+                    "formattedValue": "2"
+                  }
+                },
+                {
+                  "value": "reservations of user"
+                },
+                {
+                  "value": "usertester",
+                  "argumentInfo": {
+                    "argumentName": "username",
+                    "formattedValue": "usertester"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 63100
+            },
+            {
+              "name": "there are exactly $ reservations with end date $",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "there are exactly"
+                },
+                {
+                  "value": "1",
+                  "argumentInfo": {
+                    "argumentName": "numberOfReservations",
+                    "formattedValue": "1"
+                  }
+                },
+                {
+                  "value": "reservations with end date"
+                },
+                {
+                  "value": "2020-10-11T12:34:35.856146600",
+                  "argumentInfo": {
+                    "argumentName": "endDate",
+                    "formattedValue": "2020-10-11T12:34:35.856146600"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 28168400
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 466328600
+        }
+      ],
+      "durationInNanos": 466328600,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.reservation.ReservationServiceTest",
+      "testMethodName": "user_cannot_update_reservation_with_startDate_in_the_middle_of_previous_reservation",
+      "description": "user cannot update reservation with startDate in the middle of previous reservation",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user has made two reservations",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user has made two reservations"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 151676000
+            },
+            {
+              "name": "user tries to update reservation with startDate in the middle of previous reservation",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user tries to update reservation with startDate in the middle of previous reservation"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 9263400
+            },
+            {
+              "name": "a bad request exception with message $ is thrown",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a bad request exception with message"
+                },
+                {
+                  "value": "Car is reserved during the specified dates.",
+                  "argumentInfo": {
+                    "argumentName": "errorMessage",
+                    "formattedValue": "Car is reserved during the specified dates."
+                  }
+                },
+                {
+                  "value": "is thrown"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 10837700
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 201912300
+        }
+      ],
+      "durationInNanos": 201912300,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.reservation.ReservationServiceTest",
+      "testMethodName": "user_cannot_reserve_car_with_previous_reservation_dates_in_the_middle_of_the_new_dates",
+      "description": "user cannot reserve car with previous reservation dates in the middle of the new dates",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user reserves car",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user reserves car"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 61097400
+            },
+            {
+              "name": "user tries to reserve car with previous reservation dates in the middle of the new dates",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user tries to reserve car with previous reservation dates in the middle of the new dates"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 8301300
+            },
+            {
+              "name": "a bad request exception with message $ is thrown",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a bad request exception with message"
+                },
+                {
+                  "value": "Car is reserved during the specified dates.",
+                  "argumentInfo": {
+                    "argumentName": "errorMessage",
+                    "formattedValue": "Car is reserved during the specified dates."
+                  }
+                },
+                {
+                  "value": "is thrown"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 4848200
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 85849600
+        }
+      ],
+      "durationInNanos": 85849600,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.reservation.ReservationServiceTest",
+      "testMethodName": "user_updates_reservation_successfully",
+      "description": "user updates reservation successfully",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user reserves car",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user reserves car"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 62063000
+            },
+            {
+              "name": "user tries to update reservation with startDate",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user tries to update reservation with startDate"
+                },
+                {
+                  "value": "2020-09-28T12:34:35.856146600",
+                  "argumentInfo": {
+                    "argumentName": "startDate",
+                    "formattedValue": "2020-09-28T12:34:35.856146600"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 49265300
+            },
+            {
+              "name": "there are exactly $ reservations with start date $",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "there are exactly"
+                },
+                {
+                  "value": "1",
+                  "argumentInfo": {
+                    "argumentName": "numberOfReservations",
+                    "formattedValue": "1"
+                  }
+                },
+                {
+                  "value": "reservations with start date"
+                },
+                {
+                  "value": "2020-09-28T12:34:35.856146600",
+                  "argumentInfo": {
+                    "argumentName": "startDate",
+                    "formattedValue": "2020-09-28T12:34:35.856146600"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 15010500
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 170685700
+        }
+      ],
+      "durationInNanos": 170685700,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.reservation.ReservationServiceTest",
+      "testMethodName": "user_cannot_reserve_car_with_endDate_in_the_middle_of_previous_reservation",
+      "description": "user cannot reserve car with endDate in the middle of previous reservation",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user reserves car",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user reserves car"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 72044800
+            },
+            {
+              "name": "user tries to reserve car with endDate in the middle of previous reservation",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user tries to reserve car with endDate in the middle of previous reservation"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 6998500
+            },
+            {
+              "name": "a bad request exception with message $ is thrown",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a bad request exception with message"
+                },
+                {
+                  "value": "Car is reserved during the specified dates.",
+                  "argumentInfo": {
+                    "argumentName": "errorMessage",
+                    "formattedValue": "Car is reserved during the specified dates."
+                  }
+                },
+                {
+                  "value": "is thrown"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 1376700
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 100125300
+        }
+      ],
+      "durationInNanos": 100125300,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.reservation.ReservationServiceTest",
+      "testMethodName": "user_cancel_reservation_successfully",
+      "description": "user cancel reservation successfully",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user reserves car",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user reserves car"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 49331500
+            },
+            {
+              "name": "user tries to cancel reservation",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user tries to cancel reservation"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 9410300
+            },
+            {
+              "name": "there are exactly $ reservations of user $",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "there are exactly"
+                },
+                {
+                  "value": "0",
+                  "argumentInfo": {
+                    "argumentName": "numberOfReservations",
+                    "formattedValue": "0"
+                  }
+                },
+                {
+                  "value": "reservations of user"
+                },
+                {
+                  "value": "usertester",
+                  "argumentInfo": {
+                    "argumentName": "username",
+                    "formattedValue": "usertester"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 4847000
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 78175800
+        }
+      ],
+      "durationInNanos": 78175800,
+      "executionStatus": "SUCCESS"
+    }
+  ],
+  "tagMap": {}
+}

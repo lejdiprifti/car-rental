@@ -1,0 +1,128 @@
+{
+  "className": "com.ikubinfo.rental.car.CarServiceTest",
+  "name": "Car Service",
+  "scenarios": [
+    {
+      "className": "com.ikubinfo.rental.car.CarServiceTest",
+      "testMethodName": "exception_is_thrown_for_non_existing_car",
+      "description": "exception is thrown for non existing car",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user is logged in as admin",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user is logged in as admin"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 397808900
+            },
+            {
+              "name": "admin tries to get car by id $",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "admin tries to get car by id"
+                },
+                {
+                  "value": "0",
+                  "argumentInfo": {
+                    "argumentName": "carId",
+                    "formattedValue": "0"
+                  }
+                }
+              ],
+              "status": "FAILED",
+              "durationInNanos": 14152400
+            },
+            {
+              "name": "a not found exception with message $ is thrown",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a not found exception with message"
+                },
+                {
+                  "value": "Car not found",
+                  "argumentInfo": {
+                    "argumentName": "errorMessage",
+                    "formattedValue": "Car not found"
+                  }
+                },
+                {
+                  "value": "is thrown"
+                }
+              ],
+              "status": "SKIPPED",
+              "durationInNanos": 0
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "FAILED",
+          "success": false,
+          "errorMessage": "java.lang.NullPointerException: null",
+          "stackTrace": [
+            "com.ikubinfo.rental.car.CarWhenStage.admin_tries_to_get_car_by_id_$(CarWhenStage.java:87)",
+            "com.ikubinfo.rental.car.CarWhenStage$ByteBuddy$Lc5ZVw2A.admin_tries_to_get_car_by_id_$$accessor$Bb5Uesik(Unknown Source)",
+            "com.ikubinfo.rental.car.CarWhenStage$ByteBuddy$Lc5ZVw2A$auxiliary$aFI9gw4j.call(Unknown Source)",
+            "com.ikubinfo.rental.car.CarWhenStage$ByteBuddy$Lc5ZVw2A.admin_tries_to_get_car_by_id_$(Unknown Source)",
+            "com.ikubinfo.rental.car.CarServiceTest.exception_is_thrown_for_non_existing_car(CarServiceTest.java:51)",
+            "java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)",
+            "java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)",
+            "java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)",
+            "org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)",
+            "org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)",
+            "org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)",
+            "org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)",
+            "org.springframework.test.context.junit4.statements.RunBeforeTestExecutionCallbacks.evaluate(RunBeforeTestExecutionCallbacks.java:74)",
+            "org.springframework.test.context.junit4.statements.RunAfterTestExecutionCallbacks.evaluate(RunAfterTestExecutionCallbacks.java:84)",
+            "org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:75)",
+            "org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:86)",
+            "com.tngtech.jgiven.junit.JGivenMethodRule$1.evaluate(JGivenMethodRule.java:73)",
+            "org.springframework.test.context.junit4.statements.SpringRepeat.evaluate(SpringRepeat.java:84)",
+            "org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)",
+            "org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:251)",
+            "org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:97)",
+            "org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)",
+            "org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)",
+            "org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)",
+            "org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)",
+            "org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)",
+            "org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)",
+            "org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:70)",
+            "org.junit.rules.TestWatcher$1.evaluate(TestWatcher.java:55)",
+            "org.junit.rules.RunRules.evaluate(RunRules.java:20)",
+            "org.junit.runners.ParentRunner.run(ParentRunner.java:363)",
+            "org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:190)",
+            "org.junit.runner.JUnitCore.run(JUnitCore.java:137)",
+            "com.intellij.junit4.JUnit4IdeaTestRunner.startRunnerWithArgs(JUnit4IdeaTestRunner.java:68)",
+            "com.intellij.rt.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:33)",
+            "com.intellij.rt.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:230)",
+            "com.intellij.rt.junit.JUnitStarter.main(JUnitStarter.java:58)"
+          ],
+          "durationInNanos": 824768600
+        }
+      ],
+      "durationInNanos": 824768600
+    }
+  ],
+  "tagMap": {}
+}

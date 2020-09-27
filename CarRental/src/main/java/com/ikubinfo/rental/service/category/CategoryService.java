@@ -1,5 +1,6 @@
 package com.ikubinfo.rental.service.category;
 
+import com.ikubinfo.rental.service.category.dto.CategoryFilter;
 import com.ikubinfo.rental.service.category.dto.CategoryModel;
 import com.ikubinfo.rental.service.category.dto.CategoryPage;
 import org.springframework.web.multipart.MultipartFile;
@@ -8,7 +9,7 @@ import java.util.List;
 
 public interface CategoryService {
 
-    CategoryPage getAll(int startIndex, int pageSize);
+    CategoryPage getAll(CategoryFilter categoryFilter);
 
     List<CategoryModel> getAll();
 

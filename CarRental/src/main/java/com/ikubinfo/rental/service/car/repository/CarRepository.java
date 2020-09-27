@@ -1,25 +1,23 @@
 package com.ikubinfo.rental.service.car.repository;
 
 import com.ikubinfo.rental.service.car.dto.CarEntity;
+import com.ikubinfo.rental.service.car.dto.CarFilter;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 
 public interface CarRepository {
 
     CarEntity getById(Long carId);
 
-    List<Object[]> getAll(int startIndex, int pageSize, List<Long> selectedCategoryIds, LocalDateTime startDate2,
-                          LocalDateTime endDate2, String brand);
+    List<Object[]> getAll(CarFilter carFilter);
 
-    Long countAvailableCars(List<Long> selectedCategoryIds, LocalDateTime startDate2, LocalDateTime endDate2,
-                            String brand);
+    Long countAvailableCars(CarFilter carFilter);
 
-    Long countAllCars(List<Long> selectedCategoryIds, LocalDateTime startDate2, LocalDateTime endDate2,
-                      String brand);
+    Long countAllCars(CarFilter carFilter);
 
-    List<Object[]> getAllAvailable(int startIndex, int pageSize, List<Long> selectedCategoryIds,
-                                   LocalDateTime startDate2, LocalDateTime endDate2, String brand);
+    List<Object[]> getAllAvailable(CarFilter carFilter);
 
     CarEntity getByPlate(String plate);
 

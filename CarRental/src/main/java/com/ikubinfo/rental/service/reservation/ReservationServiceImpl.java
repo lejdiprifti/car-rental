@@ -9,10 +9,7 @@ import com.ikubinfo.rental.service.exceptions.messages.BadRequest;
 import com.ikubinfo.rental.service.exceptions.messages.NotFound;
 import com.ikubinfo.rental.service.reservation.converter.ReservationConverter;
 import com.ikubinfo.rental.service.reservation.converter.ReservationPageConverter;
-import com.ikubinfo.rental.service.reservation.dto.ReservationEntity;
-import com.ikubinfo.rental.service.reservation.dto.ReservationModel;
-import com.ikubinfo.rental.service.reservation.dto.ReservationPage;
-import com.ikubinfo.rental.service.reservation.dto.ReservedDates;
+import com.ikubinfo.rental.service.reservation.dto.*;
 import com.ikubinfo.rental.service.reservation.repository.ReservationRepository;
 import com.ikubinfo.rental.service.user.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +18,10 @@ import org.springframework.stereotype.Service;
 import javax.persistence.NoResultException;
 import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
-import static com.ikubinfo.rental.controller.filter.FilterUtils.getFilterData;
+import static com.ikubinfo.rental.service.filter.FilterUtils.getFormattedLocalDateTimes;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -35,9 +33,6 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Autowired
     private AuthorizationService authorizationService;
-
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
     private UserServiceImpl userService;
@@ -55,20 +50,18 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public ReservationPage getByUsername(int startIndex, int pageSize, String carName, String startDate,
-                                         String endDate) {
-        LocalDateTime startDate2 = getFilterData(startDate, endDate).get("startDate");
-        LocalDateTime endDate2 = getFilterData(startDate, endDate).get("endDate");
+    public ReservationPage getByUsername(ReservationFilter reservationFilter) {
+        HashMap<String, LocalDateTime> dateTimeHashMap = getFormattedLocalDateTimes(reservationFilter.getStartDate(), reservationFilter.getEndDate());
+        reservationFilter.setBothLocalDateTimes(dateTimeHashMap);
         List<ReservationModel> reservationList = reservationConverter.toModelObject(reservationRepository
-                .getByUser(jwtTokenUtil.getUsername(), startIndex, pageSize, carName, startDate2, endDate2));
-        Long totalRecords = reservationRepository.countNumberOfReservationsByUsername(jwtTokenUtil.getUsername(),
-                carName, startDate2, endDate2);
+                .getByUser(authorizationService.getCurrentLoggedUserUsername(), reservationFilter));
+        Long totalRecords = reservationRepository.countNumberOfReservationsByUsername(authorizationService.getCurrentLoggedUserUsername(),reservationFilter);
         return reservationPageConverter.toModel(reservationList, totalRecords);
     }
 
     @Override
     public List<ReservationModel> getByUsername() {
-        return reservationConverter.toModelObject(reservationRepository.getByUser(jwtTokenUtil.getUsername()));
+        return reservationConverter.toModelObject(reservationRepository.getByUser(authorizationService.getCurrentLoggedUserUsername()));
     }
 
     @Override
@@ -92,7 +85,7 @@ public class ReservationServiceImpl implements ReservationService {
         ReservationEntity entity = reservationConverter.toEntity(model);
         entity.setCreated_at(Calendar.getInstance());
         entity.setActive(true);
-        entity.setUserId(userService.getByUsername(jwtTokenUtil.getUsername()).getId());
+        entity.setUserId(userService.getByUsername(authorizationService.getCurrentLoggedUserUsername()).getId());
         ReservationEntity reservationEntity = reservationRepository.save(entity);
         emailService.sendConfirmationMail(reservationEntity, model.getFee());
         return reservationConverter.toModel(reservationEntity);
@@ -148,7 +141,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     private void checkIfAuthorizedToEditReservation(Long userId) {
         String reservationOwnerUsername = userService.getById(userId).getUsername();
-        if (!reservationOwnerUsername.equals(jwtTokenUtil.getUsername())) {
+        if (!reservationOwnerUsername.equals(authorizationService.getCurrentLoggedUserUsername())) {
             throw new CarRentalBadRequestException(BadRequest.UNAUTHORIZED.getErrorMessage());
         }
     }

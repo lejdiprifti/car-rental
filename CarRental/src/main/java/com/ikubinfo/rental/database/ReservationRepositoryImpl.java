@@ -1,6 +1,7 @@
 package com.ikubinfo.rental.database;
 
 import com.ikubinfo.rental.service.reservation.dto.ReservationEntity;
+import com.ikubinfo.rental.service.reservation.dto.ReservationFilter;
 import com.ikubinfo.rental.service.reservation.dto.ReservationModel;
 import com.ikubinfo.rental.service.reservation.dto.ReservedDates;
 import com.ikubinfo.rental.service.reservation.repository.ReservationRepository;
@@ -40,8 +41,7 @@ public class ReservationRepositoryImpl implements ReservationRepository {
 
     @Override
     @Transactional
-    public List<Object[]> getByUser(String username, int startIndex, int pageSize, String carName,
-                                    LocalDateTime startDate, LocalDateTime endDate) throws NoResultException {
+    public List<Object[]> getByUser(String username, ReservationFilter reservationFilter) throws NoResultException {
         Query query = em.createQuery(
                 "Select r.id, r.startDate, r.endDate, c.id, c.name, c.type, c.price, u.id, u.firstName, u.lastName,c.plate, c.photo from ReservationEntity r "
                         + "Join CarEntity c ON c.id = r.car.id " + "Join UserEntity u ON u.id = r.user.id "
@@ -49,11 +49,11 @@ public class ReservationRepositoryImpl implements ReservationRepository {
                         + "and COALESCE(r.endDate,?5) <= ?5 " + "Order by r.created_at DESC");
         query.setParameter(1, username);
         query.setParameter(2, true);
-        query.setParameter(3, "%" + carName + "%");
-        query.setParameter(4, startDate);
-        query.setParameter(5, endDate);
-        query.setFirstResult(startIndex);
-        query.setMaxResults(pageSize);
+        query.setParameter(3, "%" + reservationFilter.getCarName() + "%");
+        query.setParameter(4, reservationFilter.getStartLocalDateTime());
+        query.setParameter(5, reservationFilter.getEndLocalDateTime());
+        query.setFirstResult(reservationFilter.getStartIndex());
+        query.setMaxResults(reservationFilter.getPageSize());
         return query.getResultList();
     }
 
@@ -140,17 +140,16 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     }
 
     @Override
-    public Long countNumberOfReservationsByUsername(String username, String carName, LocalDateTime startDate,
-                                                    LocalDateTime endDate) {
+    public Long countNumberOfReservationsByUsername(String username, ReservationFilter reservationFilter) {
         TypedQuery<Long> query = em.createQuery(
                 "Select Count(r.id) from ReservationEntity r where r.user.username= ?1 and r.active = ?2 and (COALESCE(r.car.name, ?3) LIKE ?3 or COALESCE(r.car.type,?3) LIKE ?3) and COALESCE(r.startDate,?4) >= ?4 "
                         + " and COALESCE(r.endDate,?5) <= ?5 ",
                 Long.class);
         query.setParameter(1, username);
         query.setParameter(2, true);
-        query.setParameter(3, "%" + carName + "%");
-        query.setParameter(4, startDate);
-        query.setParameter(5, endDate);
+        query.setParameter(3, "%" + reservationFilter.getCarName() + "%");
+        query.setParameter(4, reservationFilter.getStartLocalDateTime());
+        query.setParameter(5, reservationFilter.getEndLocalDateTime());
         return query.getSingleResult();
     }
 

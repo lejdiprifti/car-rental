@@ -1,6 +1,7 @@
 package com.ikubinfo.rental.service.reservation.repository;
 
 import com.ikubinfo.rental.service.reservation.dto.ReservationEntity;
+import com.ikubinfo.rental.service.reservation.dto.ReservationFilter;
 import com.ikubinfo.rental.service.reservation.dto.ReservationModel;
 import com.ikubinfo.rental.service.reservation.dto.ReservedDates;
 
@@ -14,8 +15,7 @@ public interface ReservationRepository {
 
     ReservationEntity getById(Long id);
 
-    List<Object[]> getByUser(String username, int startIndex, int pageSize, String carName,
-                             LocalDateTime startDate, LocalDateTime endDate);
+    List<Object[]> getByUser(String username, ReservationFilter reservationFilter);
 
     List<Object[]> getByUser(String username);
 
@@ -31,8 +31,7 @@ public interface ReservationRepository {
 
     List<ReservationEntity> getByCarAndDate(LocalDateTime date, Long carId);
 
-    Long countNumberOfReservationsByUsername(String username, String carName, LocalDateTime startDate,
-                                             LocalDateTime endDate);
+    Long countNumberOfReservationsByUsername(String username, ReservationFilter reservationFilter);
 
     ReservationEntity save(ReservationEntity entity);
 

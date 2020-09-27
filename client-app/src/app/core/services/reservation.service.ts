@@ -5,12 +5,14 @@ import { ApiService } from "../utilities/api.service";
 import { ReservationPage } from "../models/reservation-page";
 import { DatePipe } from "@angular/common";
 import { HttpParams } from "@angular/common/http";
+import { ReservationFilter } from '../models/reservation-filter';
 
 @Injectable({
   providedIn: "root"
 })
 export class ReservationService {
   private url: string = "reservations";
+  private reservationFilter: ReservationFilter;
   constructor(private apiService: ApiService, private datePipe: DatePipe) {}
 
   getAll(): Observable<Array<Reservation>> {
@@ -18,7 +20,7 @@ export class ReservationService {
   }
 
   add(model: Reservation): Observable<void> {
-    return this.apiService.post(this.url, model);
+    return this.apiService.post(this.url + '/add', model);
   }
 
   edit(model: Reservation, id: number): Observable<void> {
@@ -36,32 +38,23 @@ export class ReservationService {
     startDate?: Date,
     endDate?: Date
   ): Observable<ReservationPage> {
-    let params = new HttpParams();
+    this.reservationFilter = {};
+    this.reservationFilter.startIndex = startIndex;
+    this.reservationFilter.pageSize = pageSize;
     if (carName) {
-      params = params.set("carName", carName);
+      this.reservationFilter.carName = carName;
     }
 
     if (startDate) {
-      params = params.set(
-        "startDate",
-        this.datePipe.transform(startDate, "yyyy-MM-dd HH:mm:ss")
-      );
+      this.reservationFilter.startDate = this.datePipe.transform(startDate, "yyyy-MM-dd HH:mm:ss");
     }
 
     if (endDate) {
-      params = params.set(
-        "endDate",
-        this.datePipe.transform(endDate, "yyyy-MM-dd HH:mm:ss")
-      );
+      this.reservationFilter.endDate = this.datePipe.transform(endDate, "yyyy-MM-dd HH:mm:ss");
     }
-    return this.apiService.get(
+    return this.apiService.getWithBody(
       this.url +
-        "/user" +
-        "?startIndex=" +
-        startIndex +
-        "&pageSize=" +
-        pageSize,
-      params
+        "/user", this.reservationFilter
     );
   }
 }

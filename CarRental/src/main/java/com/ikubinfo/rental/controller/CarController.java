@@ -2,6 +2,7 @@ package com.ikubinfo.rental.controller;
 
 import com.ikubinfo.rental.service.authorization.AuthorizationService;
 import com.ikubinfo.rental.service.car.CarService;
+import com.ikubinfo.rental.service.car.dto.CarFilter;
 import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.service.car.dto.CarModel;
 import com.ikubinfo.rental.service.car.dto.CarsPage;
@@ -34,19 +35,13 @@ public class CarController {
     @Autowired
     private AuthorizationService authorizationService;
 
-    @GetMapping
-    public ResponseEntity<CarsPage> getAll(@RequestParam("startIndex") int startIndex,
-                                           @RequestParam("pageSize") int pageSize,
-                                           @RequestParam(name = "selectedCategories", required = false) List<Long> selectedCategoryIds,
-                                           @RequestParam(name = "startDate", required = false, defaultValue = "1900-01-01 00:00:00") String startDate,
-                                           @RequestParam(name = "endDate", required = false, defaultValue = "1900-01-01 00:00:00") String endDate,
-                                           @RequestParam(name = "brand", required = false, defaultValue = "") String brand
-    ) {
+    @PostMapping
+    public ResponseEntity<CarsPage> getAll(@RequestBody CarFilter carFilter) {
         try {
             authorizationService.isUserAuthorized();
-            return new ResponseEntity<>(carService.getAllCars(startIndex, pageSize, selectedCategoryIds, startDate, endDate, brand), HttpStatus.OK);
+            return new ResponseEntity<>(carService.getAllCars(carFilter), HttpStatus.OK);
         } catch (CarRentalBadRequestException exception) {
-            return new ResponseEntity<>(carService.getAllAvailableCars(startIndex, pageSize, selectedCategoryIds, startDate, endDate, brand), HttpStatus.OK);
+            return new ResponseEntity<>(carService.getAllAvailableCars(carFilter), HttpStatus.OK);
         }
     }
 
@@ -60,7 +55,7 @@ public class CarController {
         return new ResponseEntity<>(reservationService.getByCar(carId), HttpStatus.OK);
     }
 
-    @PostMapping(consumes = {"multipart/form-data", "application/json"})
+    @PostMapping(path = "/add", consumes = {"multipart/form-data", "application/json"})
     @ResponseStatus(HttpStatus.CREATED)
     public void save(@RequestPart("properties") CarModel model, @RequestPart("file") MultipartFile file) {
         carService.save(model, file);

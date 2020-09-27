@@ -1,6 +1,7 @@
 package com.ikubinfo.rental.controller;
 
 import com.ikubinfo.rental.service.reservation.ReservationService;
+import com.ikubinfo.rental.service.reservation.dto.ReservationFilter;
 import com.ikubinfo.rental.service.reservation.dto.ReservationModel;
 import com.ikubinfo.rental.service.reservation.dto.ReservationPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +32,13 @@ public class ReservationController {
         return new ResponseEntity<>(reservationService.getById(id), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/user", params = {"startIndex", "pageSize"})
-    public ResponseEntity<ReservationPage> getByUsername(@RequestParam("startIndex") int startIndex,
-                                                         @RequestParam("pageSize") int pageSize, @RequestParam(name = "carName", required = false, defaultValue = "") String carName,
-                                                         @RequestParam(name = "startDate", defaultValue = "1900-01-01 00:00:00") String startDate,
-                                                         @RequestParam(name = "endDate", defaultValue = "2900-01-01 00:00:00") String endDate) {
+    @PostMapping(path = "/user")
+    public ResponseEntity<ReservationPage> getByUsername(@RequestBody ReservationFilter reservationFilter) {
         return new ResponseEntity<>(
-                reservationService.getByUsername(startIndex, pageSize, carName, startDate, endDate), HttpStatus.OK);
+                reservationService.getByUsername(reservationFilter), HttpStatus.OK);
     }
 
-    @PostMapping(consumes = "application/json")
+    @PostMapping(path = "/add", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public void save(@RequestBody ReservationModel model) {
         reservationService.save(model);

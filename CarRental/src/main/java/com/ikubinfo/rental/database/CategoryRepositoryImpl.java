@@ -1,6 +1,7 @@
 package com.ikubinfo.rental.database;
 
 import com.ikubinfo.rental.service.category.dto.CategoryEntity;
+import com.ikubinfo.rental.service.category.dto.CategoryFilter;
 import com.ikubinfo.rental.service.category.repository.CategoryRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,12 +37,12 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
     @Override
     @Transactional
-    public List<CategoryEntity> getAll(int startIndex, int pageSize) {
+    public List<CategoryEntity> getAll(CategoryFilter categoryFilter) {
         TypedQuery<CategoryEntity> query = em.createQuery("Select c from CategoryEntity c where c.active = ?1",
                 CategoryEntity.class);
         query.setParameter(1, true);
-        query.setFirstResult(startIndex);
-        query.setMaxResults(pageSize);
+        query.setFirstResult(categoryFilter.getStartIndex());
+        query.setMaxResults(categoryFilter.getPageSize());
         return query.getResultList();
     }
 

@@ -1,5 +1,6 @@
 package com.ikubinfo.rental.service.reservation;
 
+import com.ikubinfo.rental.service.reservation.dto.ReservationFilter;
 import com.ikubinfo.rental.service.reservation.dto.ReservationModel;
 import com.ikubinfo.rental.service.reservation.dto.ReservationPage;
 import com.ikubinfo.rental.service.reservation.dto.ReservedDates;
@@ -11,8 +12,7 @@ public interface ReservationService {
 
     List<ReservationModel> getAll();
 
-    ReservationPage getByUsername(int startIndex, int pageSize, String carName, String startDate,
-                                  String endDate);
+    ReservationPage getByUsername(ReservationFilter reservationFilter);
 
     List<ReservationModel> getByUsername();
 

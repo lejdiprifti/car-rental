@@ -18,6 +18,10 @@ export class ApiService {
     return this.httpClient.get<Model>(BASE_URL + path, { params });
   }
 
+  public getWithBody<Model>(path: string, body: object = {}): Observable<Model> {
+    return this.httpClient.post<Model>(BASE_URL + path, JSON.stringify(body), this.options);
+  }
+
   public put<Model>(path: string, body: object = {}): Observable<Model> {
     return this.httpClient
       .put<Model>(BASE_URL + path, JSON.stringify(body), this.options);

@@ -1,0 +1,785 @@
+{
+  "className": "com.ikubinfo.rental.category.CategoryServiceTest",
+  "name": "Category Service",
+  "scenarios": [
+    {
+      "className": "com.ikubinfo.rental.category.CategoryServiceTest",
+      "testMethodName": "admin_cannot_update_non_existing_category",
+      "description": "admin cannot update non existing category",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user is logged in as admin",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user is logged in as admin"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 8064400
+            },
+            {
+              "name": "admin tries to update category with id $",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "admin tries to update category with id"
+                },
+                {
+                  "value": "0",
+                  "argumentInfo": {
+                    "argumentName": "categoryId",
+                    "formattedValue": "0"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 13348000
+            },
+            {
+              "name": "a not found exception with message $ is thrown",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a not found exception with message"
+                },
+                {
+                  "value": "Category not found",
+                  "argumentInfo": {
+                    "argumentName": "errorMessage",
+                    "formattedValue": "Category not found"
+                  }
+                },
+                {
+                  "value": "is thrown"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 6316200
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 49363100
+        }
+      ],
+      "durationInNanos": 49363100,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.category.CategoryServiceTest",
+      "testMethodName": "admin_cannot_add_category_with_missing_data",
+      "description": "admin cannot add category with missing data",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user is logged in as admin",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user is logged in as admin"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 13833600
+            },
+            {
+              "name": "admin tries to add new category with missing data",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "admin tries to add new category with missing data"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 603600
+            },
+            {
+              "name": "a bad request exception with message $ is thrown",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a bad request exception with message"
+                },
+                {
+                  "value": "User data are missing.",
+                  "argumentInfo": {
+                    "argumentName": "errorMessage",
+                    "formattedValue": "User data are missing."
+                  }
+                },
+                {
+                  "value": "is thrown"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 2456000
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 33606000
+        }
+      ],
+      "durationInNanos": 33606000,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.category.CategoryServiceTest",
+      "testMethodName": "admin_cannot_update_category_with_same_name_as_another_category",
+      "description": "admin cannot update category with same name as another category",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "admin has added two categories",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "admin has added two categories"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 43940200
+            },
+            {
+              "name": "admin tries to update category",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "admin tries to update category"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 14403500
+            },
+            {
+              "name": "a bad request exception with message $ is thrown",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a bad request exception with message"
+                },
+                {
+                  "value": "Category already exists.",
+                  "argumentInfo": {
+                    "argumentName": "errorMessage",
+                    "formattedValue": "Category already exists."
+                  }
+                },
+                {
+                  "value": "is thrown"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 1874300
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 71126900
+        }
+      ],
+      "durationInNanos": 71126900,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.category.CategoryServiceTest",
+      "testMethodName": "admin_cannot_delete_category_if_it_contains_cars",
+      "description": "admin cannot delete category if it contains cars",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "category has cars",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "category has cars"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 52013500
+            },
+            {
+              "name": "admin tries to delete category",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "admin tries to delete category"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 26150900
+            },
+            {
+              "name": "a bad request exception with message $ is thrown",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a bad request exception with message"
+                },
+                {
+                  "value": "Category cannot be deleted because it contains cars.",
+                  "argumentInfo": {
+                    "argumentName": "errorMessage",
+                    "formattedValue": "Category cannot be deleted because it contains cars."
+                  }
+                },
+                {
+                  "value": "is thrown"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 1928800
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 92155900
+        }
+      ],
+      "durationInNanos": 92155900,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.category.CategoryServiceTest",
+      "testMethodName": "admin_deletes_category_successfully",
+      "description": "admin deletes category successfully",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "admin adds new category",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "admin adds new category"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 12230000
+            },
+            {
+              "name": "admin tries to delete category",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "admin tries to delete category"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 15655000
+            },
+            {
+              "name": "there are exactly $ categories",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "there are exactly"
+                },
+                {
+                  "value": "0",
+                  "argumentInfo": {
+                    "argumentName": "numberOfCategories",
+                    "formattedValue": "0"
+                  }
+                },
+                {
+                  "value": "categories"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 18926900
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 59767300
+        }
+      ],
+      "durationInNanos": 59767300,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.category.CategoryServiceTest",
+      "testMethodName": "exception_is_thrown_when_trying_to_get_non_existing_category",
+      "description": "exception is thrown when trying to get non existing category",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user is logged in as user",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user is logged in as user"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 19136300
+            },
+            {
+              "name": "admin tries to get category by id",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "admin tries to get category by id"
+                },
+                {
+                  "value": "0",
+                  "argumentInfo": {
+                    "argumentName": "categoryId",
+                    "formattedValue": "0"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 7673900
+            },
+            {
+              "name": "a not found exception with message $ is thrown",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a not found exception with message"
+                },
+                {
+                  "value": "Category not found",
+                  "argumentInfo": {
+                    "argumentName": "errorMessage",
+                    "formattedValue": "Category not found"
+                  }
+                },
+                {
+                  "value": "is thrown"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 2869900
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 115807000
+        }
+      ],
+      "durationInNanos": 115807000,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.category.CategoryServiceTest",
+      "testMethodName": "admin_cannot_add_two_categories_with_the_same_name",
+      "description": "admin cannot add two categories with the same name",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "admin adds new category",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "admin adds new category"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 11093600
+            },
+            {
+              "name": "admin tries to add new category",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "admin tries to add new category"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 3998700
+            },
+            {
+              "name": "a bad request exception with message $ is thrown",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a bad request exception with message"
+                },
+                {
+                  "value": "Category already exists.",
+                  "argumentInfo": {
+                    "argumentName": "errorMessage",
+                    "formattedValue": "Category already exists."
+                  }
+                },
+                {
+                  "value": "is thrown"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 1967800
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 139251800
+        }
+      ],
+      "durationInNanos": 139251800,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.category.CategoryServiceTest",
+      "testMethodName": "admin_updates_category_successfully",
+      "description": "admin updates category successfully",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "admin adds new category",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "admin adds new category"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 27742500
+            },
+            {
+              "name": "admin tries to update category",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "admin tries to update category"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 16861100
+            },
+            {
+              "name": "there are exactly $ categories with description $",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "there are exactly"
+                },
+                {
+                  "value": "1",
+                  "argumentInfo": {
+                    "argumentName": "numberOfCategories",
+                    "formattedValue": "1"
+                  }
+                },
+                {
+                  "value": "categories with description"
+                },
+                {
+                  "value": "some updated description",
+                  "argumentInfo": {
+                    "argumentName": "description",
+                    "formattedValue": "some updated description"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 68268500
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 134609200
+        }
+      ],
+      "durationInNanos": 134609200,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.category.CategoryServiceTest",
+      "testMethodName": "admin_cannot_delete_non_existing_category",
+      "description": "admin cannot delete non existing category",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user is logged in as admin",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user is logged in as admin"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 9684600
+            },
+            {
+              "name": "admin tries to delete non existing category with id $",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "admin tries to delete non existing category with id"
+                },
+                {
+                  "value": "0",
+                  "argumentInfo": {
+                    "argumentName": "categoryId",
+                    "formattedValue": "0"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 6884800
+            },
+            {
+              "name": "a not found exception with message $ is thrown",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a not found exception with message"
+                },
+                {
+                  "value": "Category not found",
+                  "argumentInfo": {
+                    "argumentName": "errorMessage",
+                    "formattedValue": "Category not found"
+                  }
+                },
+                {
+                  "value": "is thrown"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 2627800
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 66128100
+        }
+      ],
+      "durationInNanos": 66128100,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.category.CategoryServiceTest",
+      "testMethodName": "admin_adds_new_category_successfully",
+      "description": "admin adds new category successfully",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user is logged in as admin",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user is logged in as admin"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 12881500
+            },
+            {
+              "name": "admin tries to add new category",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "admin tries to add new category"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 4390900
+            },
+            {
+              "name": "there are exactly $ categories",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "there are exactly"
+                },
+                {
+                  "value": "1",
+                  "argumentInfo": {
+                    "argumentName": "numberOfCategories",
+                    "formattedValue": "1"
+                  }
+                },
+                {
+                  "value": "categories"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 31164800
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 68802900
+        }
+      ],
+      "durationInNanos": 68802900,
+      "executionStatus": "SUCCESS"
+    }
+  ],
+  "tagMap": {}
+}

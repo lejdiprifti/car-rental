@@ -1,6 +1,7 @@
 package com.ikubinfo.rental.service.category.repository;
 
 import com.ikubinfo.rental.service.category.dto.CategoryEntity;
+import com.ikubinfo.rental.service.category.dto.CategoryFilter;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface CategoryRepository {
 
     CategoryEntity getById(Long id);
 
-    List<CategoryEntity> getAll(int startIndex, int pageSize);
+    List<CategoryEntity> getAll(CategoryFilter categoryFilter);
 
     List<CategoryEntity> getAll();
 

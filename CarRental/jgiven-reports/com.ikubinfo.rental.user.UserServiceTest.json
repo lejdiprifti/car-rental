@@ -1,0 +1,639 @@
+{
+  "className": "com.ikubinfo.rental.user.UserServiceTest",
+  "name": "User Service",
+  "scenarios": [
+    {
+      "className": "com.ikubinfo.rental.user.UserServiceTest",
+      "testMethodName": "user_updates_his_password_successfully",
+      "description": "user updates his password successfully",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user is logged in as user",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user is logged in as user"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 5865600
+            },
+            {
+              "name": "user tries to update his password to $",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user tries to update his password to"
+                },
+                {
+                  "value": "Admin123-",
+                  "argumentInfo": {
+                    "argumentName": "updatedPassword",
+                    "formattedValue": "Admin123-"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 213496200
+            },
+            {
+              "name": "the password of user $ is updated to $",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "the password of user"
+                },
+                {
+                  "value": "usertester",
+                  "argumentInfo": {
+                    "argumentName": "username",
+                    "formattedValue": "usertester"
+                  }
+                },
+                {
+                  "value": "is updated to"
+                },
+                {
+                  "value": "Admin123-",
+                  "argumentInfo": {
+                    "argumentName": "updatedPassword",
+                    "formattedValue": "Admin123-"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 127586900
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 361014300
+        }
+      ],
+      "durationInNanos": 361014300,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.user.UserServiceTest",
+      "testMethodName": "user_updates_his_last_name_successfully",
+      "description": "user updates his last name successfully",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user is logged in as user",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user is logged in as user"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 3391900
+            },
+            {
+              "name": "user tries to update his last name",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user tries to update his last name"
+                },
+                {
+                  "value": "Updated Lastname",
+                  "argumentInfo": {
+                    "argumentName": "updatedLastName",
+                    "formattedValue": "Updated Lastname"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 6280300
+            },
+            {
+              "name": "the lastname of user $ is updated to $",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "the lastname of user"
+                },
+                {
+                  "value": "usertester",
+                  "argumentInfo": {
+                    "argumentName": "username",
+                    "formattedValue": "usertester"
+                  }
+                },
+                {
+                  "value": "is updated to"
+                },
+                {
+                  "value": "Updated Lastname",
+                  "argumentInfo": {
+                    "argumentName": "updatedLastname",
+                    "formattedValue": "Updated Lastname"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 79900
+            },
+            {
+              "name": "the password of user $ is updated to $",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "the password of user"
+                },
+                {
+                  "value": "usertester",
+                  "argumentInfo": {
+                    "argumentName": "username",
+                    "formattedValue": "usertester"
+                  }
+                },
+                {
+                  "value": "is updated to"
+                },
+                {
+                  "value": "Admin123_",
+                  "argumentInfo": {
+                    "argumentName": "updatedPassword",
+                    "formattedValue": "Admin123_"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 130829300
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 155926900
+        }
+      ],
+      "durationInNanos": 155926900,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.user.UserServiceTest",
+      "testMethodName": "user_cannot_update_his_username",
+      "description": "user cannot update his username",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user is logged in as user",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user is logged in as user"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 4162900
+            },
+            {
+              "name": "user tries to update his profile with new username $",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user tries to update his profile with new username"
+                },
+                {
+                  "value": "tester",
+                  "argumentInfo": {
+                    "argumentName": "username",
+                    "formattedValue": "tester"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 6219200
+            },
+            {
+              "name": "there are exactly $ users with username $",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "there are exactly"
+                },
+                {
+                  "value": "1",
+                  "argumentInfo": {
+                    "argumentName": "numberOfUsers",
+                    "formattedValue": "1"
+                  }
+                },
+                {
+                  "value": "users with username"
+                },
+                {
+                  "value": "usertester",
+                  "argumentInfo": {
+                    "argumentName": "username",
+                    "formattedValue": "usertester"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 4398700
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 26472200
+        }
+      ],
+      "durationInNanos": 26472200,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.user.UserServiceTest",
+      "testMethodName": "new_user_registers_successfully",
+      "description": "new user registers successfully",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "new user with username $ tries to register",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "new user with username"
+                },
+                {
+                  "value": "new user",
+                  "argumentInfo": {
+                    "argumentName": "username",
+                    "formattedValue": "new user"
+                  }
+                },
+                {
+                  "value": "tries to register"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 130913200
+            },
+            {
+              "name": "there are exactly $ users with username $",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "there are exactly"
+                },
+                {
+                  "value": "1",
+                  "argumentInfo": {
+                    "argumentName": "numberOfUsers",
+                    "formattedValue": "1"
+                  }
+                },
+                {
+                  "value": "users with username"
+                },
+                {
+                  "value": "new user",
+                  "argumentInfo": {
+                    "argumentName": "username",
+                    "formattedValue": "new user"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 6149600
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 145935000
+        }
+      ],
+      "durationInNanos": 145935000,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.user.UserServiceTest",
+      "testMethodName": "all_reservations_made_by_user_are_canceled_when_user_deletes_account",
+      "description": "all reservations made by user are canceled when user deletes account",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user reserves a car",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user reserves a car"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 119306700
+            },
+            {
+              "name": "user tries to delete his account",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user tries to delete his account"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 67145200
+            },
+            {
+              "name": "there are exactly $ reservations of user $",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "there are exactly"
+                },
+                {
+                  "value": "0",
+                  "argumentInfo": {
+                    "argumentName": "numberOfReservations",
+                    "formattedValue": "0"
+                  }
+                },
+                {
+                  "value": "reservations of user"
+                },
+                {
+                  "value": "usertester",
+                  "argumentInfo": {
+                    "argumentName": "username",
+                    "formattedValue": "usertester"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 127700
+            },
+            {
+              "name": "there are exactly $ users with username $",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "there are exactly"
+                },
+                {
+                  "value": "0",
+                  "argumentInfo": {
+                    "argumentName": "numberOfUsers",
+                    "formattedValue": "0"
+                  }
+                },
+                {
+                  "value": "users with username"
+                },
+                {
+                  "value": "usertester",
+                  "argumentInfo": {
+                    "argumentName": "username",
+                    "formattedValue": "usertester"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 3004200
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 205753100
+        }
+      ],
+      "durationInNanos": 205753100,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.user.UserServiceTest",
+      "testMethodName": "exception_is_thrown_if_user_is_under_18",
+      "description": "exception is thrown if user is under 18",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "new user under 18 tries to register",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "new user under 18 tries to register"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 490900
+            },
+            {
+              "name": "a bad request exception with message $ is thrown",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a bad request exception with message"
+                },
+                {
+                  "value": "User must be over 18 years old.",
+                  "argumentInfo": {
+                    "argumentName": "errorMessage",
+                    "formattedValue": "User must be over 18 years old."
+                  }
+                },
+                {
+                  "value": "is thrown"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 1411500
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 10946600
+        }
+      ],
+      "durationInNanos": 10946600,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "com.ikubinfo.rental.user.UserServiceTest",
+      "testMethodName": "user_deletes_account_successfully",
+      "description": "user deletes account successfully",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "user is logged in as user",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user is logged in as user"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 2636900
+            },
+            {
+              "name": "user tries to delete his account",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "user tries to delete his account"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 14435400
+            },
+            {
+              "name": "there are exactly $ users with username $",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "there are exactly"
+                },
+                {
+                  "value": "0",
+                  "argumentInfo": {
+                    "argumentName": "numberOfUsers",
+                    "formattedValue": "0"
+                  }
+                },
+                {
+                  "value": "users with username"
+                },
+                {
+                  "value": "usertester",
+                  "argumentInfo": {
+                    "argumentName": "username",
+                    "formattedValue": "usertester"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 5841100
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 34059900
+        }
+      ],
+      "durationInNanos": 34059900,
+      "executionStatus": "SUCCESS"
+    }
+  ],
+  "tagMap": {}
+}

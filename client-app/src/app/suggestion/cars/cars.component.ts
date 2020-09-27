@@ -7,12 +7,11 @@ import { User } from "@ikubinfo/core/models/user";
 import { AuthService } from "@ikubinfo/core/services/auth.service";
 import { CategoryService } from "@ikubinfo/core/services/category.service";
 import { Category } from "@ikubinfo/core/models/category";
-import { Car } from "@ikubinfo/core/models/car";
-import { sortOptions } from "@ikubinfo/suggestion/cars/cars.constants";
 
 import { ConfirmationService } from "primeng/primeng";
 import { SelectItem } from "primeng/components/common/selectitem";
 import { MenuItem } from "primeng/components/common/menuitem";
+import { Car } from '@ikubinfo/core/models/car';
 
 @Component({
   selector: "ikubinfo-cars",

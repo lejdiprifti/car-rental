@@ -3,9 +3,11 @@ package com.ikubinfo.rental.service.car;
 import com.ikubinfo.rental.service.authorization.AuthorizationService;
 import com.ikubinfo.rental.service.car.converter.CarConverter;
 import com.ikubinfo.rental.service.car.dto.CarEntity;
+import com.ikubinfo.rental.service.car.dto.CarFilter;
 import com.ikubinfo.rental.service.car.dto.CarModel;
 import com.ikubinfo.rental.service.car.dto.CarsPage;
 import com.ikubinfo.rental.service.car.repository.CarRepository;
+import com.ikubinfo.rental.service.car.status.StatusEnum;
 import com.ikubinfo.rental.service.category.CategoryService;
 import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.service.exceptions.CarRentalNotFoundException;
@@ -13,7 +15,6 @@ import com.ikubinfo.rental.service.exceptions.messages.BadRequest;
 import com.ikubinfo.rental.service.exceptions.messages.NotFound;
 import com.ikubinfo.rental.service.reservation.ReservationService;
 import com.ikubinfo.rental.service.reservation.dto.ReservedDates;
-import com.ikubinfo.rental.service.car.status.StatusEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.NoResultException;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 
-import static com.ikubinfo.rental.controller.filter.FilterUtils.getFilterData;
+import static com.ikubinfo.rental.service.filter.FilterUtils.getFormattedLocalDateTimes;
 
 @Service
 public class CarServiceImpl implements CarService {
@@ -47,44 +49,40 @@ public class CarServiceImpl implements CarService {
     private ReservationService reservationService;
 
     @Override
-    public CarsPage getAllCars(int startIndex, int pageSize, List<Long> selectedCategoryIds, String startDate,
-                               String endDate, String brand) {
-        LocalDateTime startDate2 = getFilterData(startDate, endDate).get("startDate");
-        LocalDateTime endDate2 = getFilterData(startDate, endDate).get("endDate");
-        CarsPage carPage = new CarsPage();
+    public CarsPage getAllCars(CarFilter carFilter) {
         authorizationService.isUserAuthorized();
-        carPage.setCarsList(getAll(startIndex, pageSize, selectedCategoryIds, startDate2, endDate2, brand));
-        carPage.setTotalRecords(carRepository.countAllCars(selectedCategoryIds, startDate2, endDate2, brand));
+        HashMap<String, LocalDateTime> dateTimeHashMap = getFormattedLocalDateTimes(carFilter.getStartDate(), carFilter.getEndDate());
+        carFilter.setBothLocalDateTimes(dateTimeHashMap);
+        CarsPage carPage = new CarsPage();
+        carPage.setCarsList(getAll(carFilter));
+        carPage.setTotalRecords(carRepository.countAllCars(carFilter));
         return carPage;
     }
 
     @Override
-    public CarsPage getAllAvailableCars(int startIndex, int pageSize, List<Long> selectedCategoryIds, String startDate,
-                                        String endDate, String brand) {
-        LOGGER.info("Getting all available cars with startIndex {}, pageSize {}, startDate {}, endDate {}, brand {}", startIndex, pageSize, startDate, endDate, brand);
-        LocalDateTime startDate2 = getFilterData(startDate, endDate).get("startDate");
-        LocalDateTime endDate2 = getFilterData(startDate, endDate).get("endDate");
+    public CarsPage getAllAvailableCars(CarFilter carFilter) {
+        LOGGER.info("Getting all available cars with startIndex {}, pageSize {}", carFilter.getStartIndex(), carFilter.getPageSize());
+        HashMap<String, LocalDateTime> dateTimeHashMap = getFormattedLocalDateTimes(carFilter.getStartDate(), carFilter.getEndDate());
+        carFilter.setBothLocalDateTimes(dateTimeHashMap);
         CarsPage carPage = new CarsPage();
         carPage.setCarsList(
-                getAllAvailable(startIndex, pageSize, selectedCategoryIds, startDate2, endDate2, brand));
-        carPage.setTotalRecords(carRepository.countAvailableCars(selectedCategoryIds, startDate2, endDate2, brand));
+                getAllAvailable(carFilter));
+        carPage.setTotalRecords(carRepository.countAvailableCars(carFilter));
         return carPage;
     }
 
-    private List<CarModel> getAll(int startIndex, int pageSize, List<Long> selectedCategoryIds, LocalDateTime startDate,
-                                  LocalDateTime endDate, String brand) {
+    private List<CarModel> getAll(CarFilter carFilter) {
         List<CarModel> modelList = carConverter.toModelObject(
-                carRepository.getAll(startIndex, pageSize, selectedCategoryIds, startDate, endDate, brand));
+                carRepository.getAll(carFilter));
         for (CarModel car : modelList) {
             setReservedDatesToCar(car);
         }
         return modelList;
     }
 
-    private List<CarModel> getAllAvailable(int startIndex, int pageSize, List<Long> selectedCategoryIds,
-                                           LocalDateTime startDate, LocalDateTime endDate, String brand) {
+    private List<CarModel> getAllAvailable(CarFilter carFilter) {
         List<CarModel> modelList = carConverter.toModelObject(
-                carRepository.getAllAvailable(startIndex, pageSize, selectedCategoryIds, startDate, endDate, brand));
+                carRepository.getAllAvailable(carFilter));
         for (CarModel car : modelList) {
             setReservedDatesToCar(car);
         }

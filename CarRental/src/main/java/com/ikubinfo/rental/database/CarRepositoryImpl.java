@@ -1,8 +1,9 @@
 package com.ikubinfo.rental.database;
 
 import com.ikubinfo.rental.service.car.dto.CarEntity;
-import com.ikubinfo.rental.service.car.status.StatusEnum;
+import com.ikubinfo.rental.service.car.dto.CarFilter;
 import com.ikubinfo.rental.service.car.repository.CarRepository;
+import com.ikubinfo.rental.service.car.status.StatusEnum;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,8 +29,7 @@ public class CarRepositoryImpl implements CarRepository {
 
     @Override
     @Transactional
-    public List<Object[]> getAll(int startIndex, int pageSize, List<Long> selectedCategoryIds, LocalDateTime startDate2,
-                                 LocalDateTime endDate2, String brand) {
+    public List<Object[]> getAll(CarFilter carFilter) {
         Query query = em.createQuery(
                 "Select c.id as id, c.photo as photo, c.name as name, c.description as description, c.plate as plate, c.diesel as diesel,"
                         + " c.type as type, c.year as year, c.price as price, c.availability as availability,"
@@ -39,19 +39,18 @@ public class CarRepositoryImpl implements CarRepository {
                         + "where ((r.startDate >= ?2 and r.endDate >= ?3 and r.startDate <= ?3) or (r.startDate >= ?2 and r.endDate <= ?3 )"
                         + "or (r.startDate <= ?2 and r.endDate >= ?3 ) or (r.startDate <= ?2 and r.endDate >= ?2 and r.endDate <= ?3 )) and r.active = ?4) "
                         + " and c.active = ?4 and (c.type LIKE ?5) ORDER BY c.id DESC");
-        query.setParameter(1, selectedCategoryIds);
-        query.setParameter(2, startDate2);
-        query.setParameter(3, endDate2);
+        query.setParameter(1, carFilter.getSelectedCategoryIds());
+        query.setParameter(2, carFilter.getStartLocalDateTime());
+        query.setParameter(3, carFilter.getEndLocalDateTime());
         query.setParameter(4, true);
-        query.setParameter(5, '%' + brand + '%');
-        query.setFirstResult(startIndex);
-        query.setMaxResults(pageSize);
+        query.setParameter(5, '%' + carFilter.getBrand() + '%');
+        query.setFirstResult(carFilter.getStartIndex());
+        query.setMaxResults(carFilter.getPageSize());
         return query.getResultList();
     }
 
     @Override
-    public Long countAvailableCars(List<Long> selectedCategoryIds, LocalDateTime startDate2, LocalDateTime endDate2,
-                                   String brand) {
+    public Long countAvailableCars(CarFilter carFilter) {
         TypedQuery<Long> query = em
                 .createQuery("Select Count(c.id) FROM CarEntity c where ((c.category.id IN (?1)) or ((?1) is NULL)) "
                         + "and c.id NOT IN ( Select c2.id from ReservationEntity r "
@@ -59,36 +58,34 @@ public class CarRepositoryImpl implements CarRepository {
                         + "where ((r.startDate >= ?2 and r.endDate >= ?3 and r.startDate <= ?3) or (r.startDate >= ?2 and r.endDate <= ?3 )"
                         + "or (r.startDate <= ?2 and r.endDate >= ?3 ) or (r.startDate <= ?2 and r.endDate >= ?2 and r.endDate <= ?3 )) and r.active = ?4) "
                         + " and c.active = ?4 and c.availability <> ?5 and (c.type LIKE ?6)", Long.class);
-        query.setParameter(1, selectedCategoryIds);
-        query.setParameter(2, startDate2);
-        query.setParameter(3, endDate2);
+        query.setParameter(1, carFilter.getSelectedCategoryIds());
+        query.setParameter(2, carFilter.getStartLocalDateTime());
+        query.setParameter(3, carFilter.getEndLocalDateTime());
         query.setParameter(5, StatusEnum.SERVIS);
-        query.setParameter(6, '%' + brand + '%');
+        query.setParameter(6, '%' + carFilter.getBrand() + '%');
         query.setParameter(4, true);
         return query.getSingleResult();
     }
 
     @Override
-    public Long countAllCars(List<Long> selectedCategoryIds, LocalDateTime startDate2, LocalDateTime endDate2,
-                             String brand) {
+    public Long countAllCars(CarFilter carFilter) {
         TypedQuery<Long> query = em
                 .createQuery("Select COUNT(c.id) FROM CarEntity c where (((c.category.id IN (?1)) or ((?1) is NULL)) "
                         + "and c.id NOT IN ( Select r.car.id from ReservationEntity r "
                         + "where r.car.id=c.id and ((r.startDate >= ?2 and r.endDate >= ?3 and r.startDate <= ?3) or (r.startDate >= ?2 and r.endDate <= ?3 )"
                         + "or (r.startDate <= ?2 and r.endDate >= ?3 ) or (r.startDate <= ?2 and r.endDate >= ?2 and r.endDate <= ?3 )) and r.active = ?4) "
                         + " and c.active = ?4 and (c.type LIKE ?5))", Long.class);
-        query.setParameter(1, selectedCategoryIds);
-        query.setParameter(2, startDate2);
-        query.setParameter(3, endDate2);
+        query.setParameter(1, carFilter.getSelectedCategoryIds());
+        query.setParameter(2, carFilter.getStartLocalDateTime());
+        query.setParameter(3, carFilter.getEndLocalDateTime());
         query.setParameter(4, true);
-        query.setParameter(5, '%' + brand + '%');
+        query.setParameter(5, '%' + carFilter.getBrand() + '%');
         return query.getSingleResult();
     }
 
     @Override
     @Transactional
-    public List<Object[]> getAllAvailable(int startIndex, int pageSize, List<Long> selectedCategoryIds,
-                                          LocalDateTime startDate2, LocalDateTime endDate2, String brand) {
+    public List<Object[]> getAllAvailable(CarFilter carFilter) {
         Query query = em.createQuery(
                 "Select c.id as id, c.photo as photo, c.name as name, c.description as description, c.plate as plate, c.diesel as diesel,"
                         + " c.type as type, c.year as year, c.price as price, c.availability as availability,"
@@ -98,14 +95,14 @@ public class CarRepositoryImpl implements CarRepository {
                         + "where ((r.startDate >= ?2 and r.endDate >= ?3 and r.startDate <= ?3) or (r.startDate >= ?2 and r.endDate <= ?3 )"
                         + "or (r.startDate <= ?2 and r.endDate >= ?3 ) or (r.startDate <= ?2 and r.endDate >= ?2 and r.endDate <= ?3 )) and r.active = ?4) "
                         + " and c.active = ?4 and c.availability <> ?5 and (c.type LIKE ?6) ORDER BY c.id DESC");
-        query.setParameter(1, selectedCategoryIds);
-        query.setParameter(2, startDate2);
-        query.setParameter(3, endDate2);
+        query.setParameter(1, carFilter.getSelectedCategoryIds());
+        query.setParameter(2, carFilter.getStartLocalDateTime());
+        query.setParameter(3, carFilter.getEndLocalDateTime());
         query.setParameter(5, StatusEnum.SERVIS);
-        query.setParameter(6, '%' + brand + '%');
+        query.setParameter(6, '%' + carFilter.getBrand() + '%');
         query.setParameter(4, true);
-        query.setFirstResult(startIndex);
-        query.setMaxResults(pageSize);
+        query.setFirstResult(carFilter.getStartIndex());
+        query.setMaxResults(carFilter.getPageSize());
         return query.getResultList();
     }
 

@@ -6,29 +6,34 @@ import { Car } from '../models/car';
 import { Reservation } from '../models/reservation';
 import { CarsPage } from '../models/cars-page';
 import { DatePipe } from '@angular/common';
+import { CarFilter } from '../models/car-filter';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CarService {
-
+  carFilter: CarFilter;
   url = 'cars';
-constructor(private apiService: ApiService, private httpClient: HttpClient, private datePipe: DatePipe) { }
+constructor(private apiService: ApiService, private httpClient: HttpClient, private datePipe: DatePipe) {
+  this.carFilter = {};
+ }
   getAll(startIndex: number, pageSize: number, selectedCategories?: number[], startDate?: Date, endDate?: Date, brand?: string): Observable<CarsPage>{
-    let params = new HttpParams();
+    this.carFilter = {};
+    this.carFilter.startIndex = startIndex;
+    this.carFilter.pageSize = pageSize;
     if (selectedCategories.length > 0) {
-      params = params.set('selectedCategories', selectedCategories.toLocaleString());
+      this.carFilter.selectedCategoryIds = selectedCategories;
     }
     if (startDate){
-      params = params.set('startDate', this.datePipe.transform(startDate, 'yyyy-MM-dd HH:mm:ss'));
+      this.carFilter.startDate = this.datePipe.transform(startDate, 'yyyy-MM-dd HH:mm:ss');
     }
     if (endDate){
-      params = params.set('endDate', this.datePipe.transform(endDate, 'yyyy-MM-dd HH:mm:ss'));
+      this.carFilter.endDate = this.datePipe.transform(endDate, 'yyyy-MM-dd HH:mm:ss');
     }
     if (brand){
-      params = params.set('brand',brand);
+      this.carFilter.brand = brand;
     }
-    return this.apiService.get(this.url + '?startIndex='+ startIndex + '&pageSize='+pageSize, params);
+    return this.apiService.getWithBody(this.url, this.carFilter);
   }
 
   getById(id: number): Observable<Car>{
@@ -36,7 +41,7 @@ constructor(private apiService: ApiService, private httpClient: HttpClient, priv
   }
 
   add(formData: FormData): Observable<any> {
-    return this.httpClient.post('http://localhost:8080/cars', formData);
+    return this.httpClient.post('http://localhost:8080/cars/add', formData);
   }
 
   edit(formData: FormData, id: number): Observable<any>{

@@ -1,5 +1,6 @@
 package com.ikubinfo.rental.service.car;
 
+import com.ikubinfo.rental.service.car.dto.CarFilter;
 import com.ikubinfo.rental.service.car.dto.CarModel;
 import com.ikubinfo.rental.service.car.dto.CarsPage;
 import org.springframework.web.multipart.MultipartFile;
@@ -8,11 +9,9 @@ import java.util.List;
 
 public interface CarService {
 
-    CarsPage getAllCars(int startIndex, int pageSize, List<Long> selectedCategoryIds, String startDate,
-                        String endDate, String brand);
+    CarsPage getAllCars(CarFilter carFilter);
 
-    CarsPage getAllAvailableCars(int startIndex, int pageSize, List<Long> selectedCategoryIds, String startDate,
-                                 String endDate, String brand);
+    CarsPage getAllAvailableCars(CarFilter carFilter);
 
     CarModel getById(Long id);
 
