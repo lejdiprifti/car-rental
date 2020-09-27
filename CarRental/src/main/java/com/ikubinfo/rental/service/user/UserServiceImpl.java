@@ -9,6 +9,7 @@ import com.ikubinfo.rental.service.reservation.ReservationService;
 import com.ikubinfo.rental.service.reservation.dto.ReservationModel;
 import com.ikubinfo.rental.service.user.converter.UserConverter;
 import com.ikubinfo.rental.service.user.dto.UserEntity;
+import com.ikubinfo.rental.service.user.dto.UserFilter;
 import com.ikubinfo.rental.service.user.dto.UserModel;
 import com.ikubinfo.rental.service.user.dto.UserPage;
 import com.ikubinfo.rental.service.user.repository.UserRepository;
@@ -53,9 +54,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserPage getAll(int startIndex, int pageSize, String name) {
-        List<UserModel> userList = userConverter.toModel(userRepository.getAll(startIndex, pageSize, name));
-        Long totalRecords = userRepository.countActiveUsers(name);
+    public UserPage getAll(UserFilter userFilter) {
+        List<UserModel> userList = userConverter.toModel(userRepository.getAll(userFilter));
+        Long totalRecords = userRepository.countActiveUsers(userFilter.getName());
         UserPage userPage = new UserPage();
         userPage.setTotalRecords(totalRecords);
         userPage.setUserList(userList);

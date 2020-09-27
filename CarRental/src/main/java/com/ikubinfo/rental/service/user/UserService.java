@@ -1,5 +1,6 @@
 package com.ikubinfo.rental.service.user;
 
+import com.ikubinfo.rental.service.user.dto.UserFilter;
 import com.ikubinfo.rental.service.user.dto.UserModel;
 import com.ikubinfo.rental.service.user.dto.UserPage;
 
@@ -7,7 +8,7 @@ public interface UserService {
 
     UserModel getById(Long id);
 
-    UserPage getAll(int startIndex, int pageSize, String name);
+    UserPage getAll(UserFilter userFilter);
 
     UserModel getByUsername(String username);
 

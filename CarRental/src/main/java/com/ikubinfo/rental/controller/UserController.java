@@ -1,6 +1,7 @@
 package com.ikubinfo.rental.controller;
 
 import com.ikubinfo.rental.service.user.UserService;
+import com.ikubinfo.rental.service.user.dto.UserFilter;
 import com.ikubinfo.rental.service.user.dto.UserModel;
 import com.ikubinfo.rental.service.user.dto.UserPage;
 import com.ikubinfo.rental.service.user.UserServiceImpl;
@@ -20,11 +21,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping
-    public ResponseEntity<UserPage> getAll(@RequestParam("startIndex") int startIndex,
-                                           @RequestParam("pageSize") int pageSize,
-                                           @RequestParam(name = "name", defaultValue = "") String name) {
-        return new ResponseEntity<>(userService.getAll(startIndex, pageSize, name), HttpStatus.OK);
+    @PostMapping
+    public ResponseEntity<UserPage> getAll(@RequestBody UserFilter userFilter) {
+        return new ResponseEntity<>(userService.getAll(userFilter), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

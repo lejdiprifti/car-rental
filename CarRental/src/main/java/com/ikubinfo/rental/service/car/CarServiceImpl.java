@@ -235,8 +235,6 @@ public class CarServiceImpl implements CarService {
                 if (model.getId() == null) {
                     throw new CarRentalBadRequestException(BadRequest.PHOTO_REQUIRED.getErrorMessage());
                 }
-            } else if (file.getSize() > 100000) {
-                throw new CarRentalBadRequestException(BadRequest.PHOTO_TO_BE_LESS_KB.getErrorMessage());
             }
             if (model.getType().equals("")) {
                 throw new CarRentalBadRequestException(BadRequest.BRAND_REQUIRED.getErrorMessage());

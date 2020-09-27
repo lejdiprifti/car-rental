@@ -1,12 +1,13 @@
 package com.ikubinfo.rental.service.user.repository;
 
 import com.ikubinfo.rental.service.user.dto.UserEntity;
+import com.ikubinfo.rental.service.user.dto.UserFilter;
 
 import java.util.List;
 
 public interface UserRepository {
 
-    List<UserEntity> getAll(int startIndex, int pageSize, String name);
+    List<UserEntity> getAll(UserFilter userFilter);
 
     UserEntity getById(Long id);
 

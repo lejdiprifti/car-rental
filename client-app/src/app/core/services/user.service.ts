@@ -4,20 +4,24 @@ import { Observable } from 'rxjs';
 import { User } from '../models/user';
 import { UserPage } from '../models/user-page';
 import { HttpParams } from '@angular/common/http';
+import { UserFilter } from '../models/user-filter';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-url='user'
+private url: string ='user';
+private userFilter: UserFilter;
 constructor(private apiService: ApiService) { }
 
   getAll(startIndex: number, pageSize: number, name?: string): Observable<UserPage>{
-    let params = new HttpParams();
+    this.userFilter = {};
+    this.userFilter.startIndex = startIndex;
+    this.userFilter.pageSize = pageSize;
     if (name){
-      params = params.set('name', name);
+      this.userFilter.name = name;
     }
-    return this.apiService.get(this.url+'?startIndex='+startIndex+'&pageSize='+pageSize, params);
+    return this.apiService.getWithBody(this.url, this.userFilter);
   }
 
   getUserById(id: number): Observable<User>{
