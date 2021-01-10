@@ -1,17 +1,22 @@
 package com.ikubinfo.rental;
 
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-@EntityScan("com.ikubinfo.rental")
-@ComponentScan({"com.ikubinfo.rental"})
 public class CarRentalApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CarRentalApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(CarRentalApplication.class, args);
+    }
 
+    @Bean
+    public ModelMapper modelMapper() {
+        ModelMapper mm = new ModelMapper();
+        mm.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        return mm;
+    }
 }

@@ -3,6 +3,7 @@ import { ApiService } from '../utilities/api.service';
 import { Observable } from 'rxjs';
 import { Category } from '../models/category';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { CategoryPage } from '../models/category-page';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,12 @@ private options = { headers: new HttpHeaders().set('Content-Type', 'multipart/fo
 
 constructor(private apiService: ApiService, private httpClient: HttpClient) { }
 
-public getAll(): Observable<Array<Category>>{
-  return this.apiService.get(this.url);
+public getAll(startIndex: number, pageSize: number): Observable<CategoryPage>{
+  return this.apiService.get(this.url+'?startIndex='+startIndex+'&pageSize='+pageSize);
+}
+
+public getAllCategories(): Observable<Array<Category>>{
+  return this.apiService.get(this.url+'/all');
 }
 
 public getById(id: number): Observable<Category>{

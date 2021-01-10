@@ -1,5 +1,5 @@
 #categoryPhoto {
-    width: 200px;
+    width: 100%;
     align-content: center;
 }
 
@@ -42,4 +42,24 @@
     90% {
         stroke: #ffa700;
     }
+}
+
+#search {
+    margin-left: 85%;
+}
+
+#advanced {
+    float:right;
+    font-size: 14px;
+    color:rgb(30, 108, 253);
+}
+
+#advanced:hover {
+    color:rgb(10, 95, 252);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#reset {
+    margin-left: 3%;
 }

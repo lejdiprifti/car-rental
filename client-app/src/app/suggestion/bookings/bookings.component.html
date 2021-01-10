@@ -2,16 +2,36 @@
   <p-progressSpinner></p-progressSpinner>
   </div>
   <div *ngIf="reservations">
-<p-table [columns]="cols" [value]="reservations" selectionMode="single" [(selection)]="selectedReservation" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="5">
+    <div class="ui-g" *ngIf="advancedFilters">
+      <div class="ui-g-2">
+          <p><b>Filter results by:</b></p>
+              </div>
+              <div class="ui-g-3">
+                <input type="search" pInputText placeholder="Search by car name" [(ngModel)]="carName">
+              </div>
+              <div class="ui-g-3">
+                 From
+                  <p-calendar placeholder = "Pick a date" [minDate]="today" [maxDate]="endFilterDate" [style]="{'width':'350px','margin-top':'8px'}" [(ngModel)]="startFilterDate" showButtonBar="true"></p-calendar>
+              </div>
+              <div class="ui-g-3">
+                  Until
+                  <p-calendar placeholder = "Pick a date"   [minDate]="startFilterDate" [style]="{'width':'350px','margin-top':'8px'}" [(ngModel)]="endFilterDate" showButtonBar="true"></p-calendar>
+              </div>
+              <div id="search" class="ui-g-3">
+                <button pButton icon="pi pi-search" type="button" label="Search" (click)="search()" class="ui-button-rounded"></button>
+                <button id="reset" pButton type="button" label="Reset" icon="pi pi-times" class="ui-button-rounded ui-button-secondary" (click)="reset()"></button>
+              </div>
+      </div>
+<p-table #dt [columns]="cols" [value]="reservations" paginatorPosition="top" [loading]="!reservations" [first]="first" [lazy]="true" [loading]="loading" [totalRecords]="totalRecords" selectionMode="single" [(selection)]="selectedReservation" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="5"
+(onPage)="paginate($event)">
   <ng-template pTemplate="caption">
       List of reservations
+      <p id="advanced" (click)="selectIfAdvanced()">Advanced filters...</p>
   </ng-template>
   <ng-template pTemplate="header" let-columns>
       <tr>
-          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          <th *ngFor="let col of columns">
               {{col.header}}
-              <p-sortIcon *ngIf="col.field !== 'car.type'" [field]="col.field"></p-sortIcon>
-              <p-sortIcon *ngIf="col.field === 'car.type'" [field]="col.field"></p-sortIcon>
           </th>
       </tr>
   </ng-template>
@@ -29,7 +49,7 @@
   </ng-template>    
 </p-table>
 
-<p-dialog header="Reservation Details" [(visible)]="displayDialog" [focusOnShow]="false" [responsive]="true" showEffect="fade" [modal]="true"  [style]="{width: '500px'}">
+<p-dialog header="Reservation Details" [(visible)]="displayDialog" [focusOnShow]="false" [responsive]="true" showEffect="fade" [modal]="true"  [style]="{width: '650px', 'height': '600px'}">
   <div class="ui-g ui-fluid reservation" *ngIf="reservation">
     <img src = "assets/images/general/calendar.png"/>
     <div class="ui-g-12">

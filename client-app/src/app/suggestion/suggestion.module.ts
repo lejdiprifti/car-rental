@@ -29,7 +29,8 @@ import {
   PanelModule,
   InplaceModule,
   KeyFilterModule,
-  DropdownModule
+  DropdownModule,
+  PaginatorModule
 } from "primeng/primeng";
 
 @NgModule({
@@ -52,7 +53,8 @@ import {
     CardModule,
     FormsModule,
     PasswordModule,
-    FileUploadModule
+    FileUploadModule,
+    PaginatorModule
   ],
   exports: [],
   declarations: [

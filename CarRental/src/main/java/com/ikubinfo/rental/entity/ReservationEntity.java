@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import lombok.Data;
 import org.hibernate.annotations.JoinColumnOrFormula;
 import org.hibernate.annotations.JoinColumnsOrFormulas;
 
@@ -24,16 +25,14 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "reservation", schema = "rental")
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 public class ReservationEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "user_id", insertable = false, updatable = false)
 	private UserEntity user;
 

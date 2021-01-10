@@ -27,22 +27,29 @@ export class BookingsComponent implements OnInit {
   minDate: Date;
   fee: number = 0;
   price: number;
-
+  first: number;
+  totalRecords: number;
+  carName: string;
+  startFilterDate: Date;
+  endFilterDate: Date;
+  advancedFilters: boolean = false;
   constructor(private confirmationService: ConfirmationService,
-    private reservationService: ReservationService, private logger: LoggerService) { }
+    private reservationService: ReservationService, private logger: LoggerService) {}
 
   ngOnInit() {
     this.reservation = {};
-    this.getMyReservations();
     this.cols = cols;
+    this.first = 0;
+    this.getMyReservations(0,5, this.carName, this.startDate, this.endDate);
     this.reservedDates = [];
     this.minDate = new Date();
   }
 
 
-  getMyReservations(): void {
-    this.reservationService.getReservationsByUsername().subscribe(res => {
-      this.reservations = res;
+  getMyReservations(startIndex: number, pageSize: number, carName?: string, startDate?: Date, endDate?: Date): void {
+    this.reservationService.getReservationsByUsername(startIndex, pageSize, carName,startDate,endDate).subscribe(res => {
+      this.reservations = res.reservationList;
+      this.totalRecords = res.totalRecords;
       this.reservations.forEach(el => {
         this.startDate = new Date(el.startDate);
         this.startTime = new Date(el.startDate);
@@ -98,7 +105,7 @@ export class BookingsComponent implements OnInit {
         reservation.fee = this.fee;
         this.reservationService.edit(reservation, this.selectedReservation.id).subscribe(res => {
           this.logger.success('Success', 'Reservation was saved successfully.');
-          this.getMyReservations();
+          this.getMyReservations(0,5);
         }, err => {
           this.logger.error('Error', err.error.message)
         })
@@ -137,7 +144,7 @@ export class BookingsComponent implements OnInit {
       accept: () => {
         this.reservationService.cancel(this.selectedReservation.id).subscribe(res => {
           this.logger.info('Info', 'Reservation was canceled.');
-          this.getMyReservations();
+          this.getMyReservations(0,5);
         }, err => {
           this.logger.error('Error', err.error.message);
         })
@@ -145,5 +152,29 @@ export class BookingsComponent implements OnInit {
     })
     this.reservation = null;
     this.displayDialog = false;
+  }
+
+  paginate(event): void {
+    this.first = event.first;
+    this.getMyReservations(event.first, 5,this.carName, this.startFilterDate,this.endFilterDate);
+  }
+
+  search(): void {
+    this.getMyReservations(this.first, 5, this.carName, this.startFilterDate, this.endFilterDate);
+  }
+
+  reset(): void {
+    this.carName = null;
+    this.startFilterDate = null;
+    this.endFilterDate = null;
+    this.getMyReservations(this.first, 5, this.carName, this.startFilterDate, this.endFilterDate);
+  }
+
+  selectIfAdvanced(): void {
+    if (this.advancedFilters === true){
+      this.advancedFilters = false;
+    } else {
+      this.advancedFilters = true;
+    }
   }
 }

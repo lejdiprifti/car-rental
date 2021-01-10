@@ -1,9 +1,6 @@
 package com.ikubinfo.rental.entity;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,56 +9,54 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.ikubinfo.rental.model.enums.StatusEnum;
+import lombok.Data;
 
 @Entity
 @Table(name = "car", schema = "rental")
-@Getter @Setter @NoArgsConstructor
+@Data
 public class CarEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@Column(name = "car_id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "car_id")
+    private Long id;
 
-	@Column(name = "name")
-	private String name;
+    @Column(name = "name")
+    private String name;
 
-	@Column(name = "plate")
-	private String plate;
+    @Column(name = "plate")
+    private String plate;
 
-	@Column(name = "year")
-	private int year;
+    @Column(name = "year")
+    private int year;
 
-	@Column(name = "type")
-	private String type;
+    @Column(name = "type")
+    private String type;
 
-	@Column(name = "description", length = 10000)
-	private String description;
+    @Column(name = "description", length = 10000)
+    private String description;
 
-	@Lob
-	@Column(name = "photo")
-	private byte[] photo;
+    @Lob
+    @Column(name = "photo")
+    private byte[] photo;
 
-	@Column(name = "price")
-	private double price;
+    @Column(name = "price")
+    private double price;
 
-	@Column(name = "diesel")
-	private String diesel;
-	
-	@Column(name="category_id")
-	private Long categoryId;
+    @Column(name = "diesel")
+    private String diesel;
 
-	@ManyToOne
-	@JoinColumn(name = "category_id", referencedColumnName = "category_id", insertable=false, updatable=false)
-	private CategoryEntity category;
+    @Column(name = "category_id")
+    private Long categoryId;
 
-	private StatusEnum availability;
-	private boolean active;
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "category_id", insertable = false, updatable = false)
+    private CategoryEntity category;
+
+    private StatusEnum availability;
+    private boolean active;
 
 }

@@ -1,6 +1,6 @@
 <div id="panel">
     <div id="information" class="ui-g-6">
-        <div class="ui-g-12">
+        <div>
             <img id="today" src="assets/images/general/today.svg" alt="Today" />
         </div>
         <div class="ui-g-6 card header" id="carsAvailable">
@@ -32,7 +32,7 @@
             </div>
         </div>
     </div>
-<div class=" calendar ui-g-6">
+<div class="calendar ui-g-6">
 <full-calendar deepChangeDetection="true"  [header]="{
     left: 'prev,next',
     center: 'title',
@@ -59,20 +59,18 @@
             </tr>
             <tr>
                 <th *ngFor="let col of columns" [ngSwitch]="col.field">
-                    <input *ngSwitchCase="'user'" pInputText placeholder="Search by user name" type="text" (input)="dt.filter($event.target.value, col.field, 'contains')">
-                    <input *ngSwitchCase="'car'" pInputText placeholder = "Search by car name" type="text" (input)="dt.filter($event.target.value, 'car.name', 'contains')">
-                    <input *ngSwitchCase="'plate'" pInputText placeholder = "Search by car plate" type="text" (input)="dt.filter($event.target.value, 'car.plate', 'contains')">
-                    <div *ngSwitchCase="'startDate'">
+                    <input class="filterInput" *ngSwitchCase="'user'" pInputText placeholder="Search by user name" type="text" (input)="dt.filter($event.target.value, 'user.firstName', 'contains')">
+                    <input class="filterInput" *ngSwitchCase="'car'" pInputText placeholder = "Search by car name" type="text" (input)="dt.filter($event.target.value, 'car.name', 'contains')">
+                    <input class="filterInput" *ngSwitchCase="'plate'" pInputText placeholder = "Search by car plate" type="text" (input)="dt.filter($event.target.value, 'car.plate', 'contains')">
+                    <div class="filterInput" *ngSwitchCase="'startDate'">
                         Later than
-                        <p-calendar placeholder = "Pick a date" [style]="{'width':'350px','margin-top':'8px'}" [(ngModel)]="date" (click)="filterBookings()" showButtonBar="true"></p-calendar>
+                        <p-calendar  class="filterInput" placeholder = "Pick a date" [style]="{'width':'350px','margin-top':'8px'}" [(ngModel)]="date" (click)="filterBookings()" showButtonBar="true"></p-calendar>
                     </div>
-                    <div *ngSwitchCase="'endDate'">
+                    <div class="filterInput" *ngSwitchCase="'endDate'">
                         Earlier than
-                        <p-calendar placeholder = "Pick a date" [style]="{'width':'350px','margin-top':'8px'}" [(ngModel)]="endDate" (click)="filterBookings()" showButtonBar="true"></p-calendar>
+                        <p-calendar class="filterInput" placeholder = "Pick a date" [style]="{'width':'350px','margin-top':'8px'}" [(ngModel)]="endDate" (click)="filterBookings()" showButtonBar="true"></p-calendar>
                     </div>
-                    <p-dropdown *ngSwitchCase="'type'" [options]="brands" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'equals')"></p-dropdown>
-                    <p-multiSelect *ngSwitchCase="'diesel'" [options]="fuels" defaultLabel="All Fuels" (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
-                    <input *ngSwitchCase="'price'"  pKeyFilter="int" pInputText type="text" placeholder="Greater Than" (input)="filterBookingsByPrice($event)">
+                    <input class="filterInput" *ngSwitchCase="'price'"  pKeyFilter="int" pInputText type="text" placeholder="Greater Than" (input)="filterBookingsByPrice($event)">
                 </th>
             </tr>
         </ng-template>
@@ -80,7 +78,7 @@
             <tr [pSelectableRow]="rowData">
                 <td *ngFor="let col of columns">
                     <p *ngIf="col.field === 'user'">{{rowData[col.field].firstName}} {{rowData[col.field].lastName}}</p>
-                   <p *ngIf="col.field === 'car'">{{rowData[col.field].type}} {{rowData[col.field].name}}</p>
+                   <p *ngIf="col.field === 'car'">{{rowData[col.field].name}} {{rowData[col.field].type}}</p>
                    <p *ngIf="col.field === 'plate'">{{rowData.car.plate}}</p>
                    <p *ngIf="col.field === 'price'">{{calculateFee(rowData.car, rowData.startDate, rowData.endDate)}}</p>
                    <p *ngIf="col.field === 'startDate' || col.field === 'endDate'">{{rowData[col.field] | date: 'medium'}}</p>
