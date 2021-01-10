@@ -1,9 +1,10 @@
 package com.ikubinfo.rental.category;
 
+import com.ikubinfo.rental.service.category.CategoryService;
 import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.service.exceptions.CarRentalNotFoundException;
-import com.ikubinfo.rental.model.CategoryModel;
-import com.ikubinfo.rental.service.CategoryService;
+import com.ikubinfo.rental.service.category.dto.CategoryModel;
+import com.ikubinfo.rental.service.category.CategoryServiceImpl;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioState;

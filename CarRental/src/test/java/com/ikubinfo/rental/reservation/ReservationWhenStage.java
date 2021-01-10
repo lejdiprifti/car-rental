@@ -1,9 +1,10 @@
 package com.ikubinfo.rental.reservation;
 
 import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
-import com.ikubinfo.rental.model.CarModel;
-import com.ikubinfo.rental.model.ReservationModel;
-import com.ikubinfo.rental.service.ReservationService;
+import com.ikubinfo.rental.service.car.dto.CarModel;
+import com.ikubinfo.rental.service.reservation.ReservationService;
+import com.ikubinfo.rental.service.reservation.dto.ReservationModel;
+import com.ikubinfo.rental.service.reservation.ReservationServiceImpl;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;

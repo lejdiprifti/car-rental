@@ -1,8 +1,8 @@
 package com.ikubinfo.rental.user;
 
 import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
-import com.ikubinfo.rental.model.UserModel;
-import com.ikubinfo.rental.service.UserService;
+import com.ikubinfo.rental.service.user.dto.UserModel;
+import com.ikubinfo.rental.service.user.UserServiceImpl;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.integration.spring.JGivenStage;
@@ -17,7 +17,7 @@ import static com.ikubinfo.rental.user.util.UserUtil.createUserModel;
 public class UserWhenStage extends Stage<UserWhenStage> {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @ProvidedScenarioState
     private CarRentalBadRequestException carRentalBadRequestException;

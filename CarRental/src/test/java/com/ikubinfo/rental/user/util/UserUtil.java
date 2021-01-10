@@ -1,7 +1,6 @@
 package com.ikubinfo.rental.user.util;
 
-import com.ikubinfo.rental.model.RoleModel;
-import com.ikubinfo.rental.model.UserModel;
+import com.ikubinfo.rental.service.user.dto.UserModel;
 
 import java.time.LocalDateTime;
 

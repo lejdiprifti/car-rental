@@ -1,6 +1,6 @@
 package com.ikubinfo.rental.security.jwt_configuration;
 
-import com.ikubinfo.rental.entity.RoleEntity;
+import com.ikubinfo.rental.service.role.dto.RoleEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

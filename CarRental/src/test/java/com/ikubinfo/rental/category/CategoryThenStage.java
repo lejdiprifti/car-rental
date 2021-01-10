@@ -1,6 +1,6 @@
 package com.ikubinfo.rental.category;
 
-import com.ikubinfo.rental.entity.CategoryEntity;
+import com.ikubinfo.rental.service.category.dto.CategoryEntity;
 import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.service.exceptions.CarRentalNotFoundException;
 import com.tngtech.jgiven.Stage;

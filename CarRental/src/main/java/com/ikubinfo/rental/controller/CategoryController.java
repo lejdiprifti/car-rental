@@ -1,10 +1,13 @@
 package com.ikubinfo.rental.controller;
 
-import com.ikubinfo.rental.model.CarModel;
-import com.ikubinfo.rental.model.CategoryModel;
-import com.ikubinfo.rental.model.page.CategoryPage;
-import com.ikubinfo.rental.service.CarService;
-import com.ikubinfo.rental.service.CategoryService;
+import com.ikubinfo.rental.service.car.CarService;
+import com.ikubinfo.rental.service.car.dto.CarModel;
+import com.ikubinfo.rental.service.category.CategoryService;
+import com.ikubinfo.rental.service.category.dto.CategoryFilter;
+import com.ikubinfo.rental.service.category.dto.CategoryModel;
+import com.ikubinfo.rental.service.category.dto.CategoryPage;
+import com.ikubinfo.rental.service.car.CarServiceImpl;
+import com.ikubinfo.rental.service.category.CategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,10 +35,9 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.getAll(), HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<CategoryPage> getAll(@RequestParam(name = "startIndex") int startIndex,
-                                               @RequestParam(name = "pageSize") int pageSize) {
-        return new ResponseEntity<>(categoryService.getAll(startIndex, pageSize), HttpStatus.OK);
+    @PostMapping
+    public ResponseEntity<CategoryPage> getAll(@RequestBody CategoryFilter categoryFilter) {
+        return new ResponseEntity<>(categoryService.getAll(categoryFilter), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -48,7 +50,7 @@ public class CategoryController {
         return new ResponseEntity<>(carService.getByCategory(categoryId), HttpStatus.OK);
     }
 
-    @PostMapping(consumes = {"multipart/form-data", "application/json"})
+    @PostMapping(path = "/add", consumes = {"multipart/form-data", "application/json"})
     @ResponseStatus(HttpStatus.CREATED)
     public void save(@RequestPart("properties") CategoryModel model, @RequestPart("file") MultipartFile file) {
         categoryService.save(model, file);

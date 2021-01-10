@@ -1,7 +1,6 @@
 package com.ikubinfo.rental.reservation.util;
 
-import com.ikubinfo.rental.model.ReservationModel;
-import com.ikubinfo.rental.model.UserModel;
+import com.ikubinfo.rental.service.reservation.dto.ReservationModel;
 
 import java.time.LocalDateTime;
 

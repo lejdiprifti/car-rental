@@ -1,6 +1,6 @@
 package com.ikubinfo.rental.reservation;
 
-import com.ikubinfo.rental.entity.ReservationEntity;
+import com.ikubinfo.rental.service.reservation.dto.ReservationEntity;
 import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.service.exceptions.CarRentalNotFoundException;
 import com.tngtech.jgiven.Stage;

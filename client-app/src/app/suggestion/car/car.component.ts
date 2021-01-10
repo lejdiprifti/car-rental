@@ -217,10 +217,8 @@ export class CarComponent implements OnInit {
   }
 
   uploadFile(event) {
-    if (event.target.files.length > 0 && event.target.files[0].size < 100000) {
+    if (event.target.files.length > 0) {
       this.file = event.target.files[0];
-    } else {
-      this.logger.warning("Warning!", "Please, insert a photo under 100 KB.");
     }
   }
 

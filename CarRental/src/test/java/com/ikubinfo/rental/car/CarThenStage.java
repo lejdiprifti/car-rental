@@ -1,7 +1,7 @@
 package com.ikubinfo.rental.car;
 
-import com.ikubinfo.rental.entity.CarEntity;
-import com.ikubinfo.rental.model.enums.StatusEnum;
+import com.ikubinfo.rental.service.car.dto.CarEntity;
+import com.ikubinfo.rental.service.car.status.StatusEnum;
 import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.service.exceptions.CarRentalNotFoundException;
 import com.tngtech.jgiven.Stage;

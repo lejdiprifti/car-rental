@@ -1,6 +1,6 @@
 package com.ikubinfo.rental.category.util;
 
-import com.ikubinfo.rental.model.CategoryModel;
+import com.ikubinfo.rental.service.category.dto.CategoryModel;
 
 public class CategoryUtil {
 

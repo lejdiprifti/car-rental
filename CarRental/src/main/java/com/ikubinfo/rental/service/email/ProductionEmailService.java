@@ -1,13 +1,13 @@
 package com.ikubinfo.rental.service.email;
 
-import com.ikubinfo.rental.entity.ReservationEntity;
+import com.ikubinfo.rental.service.reservation.dto.ReservationEntity;
 import com.ikubinfo.rental.service.exceptions.CarRentalBadRequestException;
 import com.ikubinfo.rental.service.exceptions.messages.BadRequest;
-import com.ikubinfo.rental.model.CarModel;
-import com.ikubinfo.rental.model.Mail;
-import com.ikubinfo.rental.model.UserModel;
-import com.ikubinfo.rental.service.CarService;
-import com.ikubinfo.rental.service.UserService;
+import com.ikubinfo.rental.service.car.dto.CarModel;
+import com.ikubinfo.rental.service.email.dto.Mail;
+import com.ikubinfo.rental.service.user.dto.UserModel;
+import com.ikubinfo.rental.service.car.CarServiceImpl;
+import com.ikubinfo.rental.service.user.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +38,10 @@ public class ProductionEmailService implements EmailService {
     private SpringTemplateEngine springTemplateEngine;
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Autowired
-    private CarService carService;
+    private CarServiceImpl carService;
 
     @Override
     public void sendConfirmationMail(ReservationEntity reservationEntity, double fee) {
